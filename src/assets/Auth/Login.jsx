@@ -67,7 +67,7 @@ export default function Login() {
       <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[373px] absolute top-[406px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
           <div className="text-2xl font-bold ms-4 ">Masuk</div>
-          <form className="flex flex-col ms-3 mt-4">
+          <form className="flex flex-col ms-3 mt-4" onClick={handleSubmit}>
             <label className="mt-4">Email</label>
             <input
               className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-[452px] h-[48px] max-sm:w-[90%]"
@@ -93,7 +93,6 @@ export default function Login() {
           <button
             className="bg-[#006769] text-white rounded-lg ms-3 mt-6 w-[452px] h-[48px] max-sm:w-[85%]"
             type="submit"
-            onClick={handleSubmit}
           >
             Masuk
           </button>
