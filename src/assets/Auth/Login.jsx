@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../logo/logo.png";
+import ngefly from "../logo/ngefly.png";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
 import pesawatbawah from "../logo/pesawatbawah.png";
@@ -110,11 +110,10 @@ export default function Login() {
         setPasswordError(false);
         setIsEmailVerified(true);
 
-        // setTimeout(() => {
-        //   navigate("/", { state: { user: data } });
-        // }, 2000);
+        setTimeout(() => {
+          navigate("/", { state: { user: data } });
+        }, 2000);
       } else {
-        // Handle token expired
         setError("Token Expired Broo");
         setEmailError(true);
         setPasswordError(true);
@@ -144,8 +143,8 @@ export default function Login() {
         className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <img
-        src={logo}
-        className="w-[246px] h-[146px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+        src={ngefly}
+        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
       />
       <img
         src={pesawatatas}
