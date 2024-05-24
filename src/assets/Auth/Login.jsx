@@ -132,7 +132,7 @@ export default function Login() {
   };
   return (
     <div
-      className="bg-white relative h-screen "
+      className="bg-white relative h-screen"
       style={{
         backgroundImage: `url(${cover})`,
         backgroundSize: "cover",
