@@ -110,9 +110,9 @@ export default function Login() {
         setPasswordError(false);
         setIsEmailVerified(true);
 
-        setTimeout(() => {
-          navigate("/", { state: { user: data } });
-        }, 2000);
+        // setTimeout(() => {
+        //   navigate("/", { state: { user: data } });
+        // }, 2000);
       } else {
         // Handle token expired
         setError("Token Expired Broo");
@@ -187,7 +187,7 @@ export default function Login() {
             />
             <button
               type="button"
-              className="absolute inset-y-0 right-10 bottom-4 px-3 flex items-center"
+              className="absolute inset-y-5 right-10 bottom-4 px-3 flex items-center"
               onClick={toggleShowPassword}
             >
               {showPassword ? (
@@ -230,7 +230,7 @@ export default function Login() {
           )}
           {data && (
             <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-[#40A578] rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
-              Welcome {data && data.data && data.data.name}!
+              Welcome {data && data.name}!
             </div>
           )}
         </div>
