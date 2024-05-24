@@ -17,6 +17,7 @@ function GoogleLogin({ buttonText }) {
       );
       const { token } = response.data.data;
       localStorage.setItem("token", token);
+      console.log("data", response.data);
       navigate("/", { state: { token: token } });
     } catch (error) {
       console.error("Error registering/login with Google:", error);
