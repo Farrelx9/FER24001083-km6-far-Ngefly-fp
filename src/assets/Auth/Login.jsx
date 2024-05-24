@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../logo/logo.png";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
@@ -6,6 +6,8 @@ import pesawatbawah from "../logo/pesawatbawah.png";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import GoogleLogin from "./GoogleLogin";
 
 export default function Login() {
   const [email, setEmail] = useState("farrelfarhan902@gmail.com");
@@ -17,6 +19,24 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
+
+  useEffect(() => {
+    const cleanupLocalStorage = () => {
+      localStorage.removeItem("token");
+    };
+
+    window.addEventListener("beforeunload", cleanupLocalStorage);
+
+    return () => {
+      window.removeEventListener("beforeunload", cleanupLocalStorage);
+    };
+  }, []);
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
@@ -27,6 +47,7 @@ export default function Login() {
     setPassword(event.target.value);
     setPasswordError(false);
   };
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -38,14 +59,9 @@ export default function Login() {
 
   const validatePassword = (password) => {
     const minLength = 5;
-    // const hasUpperCase = /[A-Z]/.test(password);
-    // const hasLowerCase = /[a-z]/.test(password);
-    // const hasNumbers = /[0-9]/.test(password);
-    return (
-      password.length >= minLength
-      // && hasUpperCase && hasLowerCase && hasNumbers
-    );
+    return password.length >= minLength;
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const isEmailValid = validateEmail(email);
@@ -62,6 +78,7 @@ export default function Login() {
       setPasswordErrorMessage("Password tidak valid");
       return;
     }
+
     try {
       const response = await axios.post(
         `https://binar-project-backend-staging.vercel.app/api/v1/auth/login`,
@@ -75,22 +92,29 @@ export default function Login() {
           },
         }
       );
-      console.log("ApiResponse", response.data);
-      const { token } = response.data.data; // Anggap response API mengembalikan token
 
-      if (token) {
-        localStorage.setItem("token", token); // Store token in localStorage
-        setData(response.data);
+      console.log("ApiResponse", response.data);
+      const { status, data } = response.data;
+
+      if (!status && data.user && data.user.is_verified === false) {
+        setIsEmailVerified(false);
+        setError;
+        return;
+      }
+
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        setData(data);
         setError(null);
         setEmailError(false);
         setPasswordError(false);
+        setIsEmailVerified(true);
 
-        // Navigate after 2 seconds
-        // setTimeout(() => {
-        //   navigate("/", { state: { user: response.data } });
-        // }, 2000);
+        setTimeout(() => {
+          navigate("/", { state: { user: data } });
+        }, 2000);
       } else {
-        // Handle case where token is missing or undefined
+        // Handle token expired
         setError("Token Expired Broo");
         setEmailError(true);
         setPasswordError(true);
@@ -98,9 +122,11 @@ export default function Login() {
     } catch (error) {
       console.error("API Request Error:", error);
       if (error.response && error.response.status === 404) {
-        setError("Email atau kata sandi tidak valid");
+        setError("Wrong email or password");
         setEmailError(true);
         setPasswordError(true);
+      } else {
+        setError("Email not verified!");
       }
     }
   };
@@ -125,10 +151,10 @@ export default function Login() {
         src={pesawatatas}
         className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden "
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[373px] absolute top-[406px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 font-poppins border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
-          <div className="text-2xl font-bold ms-4 ">Masuk</div>
-          <form className="flex flex-col ms-3 mt-4">
+          <div className="text-2xl font-bold ms-4 ">Login</div>
+          <form className="flex flex-col ms-3 mt-4" onSubmit={handleSubmit}>
             <label className="mt-4">Email</label>
             <input
               className={`rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-[452px] h-[48px] max-sm:w-[90%] ${
@@ -136,7 +162,7 @@ export default function Login() {
                   ? "border-red-500 border-opacity-100"
                   : "border-black "
               }`}
-              placeholder="Contoh: snoopdog@gmail.com"
+              placeholder="Ex: snoopdog@gmail.com"
               value={email}
               onChange={handleEmailChange}
               type="text"
@@ -145,7 +171,7 @@ export default function Login() {
             <div className="flex justify-between">
               <label className="mt-4 mb-2">Password</label>
               <button className="text-[#40A578] hover:text-[#006769] mt-4">
-                Lupa kata sandi?
+                Forgot Password?
               </button>
             </div>
             <input
@@ -154,14 +180,14 @@ export default function Login() {
                   ? "border-red-500 border-opacity-100"
                   : "border-black "
               }`}
-              placeholder="Masukan password"
+              placeholder="Insert password"
               value={password}
               onChange={handlePasswordChange}
               type={showPassword ? "text" : "password"}
             />
             <button
               type="button"
-              className="absolute inset-y-20 right-10 bottom-0 px-3 flex items-center"
+              className="absolute inset-y-0 right-10 bottom-4 px-3 flex items-center"
               onClick={toggleShowPassword}
             >
               {showPassword ? (
@@ -171,32 +197,40 @@ export default function Login() {
               )}
             </button>
             <button
-              className="bg-[#006769] text-white rounded-lg mt-6 w-[452px] h-[48px] max-sm:w-[90%]"
+              className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg mt-6 w-[452px] h-[48px] max-sm:w-[90%]"
               type="submit"
-              onClick={handleSubmit}
             >
-              Masuk
+              Submit
             </button>
           </form>
+          <GoogleLogin buttonText="Login with Google" />
           <div className="flex gap-4 justify-center mt-3">
-            <div>Belum punya akun?</div>
+            <div>Dont have account?</div>
             <button className="text-[#40A578] font-bold hover:text-[#006769]">
-              Daftar di sini{" "}
+              Register here.{" "}
             </button>
           </div>
+          {error && (
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
+              {error}
+            </div>
+          )}
           {emailError && (
-            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl">
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
               {emailErrorMessage}
             </div>
           )}
           {passwordError && (
-            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl">
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
               {passwordErrorMessage}
             </div>
           )}
+          {!isEmailVerified && (
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg"></div>
+          )}
           {data && (
-            <div className="text-lg text-white font-semibold mt-2">
-              Login successful, welcome {data.name}!
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-[#40A578] rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
+              Welcome {data && data.data && data.data.name}!
             </div>
           )}
         </div>
