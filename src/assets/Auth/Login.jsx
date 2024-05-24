@@ -151,7 +151,7 @@ export default function Login() {
         src={pesawatatas}
         className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden "
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 font-poppins border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border-2  border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
           <div className="text-2xl font-bold ms-4 ">Login</div>
           <form className="flex flex-col ms-3 mt-4" onSubmit={handleSubmit}>
