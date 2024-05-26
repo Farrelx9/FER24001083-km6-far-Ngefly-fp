@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import Home from "./pages/Home";
 import Login from "./assets/Auth/Login";
-import Navbar from "./assets/Navbar/Navbar";
+import ResetPassword from "./assets/Auth/ResetPassword";
+import RequestResetPassword from "./assets/Auth/RequestResetPassword";
+import VerifyEmail from "./assets/Auth/VerifyEmail";
 
 export default function App() {
   return (
@@ -11,7 +13,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/navbar" element={<Navbar />} />
+        <Route path="/reset" element={<RequestResetPassword />} />
+        <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        <Route path="/verify/:token" element={<VerifyEmail />} />
       </Routes>
     </Router>
   );
