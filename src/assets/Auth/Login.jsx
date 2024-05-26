@@ -1,9 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; 
 import logo from "../logo/logo.png";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
 import pesawatbawah from "../logo/pesawatbawah.png";
+import ngefly from '../logo/ngefly.png'
 export default function Login() {
+  const navigate = useNavigate(); 
   return (
     <div
       className="bg-white relative h-screen "
@@ -18,8 +21,8 @@ export default function Login() {
         className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-581px)] transform -translate-x-1/2 -translate-y-1/2 "
       />
       <img
-        src={logo}
-        className="w-[246px] h-[146px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+        src={ngefly}
+        className="w-[270px] h-[270px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
       />
       <img
         src={pesawatatas}
@@ -36,7 +39,8 @@ export default function Login() {
             />
             <div className="flex justify-between">
               <label className="mt-4 mb-2">Password</label>
-              <button className="text-[#40A578] hover:text-[#006769] mt-4">
+              <button className="text-[#40A578] hover:text-[#006769] mt-4"
+              onClick={() => navigate('/reset')}>
                 Lupa kata sandi?
               </button>
             </div>
