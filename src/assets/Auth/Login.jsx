@@ -121,9 +121,7 @@ export default function Login() {
     } catch (error) {
       console.error("API Request Error:", error);
       if (error.response && error.response.status === 404) {
-        setError("Wrong email or password");
-        setEmailError(true);
-        setPasswordError(true);
+        setError("Email not found");
       } else {
         setError("Email not verified!");
       }
