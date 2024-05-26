@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ngefly from "../logo/ngefly.png"
+import ngefly from "../logo/ngefly.png";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
 import pesawatbawah from "../logo/pesawatbawah.png";
@@ -89,9 +89,7 @@ export default function ResetPassword() {
                 width={110}
                 color="#35b950"
               />
-              <p>
-                Reset Password Success
-              </p>
+              <p>Reset Password Success</p>
             </div>
           ) : (
             <>
