@@ -58,8 +58,12 @@ export default function Login() {
   };
 
   const validatePassword = (password) => {
-    const minLength = 5;
+    const minLength = 8;
     return password.length >= minLength;
+  };
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault();
+    navigate("/reset");
   };
 
   const handleSubmit = async (event) => {
@@ -129,7 +133,7 @@ export default function Login() {
   };
   return (
     <div
-      className="bg-white relative h-screen"
+      className="bg-white relative h-screen "
       style={{
         backgroundImage: `url(${cover})`,
         backgroundSize: "cover",
@@ -148,7 +152,7 @@ export default function Login() {
         src={pesawatatas}
         className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden "
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2  border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border-2  border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%] max-sm:">
         <div>
           <div className="text-2xl font-bold ms-4 ">Login</div>
           <form className="flex flex-col ms-3 mt-4" onSubmit={handleSubmit}>
@@ -167,8 +171,11 @@ export default function Login() {
 
             <div className="flex justify-between">
               <label className="mt-4 mb-2">Password</label>
-              <button className="text-[#40A578] hover:text-[#006769] mt-4"
-              onClick={()=>navigate("/reset")}>
+              <button
+                className="text-[#40A578] hover:text-[#006769] p-2 mt-2 "
+                onClick={handleForgotPasswordClick}
+                type="button"
+              >
                 Forgot Password?
               </button>
             </div>
