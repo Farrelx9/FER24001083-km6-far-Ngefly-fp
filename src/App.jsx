@@ -7,6 +7,7 @@ import ResetPassword from "./assets/Auth/ResetPassword";
 import RequestResetPassword from "./assets/Auth/RequestResetPassword";
 import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Navbar from "./assets/Navbar/Navbar";
+import Register from "./assets/Auth/Register";
 export default function App() {
   return (
     <Router>
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/navbar" element={<Navbar />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );
