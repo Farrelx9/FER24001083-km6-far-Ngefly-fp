@@ -58,7 +58,7 @@ export default function Login() {
   };
 
   const validatePassword = (password) => {
-    const minLength = 5;
+    const minLength = 8;
     return password.length >= minLength;
   };
 
@@ -167,8 +167,10 @@ export default function Login() {
 
             <div className="flex justify-between">
               <label className="mt-4 mb-2">Password</label>
-              <button className="text-[#40A578] hover:text-[#006769] mt-4"
-              onClick={()=>navigate("/reset")}>
+              <button
+                className="text-[#40A578] hover:text-[#006769] mt-4"
+                onClick={() => navigate("/reset")}
+              >
                 Forgot Password?
               </button>
             </div>
