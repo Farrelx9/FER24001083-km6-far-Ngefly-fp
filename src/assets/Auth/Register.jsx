@@ -14,13 +14,10 @@ export default function Register() {
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isTickEmail, setIsTickEmail] = useState(false);
   const [isTickPassword, setIsTickPassword] = useState(false);
-  const [user, setUser] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const emailRegex =
-    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|mil|info)$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^.{8,}$/;
 
   const handleEmailChange = (event) => {
@@ -110,11 +107,7 @@ export default function Register() {
       );
       console.log("response", response);
       if (response?.status === 201) {
-        setUser({ token: response.data.data.token });
-        setLoggedIn(false);
-
-        console.log("Register ", response.data.data);
-        localStorage.setItem("userEmail", email); // Simpan email ke localStorage
+        localStorage.setItem("userEmail", response.data.data.user.email); // Simpan email ke localStorage
         navigate("/sendverif");
         alert(
           `Register Sukses, ${name}. Silakan Verifikasi Email terlebih dahulu agar bisa melakukan login`
@@ -145,10 +138,10 @@ export default function Register() {
       <ToastContainer />
       <div className="flex flex-col min-h-screen items-center justify-center">
         <div>
-          <div className="flex justify-center mb-3">
-            <img src="\src\assets\logo\NgeFly.png" className="w-[180px]" />
+          <div className="absolute transform -translate-y-14 translate-x-28">
+            <img src="\src\assets\logo\ngefly.png" className="w-[180px]" />
           </div>
-          <div className="bg-white py-1 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
+          <div className="bg-white mt-20 py-1 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
