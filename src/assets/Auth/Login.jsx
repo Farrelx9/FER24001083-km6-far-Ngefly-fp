@@ -211,7 +211,10 @@ export default function Login() {
           <GoogleLogin buttonText="Login with Google" />
           <div className="flex gap-4 justify-center mt-3">
             <div>Dont have account?</div>
-            <button className="text-[#40A578] font-bold hover:text-[#006769]">
+            <button
+              className="text-[#40A578] font-bold hover:text-[#006769]"
+              onClick={() => navigate("/register")}
+            >
               Register here.{" "}
             </button>
           </div>

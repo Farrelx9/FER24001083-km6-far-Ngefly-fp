@@ -114,7 +114,8 @@ export default function Register() {
         setLoggedIn(false);
 
         console.log("Register ", response.data.data);
-        navigate("/login");
+        localStorage.setItem("userEmail", email); // Simpan email ke localStorage
+        navigate("/sendverif");
         alert(
           `Register Sukses, ${name}. Silakan Verifikasi Email terlebih dahulu agar bisa melakukan login`
         );
