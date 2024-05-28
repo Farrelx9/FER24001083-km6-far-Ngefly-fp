@@ -10,7 +10,7 @@ function GoogleLogin({ buttonText }) {
   const registerLoginWithGoogleAction = async (accessToken) => {
     try {
       const response = await axios.post(
-        "https://shy-cloud-3319.fly.dev/api/v1/auth/google",
+        "https://binar-project-backend-staging.vercel.app/api/v1/auth/googlelogin",
         { access_token: accessToken },
         { headers: { "Content-Type": "application/json" } }
       );
