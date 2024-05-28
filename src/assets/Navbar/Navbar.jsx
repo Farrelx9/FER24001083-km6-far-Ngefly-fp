@@ -7,7 +7,7 @@ export default function Navbar() {
     <div className=" flex justify-between bg-none shadow-2xl px-32 ">
       <div className="flex gap-5 ">
         <img src={ngefly} className="w-[98px] h-[93px] max-sm:hidden" />
-        <form className=""> 
+        <form className="">
           <input
             type="text"
             placeholder="Search"
