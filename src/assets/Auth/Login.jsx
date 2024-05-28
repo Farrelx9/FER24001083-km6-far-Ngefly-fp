@@ -171,36 +171,39 @@ export default function Login() {
 
             <div className="flex justify-between">
               <label className="mt-4 mb-2">Password</label>
-              <button
-                className="text-[#40A578] hover:text-[#006769] p-2 mt-2 "
+              <div
+                className="text-[#40A578] hover:text-[#006769] hover:cursor-pointer mt-5 mb-1 "
                 onClick={handleForgotPasswordClick}
                 type="button"
               >
                 Forgot Password?
+              </div>
+            </div>
+            <div className="relative">
+              {" "}
+              <input
+                className={`rounded-lg border-2 border-black border-opacity-10 p-2 w-[452px] h-[48px] max-sm:w-[90%] ${
+                  passwordError
+                    ? "border-red-500 border-opacity-100"
+                    : "border-black "
+                }`}
+                placeholder="Insert password"
+                value={password}
+                onChange={handlePasswordChange}
+                type={showPassword ? "text" : "password"}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center px-12"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className=" text-black" size={20} />
+                ) : (
+                  <IoEyeSharp className=" text-black" size={20} />
+                )}
               </button>
             </div>
-            <input
-              className={`rounded-lg border-2 border-black border-opacity-10 p-2 w-[452px] h-[48px] max-sm:w-[90%] ${
-                passwordError
-                  ? "border-red-500 border-opacity-100"
-                  : "border-black "
-              }`}
-              placeholder="Insert password"
-              value={password}
-              onChange={handlePasswordChange}
-              type={showPassword ? "text" : "password"}
-            />
-            <button
-              type="button"
-              className="absolute inset-y-5 right-10 bottom-4 px-3 flex items-center"
-              onClick={toggleShowPassword}
-            >
-              {showPassword ? (
-                <FaEyeSlash className=" text-black" size={20} />
-              ) : (
-                <IoEyeSharp className=" text-black" size={20} />
-              )}
-            </button>
             <button
               className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg mt-6 w-[452px] h-[48px] max-sm:w-[90%]"
               type="submit"
@@ -209,7 +212,7 @@ export default function Login() {
             </button>
           </form>
           <GoogleLogin buttonText="Login with Google" />
-          <div className="flex gap-4 justify-center mt-3">
+          <div className="flex gap-4 justify-center mt-3 px-auto">
             <div>Dont have account?</div>
             <button
               className="text-[#40A578] font-bold hover:text-[#006769]"
