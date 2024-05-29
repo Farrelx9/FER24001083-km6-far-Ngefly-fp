@@ -1,11 +1,13 @@
 import React from "react";
-import Navbar from "../assets/Navbar/Navbar";
+import Navbar from "../assets/Properties/Navbar";
 import { RiFlightTakeoffFill } from "react-icons/ri";
 import {
   MdDateRange,
   MdOutlineAirlineSeatReclineNormal,
   MdOutlineFlight,
 } from "react-icons/md";
+import Carousel from "../assets/Properties/Carousel";
+
 export default function Home() {
   return (
     <div className="bg-[#FFFFFF]">
@@ -34,8 +36,8 @@ export default function Home() {
             <div>Choose a Special Flight Schedule on</div>
             <div className="font-bold text-[#006769]">Ngefly!</div>
           </div>
-          <ul className="grid grid-cols-2 gap-11 ">
-            <li className="flex gap-4 px-10">
+          <ul className="grid grid-cols-2 gap-10 py-2 ">
+            <li className="flex gap-4 px-10 items-center">
               <MdOutlineFlight size={20} />
               <div className="text-sm">From</div>
               <div className="gap-2">
@@ -43,7 +45,7 @@ export default function Home() {
                 <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
             </li>
-            <li className="flex gap-4 px-10">
+            <li className="flex gap-4 px-10 items-center">
               <RiFlightTakeoffFill size={20} />
               <div className="text-sm">Into</div>
               <div className="gap-2">
@@ -51,27 +53,33 @@ export default function Home() {
                 <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
             </li>
-            <li className="flex gap-4 px-10">
+            <li className="flex gap-4 px-10 items-center">
               <MdDateRange size={20} />
               <div className="text-sm">Date</div>
               <div className="gap-2">
-                <div className="text-center text-xl mb-2">Jakarta (JKTA) </div>
+                <div className="text-center text-sm mb-2">Departure</div>
+                <div className="text-center text-xl mb-2">5 Juni 2024 </div>
                 <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
               <div className="gap-2">
-                <div className="text-center text-xl mb-2">Jakarta (JKTA) </div>
+                <div className="text-center text-sm mb-2">Return</div>
+                <div className="text-center text-[#006769] text-xl mb-2">
+                  Return
+                </div>
                 <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
             </li>
-            <li className="flex gap-4 px-10">
+            <li className="flex gap-4 px-10 items-center">
               <MdOutlineAirlineSeatReclineNormal size={20} />
               <div className="text-sm">Seat</div>
-              <div className="gap-2">
-                <div className="text-center text-xl mb-2">Jakarta (JKTA) </div>
+              <div className="gap-2 ">
+                <div className="text-center text-sm mb-2">Passengers</div>
+                <div className="text-center text-xl mb-2">2 Penumpang </div>
                 <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
               <div className="gap-2">
-                <div className="text-center text-xl mb-2">Jakarta (JKTA) </div>
+                <div className="text-center text-sm mb-2">Seat Class</div>
+                <div className="text-center text-xl mb-2">Business</div>
                 <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
             </li>
@@ -79,9 +87,10 @@ export default function Home() {
               Search for Flight
             </button>
           </ul>
+          <div className="text-xl mt-4">Destinasi Favorit</div>
+          <Carousel />
         </div>
       </div>
-      <div>Destinasi Favorit</div>
     </div>
   );
 }
