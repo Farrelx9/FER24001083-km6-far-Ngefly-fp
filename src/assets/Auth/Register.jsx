@@ -261,7 +261,7 @@ export default function Register() {
                 </div>
               </div>
               <button
-                className="mt-3 text-xs hover:bg-[#D6FFDE] text-white flex justify-center p-2 rounded-xl w-[380px] border bg-[#006769]"
+                className="mt-3 text-xs hover:bg-[#73CA5C] text-white flex justify-center p-2 rounded-xl w-[380px] border bg-[#006769]"
                 type="submit"
               >
                 Daftar
@@ -272,7 +272,7 @@ export default function Register() {
                   onClick={() => {
                     navigate("/login");
                   }}
-                  className="text-xs text-bold text-[#006769]"
+                  className="text-xs text-bold hover:text-[#006769] text-[#73CA5C]"
                 >
                   Masuk di sini
                 </strong>
