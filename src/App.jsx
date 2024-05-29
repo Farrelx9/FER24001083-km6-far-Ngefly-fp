@@ -9,7 +9,7 @@ import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Register from "./assets/Auth/Register";
 import Verify from "./assets/Auth/Verify";
 import SendVerif from "./assets/Auth/SendVerif";
-import Carousel from "./assets/Properties/Carousel";
+
 export default function App() {
   return (
     <Router>
@@ -21,7 +21,6 @@ export default function App() {
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/verify/:token" element={<Verify />} />
-        <Route path="/carousel" element={<Carousel />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
