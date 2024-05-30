@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
 import pesawatbawah from "../logo/pesawatbawah.png";
 import { ToastContainer, toast } from "react-toastify";
@@ -133,10 +134,7 @@ export default function Register() {
 
   return (
     <div>
-      <img
-        src="\src\assets\logo\cover.png"
-        className="absolute w-full h-full -z-10"
-      />
+      <img src={cover} className="absolute w-full h-full -z-10" />
       <img
         src={pesawatbawah}
         className="w-[249px] h-[249px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-24 -translate-y-72 max-sm:hidden"
