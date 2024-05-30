@@ -7,7 +7,6 @@ import ResetPassword from "./assets/Auth/ResetPassword";
 import RequestResetPassword from "./assets/Auth/RequestResetPassword";
 import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Register from "./assets/Auth/Register";
-import Verify from "./assets/Auth/Verify";
 import SendVerif from "./assets/Auth/SendVerif";
 
 export default function App() {
