@@ -8,7 +8,7 @@ import RequestResetPassword from "./assets/Auth/RequestResetPassword";
 import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Navbar from "./assets/Navbar/Navbar";
 import Register from "./assets/Auth/Register";
-import Verify from "./assets/Auth/Verify";
+// import Verify from "./assets/Auth/Verify";
 import SendVerif from "./assets/Auth/SendVerif";
 export default function App() {
   return (
@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
-        <Route path="/verify/:token" element={<Verify />} />
+        {/* <Route path="/verify/:token" element={<Verify />} /> */}
         <Route path="/navbar" element={<Navbar />} />
         <Route path="/register" element={<Register />} />
       </Routes>
