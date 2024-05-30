@@ -16,15 +16,17 @@ export default function ResetPassword() {
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async () => {
     if (form.newPassword1 !== form.newPassword2) {
-      alert("Password are not same!");
+      alert("Passwords are not the same!");
     } else if (
       form.newPassword1.length < MIN_CHARACTER ||
       form.newPassword2.length < MIN_CHARACTER
     ) {
-      alert("Please input minimum 8 characters!");
+      alert("Please input a minimum of 8 characters!");
     } else {
       setLoading(true);
 
@@ -45,9 +47,11 @@ export default function ResetPassword() {
         const result = await response.json();
 
         setLoading(false);
-        if (result.status) {
-          alert(result.message);
+        if (response.status === 200 && result.status) { // Check if the response status is 200 and result status is true
+          setSuccessMessage(result.message);
           setSuccess(true);
+        } else if (response.status === 400) { // Check if the response status is 400
+          setErrorMessage(result.message);
         } else {
           alert(result.message);
         }
@@ -60,7 +64,7 @@ export default function ResetPassword() {
 
   return (
     <div
-      className="bg-white relative h-screen "
+      className="bg-white relative h-screen"
       style={{
         backgroundImage: `url(${cover})`,
         backgroundSize: "cover",
@@ -69,27 +73,23 @@ export default function ResetPassword() {
     >
       <img
         src={pesawatbawah}
-        className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-581px)] transform -translate-x-1/2 -translate-y-1/2 "
+        className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-581px)] transform -translate-x-1/2 -translate-y-1/2"
       />
       <img
         src={ngefly}
-        className="w-[270px] h-[270px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+        className="w-[270px] h-[270px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       />
       <img
         src={pesawatatas}
-        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+581px)] transform -translate-x-1/2 -translate-y-1/2 "
+        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+581px)] transform -translate-x-1/2 -translate-y-1/2"
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] fixed top-[406px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
         <div>
           <div className="text-2xl font-bold">Reset Password</div>
           {success ? (
             <div className="flex flex-col justify-center items-center text-center p-5 min-h-[270px] gap-5">
-              <Icon
-                icon="icon-park-solid:success"
-                width={110}
-                color="#35b950"
-              />
-              <p>Reset Password Success</p>
+              <Icon icon="icon-park-solid:success" width={110} color="#35b950" />
+              <p>{successMessage}</p>
             </div>
           ) : (
             <>
@@ -98,7 +98,6 @@ export default function ResetPassword() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleSubmit();
-                  console.log("first");
                 }}
               >
                 <label className="mt-4">Masukkan Password Baru</label>
@@ -124,6 +123,9 @@ export default function ResetPassword() {
                   required
                 />
               </form>
+              {errorMessage && (
+                <p className="text-red-600 mt-2">{errorMessage}</p>
+              )}
               <button
                 className="bg-[#006769] text-white rounded-lg mt-6 w-full min-h-[48px] px-2 py-3 flex items-center justify-center gap-3"
                 onClick={handleSubmit}
