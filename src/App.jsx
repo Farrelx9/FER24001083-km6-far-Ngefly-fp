@@ -19,7 +19,6 @@ export default function App() {
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
-        <Route path="/verify/:token" element={<Verify />} />
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
