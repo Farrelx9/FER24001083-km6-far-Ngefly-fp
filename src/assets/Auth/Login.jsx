@@ -41,11 +41,13 @@ export default function Login() {
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
     setEmailError(false);
+    setError(null);
   };
 
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
     setPasswordError(false);
+    setError(null);
   };
 
   const toggleShowPassword = () => {
@@ -58,8 +60,13 @@ export default function Login() {
   };
 
   const validatePassword = (password) => {
-    const minLength = 5;
+    const minLength = 8;
     return password.length >= minLength;
+  };
+
+  const handleForgotPasswordClick = (e) => {
+    e.preventDefault();
+    navigate("/reset");
   };
 
   const handleSubmit = async (event) => {
@@ -69,13 +76,13 @@ export default function Login() {
 
     if (!isEmailValid) {
       setEmailError(true);
-      setEmailErrorMessage("Email tidak valid");
+      setEmailErrorMessage("Email Invalid!");
       return;
     }
 
     if (!isPasswordValid) {
       setPasswordError(true);
-      setPasswordErrorMessage("Password tidak valid");
+      setPasswordErrorMessage("Password Invalid!");
       return;
     }
 
@@ -98,7 +105,7 @@ export default function Login() {
 
       if (!status && data.user && data.user.is_verified === false) {
         setIsEmailVerified(false);
-        setError;
+        setError("Email not verified!");
         return;
       }
 
@@ -114,19 +121,28 @@ export default function Login() {
           navigate("/", { state: { user: data } });
         }, 2000);
       } else {
-        setError("Token Expired Broo");
+        setError("Token Expired Broo!");
         setEmailError(true);
         setPasswordError(true);
       }
     } catch (error) {
       console.error("API Request Error:", error);
-      if (error.response && error.response.status === 404) {
-        setError("Email not found");
-      } else {
+      if (error.response && error.response.status === 401) {
         setError("Email not verified!");
+      } else if (error.response && error.response.status === 404) {
+        setError("Account not found!");
+      } else if (
+        error.response &&
+        error.response.status >= 400 &&
+        error.response.status < 500
+      ) {
+        setError("Pasword Invalid!");
+      } else {
+        setError("An unexpected error occurred. Please try again later.");
       }
     }
   };
+
   return (
     <div
       className="bg-white relative h-screen"
@@ -142,22 +158,22 @@ export default function Login() {
       />
       <img
         src={ngefly}
-        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
       />
       <img
         src={pesawatatas}
-        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden "
+        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2  border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
-          <div className="text-2xl font-bold ms-4 ">Login</div>
+          <div className="text-2xl font-bold ms-4">Login</div>
           <form className="flex flex-col ms-3 mt-4" onSubmit={handleSubmit}>
             <label className="mt-4">Email</label>
             <input
               className={`rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-[452px] h-[48px] max-sm:w-[90%] ${
                 emailError
                   ? "border-red-500 border-opacity-100"
-                  : "border-black "
+                  : "border-black"
               }`}
               placeholder="Ex: snoopdog@gmail.com"
               value={email}
@@ -167,33 +183,38 @@ export default function Login() {
 
             <div className="flex justify-between">
               <label className="mt-4 mb-2">Password</label>
-              <button className="text-[#40A578] hover:text-[#006769] mt-4"
-              onClick={()=>navigate("/reset")}>
+              <div
+                className="text-[#40A578] hover:text-[#006769] hover:cursor-pointer mt-5 mb-1"
+                onClick={handleForgotPasswordClick}
+                type="button"
+              >
                 Forgot Password?
+              </div>
+            </div>
+            <div className="relative">
+              <input
+                className={`rounded-lg border-2 border-black border-opacity-10 p-2 w-[452px] h-[48px] max-sm:w-[90%] ${
+                  passwordError
+                    ? "border-red-500 border-opacity-100"
+                    : "border-black"
+                }`}
+                placeholder="Insert password"
+                value={password}
+                onChange={handlePasswordChange}
+                type={showPassword ? "text" : "password"}
+              />
+              <button
+                type="button"
+                className="absolute inset-y-0 right-0 flex items-center px-12"
+                onClick={toggleShowPassword}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="text-black" size={20} />
+                ) : (
+                  <IoEyeSharp className="text-black" size={20} />
+                )}
               </button>
             </div>
-            <input
-              className={`rounded-lg border-2 border-black border-opacity-10 p-2 w-[452px] h-[48px] max-sm:w-[90%] ${
-                passwordError
-                  ? "border-red-500 border-opacity-100"
-                  : "border-black "
-              }`}
-              placeholder="Insert password"
-              value={password}
-              onChange={handlePasswordChange}
-              type={showPassword ? "text" : "password"}
-            />
-            <button
-              type="button"
-              className="absolute inset-y-5 right-10 bottom-4 px-3 flex items-center"
-              onClick={toggleShowPassword}
-            >
-              {showPassword ? (
-                <FaEyeSlash className=" text-black" size={20} />
-              ) : (
-                <IoEyeSharp className=" text-black" size={20} />
-              )}
-            </button>
             <button
               className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg mt-6 w-[452px] h-[48px] max-sm:w-[90%]"
               type="submit"
@@ -202,10 +223,13 @@ export default function Login() {
             </button>
           </form>
           <GoogleLogin buttonText="Login with Google" />
-          <div className="flex gap-4 justify-center mt-3">
-            <div>Dont have account?</div>
-            <button className="text-[#40A578] font-bold hover:text-[#006769]">
-              Register here.{" "}
+          <div className="flex gap-4 justify-center mt-3 px-auto">
+            <div>Don't have an account?</div>
+            <button
+              className="text-[#40A578] font-bold hover:text-[#006769]"
+              onClick={() => navigate("/register")}
+            >
+              Register here.
             </button>
           </div>
           {error && (
@@ -224,7 +248,9 @@ export default function Login() {
             </div>
           )}
           {!isEmailVerified && (
-            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg"></div>
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-red-500 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
+              Email not verified!
+            </div>
           )}
           {data && (
             <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-[#40A578] rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
