@@ -18,7 +18,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <div className=" flex justify-between gap-3 bg-none shadow-2xl px-3 md:px-10 lg:px-32 ">
+    <div className=" flex justify-between gap-3 bg-none shadow-2xl px-3 md:px-10 lg:px-32">
       <div className="flex gap-5">
         <img
           src={ngefly}
@@ -38,12 +38,11 @@ export default function Navbar() {
       {!isLoggedIn ? (
         <>
           <div className="flex items-center">
-            <button className="bg-[#40A578] md:w-[105px] lg:w-[105px] w-[90px] h-[48px]  p-2 my-6 text-white font-semibold rounded-2xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] flex items-center justify-center">
-              <CiLogin
-                size={20}
-                className="mr-2 text-white "
-                onClick={() => navigate("/login")}
-              />
+            <button
+              className="bg-[#40A578] md:w-[105px] lg:w-[105px] w-[90px] h-[48px]  p-2 my-6 text-white font-semibold rounded-2xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] flex items-center justify-center"
+              onClick={() => navigate("/login")}
+            >
+              <CiLogin size={20} className="mr-2 text-white " />
               Login
             </button>
           </div>
@@ -53,7 +52,7 @@ export default function Navbar() {
           <MdOutlineList size={20} />
           <MdNotificationsNone size={20} />
           <FiUser size={20} />
-          <button onClick={() => navigate("/login ")}>logout</button>
+          <button onClick={() => navigate("/login")}>logout</button>
         </div>
       )}
     </div>

@@ -31,7 +31,7 @@ export default function Home() {
         className="flex justify-center relative z-30 "
         style={{ bottom: "120px" }}
       >
-        <div className="shadow-2xl rounded-md bg-[#FFFFFF] w-[968px] h-[298px] ">
+        <div className="shadow-2xl rounded-lg bg-[#FFFFFF] w-[968px] h-[298px] ">
           <div className="flex text-2xl font-semibold p-2 gap-2 mt-4 mb-6 px-10">
             <div>Choose a Special Flight Schedule on</div>
             <div className="font-bold text-[#006769]">Ngefly!</div>
@@ -83,7 +83,7 @@ export default function Home() {
                 <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
               </div>
             </li>
-            <button className="bg-[#006769] w-[968px] shadow-xl h-[48px] rounded-b-md text-white hover:bg-[#006769]">
+            <button className="bg-[#006769] w-[968px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white hover:bg-[#006769] ease-in-out duration-300 ">
               Search for Flight
             </button>
           </ul>
