@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
 import pesawatbawah from "../logo/pesawatbawah.png";
+import ngefly from "../logo/ngefly.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -147,7 +148,7 @@ export default function Register() {
       <div className="flex flex-col relative min-h-screen items-center justify-center">
         <div>
           <div className="absolute transform -translate-y-16 translate-x-20">
-            <img src="\src\assets\logo\ngefly.png" className="w-[249px]" />
+            <img src={ngefly} className="w-[249px]" />
           </div>
           <div className="bg-white mt-32 py-1 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
             <form
