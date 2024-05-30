@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import pesawatatas from "../logo/pesawatatas.png";
+import pesawatbawah from "../logo/pesawatbawah.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,13 +16,10 @@ export default function Register() {
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isTickEmail, setIsTickEmail] = useState(false);
   const [isTickPassword, setIsTickPassword] = useState(false);
-  const [user, setUser] = useState("");
-  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const emailRegex =
-    /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.(com|org|net|edu|gov|mil|info)$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^.{8,}$/;
 
   const handleEmailChange = (event) => {
@@ -110,11 +109,7 @@ export default function Register() {
       );
       console.log("response", response);
       if (response?.status === 201) {
-        setUser({ token: response.data.data.token });
-        setLoggedIn(false);
-
-        console.log("Register ", response.data.data);
-        localStorage.setItem("userEmail", email); // Simpan email ke localStorage
+        localStorage.setItem("userEmail", response.data.data.user.email); // Simpan email ke localStorage
         navigate("/sendverif");
         alert(
           `Register Sukses, ${name}. Silakan Verifikasi Email terlebih dahulu agar bisa melakukan login`
@@ -139,16 +134,24 @@ export default function Register() {
   return (
     <div>
       <img
-        src="\src\assets\Background\linear.png"
+        src="\src\assets\logo\cover.png"
         className="absolute w-full h-full -z-10"
       />
+      <img
+        src={pesawatbawah}
+        className="w-[249px] h-[249px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-24 -translate-y-72 max-sm:hidden"
+      />
+      <img
+        src={pesawatatas}
+        className="w-[230px] h-[180px] absolute top-[194px] right-[calc(50%-700px)] transform -translate-x-40 -translate-y-32 max-sm:hidden "
+      />
       <ToastContainer />
-      <div className="flex flex-col min-h-screen items-center justify-center">
+      <div className="flex flex-col relative min-h-screen items-center justify-center">
         <div>
-          <div className="flex justify-center mb-3">
-            <img src="\src\assets\logo\NgeFly.png" className="w-[180px]" />
+          <div className="absolute transform -translate-y-16 translate-x-20">
+            <img src="\src\assets\logo\ngefly.png" className="w-[249px]" />
           </div>
-          <div className="bg-white py-1 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
+          <div className="bg-white mt-32 py-1 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -157,17 +160,19 @@ export default function Register() {
             >
               <strong className="text-xl">Daftar</strong>
               <div className="mt-3">
-                <div className="text-xs mb-1">Nama</div>
-                <input
-                  name="name"
-                  placeholder="Nama Lengkap"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="text-xs text- w-[380px] p-2 rounded-xl px-4 border border-gray-300"
-                ></input>
+                <div className="mb-1 text-sm">Nama</div>
+                <div className="text-xs flex items-center justify-end">
+                  <input
+                    name="name"
+                    placeholder="Nama Lengkap"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="text-xs w-[380px] p-2 rounded-xl px-4 border border-gray-300"
+                  ></input>
+                </div>
               </div>
               <div className="mt-2">
-                <div className="text-xs mb-1">Email</div>
+                <div className="mb-1 text-sm">Email</div>
                 <div className="flex items-center justify-end">
                   <input
                     name="email"
@@ -196,11 +201,11 @@ export default function Register() {
                 </div>
               </div>
               <div>
-                <div className="mt-2 flex justify-between mb-1 text-xs">
+                <div className="mt-2 text-sm flex justify-between mb-1">
                   Buat Password
                 </div>
                 <div className="relative">
-                  <div className="flex items-center justify-end">
+                  <div className="text-xs flex items-center justify-end">
                     <input
                       name="password"
                       type={showPassword ? "password" : "text"}
@@ -208,7 +213,7 @@ export default function Register() {
                       onChange={handlePasswordChange}
                       onBlur={handlePasswordBlur}
                       placeholder="Buat Password"
-                      className={`text-xs w-[380px] px-4 p-2 rounded-xl border border-gray-300 ${
+                      className={`w-[380px] px-4 p-2 rounded-xl border border-gray-300 ${
                         passwordError ? "border-[#FF0000] border-2" : ""
                       }`}
                     ></input>
@@ -267,27 +272,29 @@ export default function Register() {
                   </div>
                 </div>
               </div>
-              <button
-                className="mt-3 text-xs hover:bg-[#D6FFDE] text-white flex justify-center p-2 rounded-xl w-[380px] border bg-[#006769]"
-                type="submit"
-              >
-                Daftar
-              </button>
+              <div className="flex items-center justify-end">
+                <button
+                  className="mt-3 hover:bg-[#40A578] text-white flex justify-center p-2 rounded-xl w-[380px] border bg-[#006769]"
+                  type="submit"
+                >
+                  Daftar
+                </button>
+              </div>
               <div className="mt-5 flex justify-center">
-                <span className="text-xs mr-1">Sudah punya akun?</span>
-                <strong
+                <span className="mr-1 text-sm">Sudah punya akun?</span>
+                <button
                   onClick={() => {
                     navigate("/login");
                   }}
-                  className="text-xs text-bold text-[#006769]"
+                  className="text-sm font-bold hover:text-[#006769] text-[#40A578]"
                 >
-                  Masuk di sini
-                </strong>
+                  Masuk di sini{" "}
+                </button>
               </div>
             </form>
           </div>
         </div>
-        <div className="mt-1 flex flex-col justify-center items-center text-xs text-white">
+        <div className="mt-1 text-xs flex flex-col justify-center items-center text-white">
           {emailError && (
             <p
               className={
