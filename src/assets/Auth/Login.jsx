@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import GoogleLogin from "./GoogleLogin";
 
 export default function Login() {
-  const [email, setEmail] = useState("farrelfarhan902@gmail.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
