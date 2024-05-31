@@ -69,7 +69,7 @@ export default function Register() {
       setIsTickPassword(false);
     } else if (!passwordRegex.test(newPassword)) {
       setPasswordError("Password min 8 karakter.");
-      setIsValidatePassword(true);
+      setIsValidatePassword(false);
       setIsTickPassword(false);
     } else {
       setPasswordError(null);
@@ -136,21 +136,23 @@ export default function Register() {
   return (
     <div>
       <img src={cover} className="absolute w-full h-full -z-10" />
-      <img
-        src={pesawatbawah}
-        className="w-[249px] h-[249px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-24 -translate-y-72 max-sm:hidden"
-      />
-      <img
-        src={pesawatatas}
-        className="w-[230px] h-[180px] absolute top-[194px] right-[calc(50%-700px)] transform -translate-x-40 -translate-y-32 max-sm:hidden "
-      />
+      <div>
+        <img
+          src={pesawatbawah}
+          className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
+        />
+        <img
+          src={pesawatatas}
+          className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
+        />
+      </div>
       <ToastContainer />
-      <div className="flex flex-col relative min-h-screen items-center justify-center">
+      <div className="flex flex-col min-h-screen items-center justify-start">
         <div>
-          <div className="absolute transform -translate-y-16 translate-x-20">
+          <div className="flex justify-center relative">
             <img src={ngefly} className="w-[249px]" />
           </div>
-          <div className="bg-white mt-32 py-1 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
+          <div className="bg-white -mt-12 px-4 rounded-2xl border border-gray-200 bg-opacity-60">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -180,7 +182,7 @@ export default function Register() {
                     onChange={handleEmailChange}
                     onBlur={handleEmailBlur}
                     className={`text-xs w-[380px] p-2 rounded-xl px-4 border border-gray-300 ${
-                      emailError ? "border-[#FF0000] border-2" : ""
+                      emailError ? "border-red-500 border-2" : ""
                     }`}
                   ></input>
                   {isTickEmail && (
@@ -213,7 +215,7 @@ export default function Register() {
                       onBlur={handlePasswordBlur}
                       placeholder="Buat Password"
                       className={`w-[380px] px-4 p-2 rounded-xl border border-gray-300 ${
-                        passwordError ? "border-[#FF0000] border-2" : ""
+                        passwordError ? "border-red-500 border-2" : ""
                       }`}
                     ></input>
                     {isTickPassword && (
@@ -292,30 +294,30 @@ export default function Register() {
               </div>
             </form>
           </div>
-        </div>
-        <div className="mt-1 text-xs flex flex-col justify-center items-center text-white">
-          {emailError && (
-            <p
-              className={
-                isValidateEmail
-                  ? "bg-[#73CA5C] mt-1 p-3 rounded-xl flex text-center w-[250px]"
-                  : "bg-[#FF0000] mt-1 p-3 rounded-xl flex justify-center w-[200px]"
-              }
-            >
-              {emailError}
-            </p>
-          )}
-          {passwordError && (
-            <p
-              className={
-                isValidatePassword
-                  ? "bg-[#73CA5C] mt-1 p-3 rounded-xl flex justify-center w-[250px]"
-                  : "bg-[#FF0000] mt-1 p-3 rounded-xl flex justify-center w-[200px]"
-              }
-            >
-              {passwordError}
-            </p>
-          )}
+          <div className="absolute transform -translate-y-0 translate-x-20 text-xs flex flex-col items-center text-white">
+            {emailError && (
+              <p
+                className={
+                  isValidateEmail
+                    ? "bg-[#73CA5C] mt-1 p-3 rounded-xl flex text-center w-[250px]"
+                    : "bg-[#FF0000] mt-1 p-3 rounded-xl flex justify-center w-[250px]"
+                }
+              >
+                {emailError}
+              </p>
+            )}
+            {passwordError && (
+              <p
+                className={
+                  isValidatePassword
+                    ? "bg-[#73CA5C] mt-1 p-3 rounded-xl flex justify-center w-[250px]"
+                    : "bg-[#FF0000] mt-1 p-3 rounded-xl flex justify-center w-[250px]"
+                }
+              >
+                {passwordError}
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>
