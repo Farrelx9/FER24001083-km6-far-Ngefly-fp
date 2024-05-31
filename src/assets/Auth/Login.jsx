@@ -164,13 +164,13 @@ export default function Login() {
         src={pesawatatas}
         className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-xl p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
           <div className="text-2xl font-bold ms-4">Login</div>
           <form className="flex flex-col ms-3 mt-4" onSubmit={handleSubmit}>
             <label className="mt-4">Email</label>
             <input
-              className={`rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-[452px] h-[48px] max-sm:w-[90%] ${
+              className={`rounded-xl border border-black border-opacity-10 p-1 px-2  w-[452px] h-[48px] max-sm:w-[90%] ${
                 emailError
                   ? "border-red-500 border-opacity-100"
                   : "border-black"
@@ -193,7 +193,7 @@ export default function Login() {
             </div>
             <div className="relative">
               <input
-                className={`rounded-lg border-2 border-black border-opacity-10 p-2 w-[452px] h-[48px] max-sm:w-[90%] ${
+                className={`rounded-xl border border-black border-opacity-10 p-1 px-2 w-[452px] h-[48px] max-sm:w-[90%] ${
                   passwordError
                     ? "border-red-500 border-opacity-100"
                     : "border-black"
@@ -205,7 +205,7 @@ export default function Login() {
               />
               <button
                 type="button"
-                className="absolute inset-y-0 right-0 flex items-center px-12"
+                className="absolute inset-y-0 right-0 flex items-center px-10"
                 onClick={toggleShowPassword}
               >
                 {showPassword ? (
