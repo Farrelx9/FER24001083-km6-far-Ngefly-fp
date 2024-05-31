@@ -55,7 +55,7 @@ export default function VerifyEmail() {
     >
       <img
         src={pesawatbawah}
-        className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-581px)] transform -translate-x-1/2 -translate-y-1/2 "
+        className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <img
         src={ngefly}
@@ -63,9 +63,9 @@ export default function VerifyEmail() {
       />
       <img
         src={pesawatatas}
-        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+581px)] transform -translate-x-1/2 -translate-y-1/2 "
+        className="w-w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] fixed top-[406px] left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-fit absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
           {loading ? (
             <div className="flex flex-col justify-center items-center text-center p-5 min-h-[270px] gap-5">
@@ -100,9 +100,10 @@ export default function VerifyEmail() {
               />
               <div>
                 <p className="font-bold text-3xl mb-2">Verify Failed!</p>
-                <p>
+                <p className="text-sm md:text-base text-gray-600 mb-6">
                   Verify token expired or invalid. Please try resend
                   verification email again
+
                 </p>
               </div>
             </div>
