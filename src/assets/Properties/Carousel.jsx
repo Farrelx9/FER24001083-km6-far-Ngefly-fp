@@ -1,14 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import axios from "axios";
 
 export default function Carousel() {
-  const [currentPage, setCurrentPage] = useState(0);
-  const sliderRef = useRef(null);
+  const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState(null);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        "https://binar-project-backend-staging.vercel.app/api/v1/flight/favorite",
+        { headers: { accept: "application/json" } }
+      );
+      console.log("response.data", response.data);
+      const flightsData = response.data.data.flights;
+      setFetchFavoriteFlights(flightsData);
+    } catch (error) {
+      console.error("Error Fetching Data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const settings = {
-    dots: false,
+    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 4,
@@ -40,45 +58,44 @@ export default function Carousel() {
         },
       },
     ],
-    afterChange: (current) => {
-      setCurrentPage(current);
-    },
-  };
-
-  const handlePageClick = (index) => {
-    sliderRef.current.slickGoTo(index);
   };
 
   return (
-    <div className="slider-container bg-none p-5 px-2 bg-[#FFFFFF]">
-      <Slider {...settings} ref={sliderRef}>
-        {[...Array(8)].map((_, index) => (
-          <div key={index} className="px-1">
-            <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_2i8ppVU5Sn29MLI5TACFDJ7gYbwAqVUzRA&s"
-              alt={`Dummy ${index + 1}`}
-              className=" w-[190px] h-[196px] object-cover  mb-4 rounded-lg"
-            />
-          </div>
-        ))}
-      </Slider>
-      <div className="flex justify-center mt-4 space-x-2">
-        {[...Array(settings.responsive[0].settings.slidesToShow)].map(
-          (_, index) => (
-            <button
-              key={index}
-              className={`${
-                currentPage === index
-                  ? "bg-[#40A578] text-white"
-                  : "bg-[#EBFFEF] text-black"
-              } px-3 py-1 rounded`}
-              onClick={() => handlePageClick(index)}
-            >
-              {index + 1}
-            </button>
-          )
+    <div className="bg-none bg-[#FFFFFF]">
+      <Slider {...settings}>
+        {fetchFavoriteFlights ? (
+          fetchFavoriteFlights.map((flight) => (
+            <div key={flight.id} className="px-4">
+              <div className="max-w-xs mx-auto bg-white shadow-lg rounded-lg overflow-hidden hover:scale-95 hover:cursor-pointer ">
+                <div className="relative">
+                  <img
+                    className="object-cover w-full h-[150px] "
+                    src={flight.to.image_url}
+                    alt={flight.title}
+                  />
+                  <div className="absolute top-2 right-2 bg-green-400 text-white text-xs px-2 py-1 rounded">
+                    {flight.limited}
+                  </div>
+                </div>
+                <div className="p-4">
+                  <div className="text-xl font-semibold truncate">
+                    {flight.from.city} -&gt; {flight.to.city}
+                  </div>
+                  <div className="text-sm text-[#9DDE8B]">
+                    {flight.plane.airline}
+                  </div>
+                  <p className="text-sm text-gray-600 mb-2">{flight.airline}</p>
+                  <p className="text-sm text-gray-600 mb-2">
+                    {flight.arriveAt} - {flight.departureAt}
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div>Loading...</div>
         )}
-      </div>
+      </Slider>
     </div>
   );
 }

@@ -37,7 +37,7 @@ function GoogleLogin({ buttonText }) {
     <button
       variant="primary"
       onClick={loginWithGoogle}
-      className="md:mx-auto lg:mx-auto mx-auto me-14 mt-4 bg-[#9DDE8B] text-white font-semibold py-4 rounded-2xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#40A578] active:bg-[#40A578] flex items-center justify-center gap-2 w-[200px] ease-in-out transform hover:scale-105 max-sm:me-15"
+      className=" mx-auto mt-4 md:mx-auto lg:mx-auto bg-[#9DDE8B] text-white font-semibold py-4 rounded-2xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#40A578] active:bg-[#40A578] flex items-center justify-center gap-2 w-[200px] ease-in-out transform hover:scale-105 max-sm:me-15"
     >
       <FcGoogle className="w-6 h-6 mr-2" />
       {buttonText}
