@@ -11,7 +11,7 @@ export default function Carousel() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "https://binar-project-backend-staging.vercel.app/api/v1/flight/favorite",
+        `https://binar-project-backend-staging.vercel.app/api/v1/flight/favorite`,
         { headers: { accept: "application/json" } }
       );
       console.log("response.data", response.data);
@@ -76,7 +76,7 @@ export default function Carousel() {
   };
 
   return (
-    <div className="bg-none bg-[#FFFFFF]">
+    <div className="bg-none ">
       <Slider {...settings}>
         {fetchFavoriteFlights ? (
           fetchFavoriteFlights.map((flight) => (

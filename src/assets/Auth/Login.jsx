@@ -60,7 +60,7 @@ export default function Login() {
   };
 
   const validatePassword = (password) => {
-    const minLength = 8;
+    const minLength = 7;
     return password.length >= minLength;
   };
 
