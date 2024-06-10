@@ -58,11 +58,8 @@ export default function Navbar() {
       ) : (
         <div className="flex gap-4 mr-2 items-center">
           <MdOutlineList size={20} />
-          <MdNotificationsNone
-            size={20}
-            onClick={() => navigate("/notification")}
-          />
-          <FiUser size={20}  />
+          <MdNotificationsNone size={20} onClick={() => navigate("/notif")} />
+          <FiUser size={20} onClick={() => navigate("/profile")} />
           <button onClick={() => navigate("/login")}>Logout</button>
         </div>
       )}
