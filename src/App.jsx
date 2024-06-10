@@ -8,6 +8,8 @@ import RequestResetPassword from "./assets/Auth/RequestResetPassword";
 import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Register from "./assets/Auth/Register";
 import SendVerif from "./assets/Auth/SendVerif";
+import Notification from "./pages/Notification";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/notif" element={<Notification />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );
