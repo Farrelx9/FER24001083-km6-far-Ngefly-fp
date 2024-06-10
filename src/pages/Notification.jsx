@@ -47,7 +47,7 @@ export default function NotificationPage() {
         (n) => n.id === notificationId
       );
 
-      if (!notificationToMark.read) {
+      if (!notificationToMark.is_read) {
         const response = await axios.put(
           `https://binar-project-backend-staging.vercel.app/api/v1/notification/read`,
           { id: notificationId },
@@ -63,7 +63,7 @@ export default function NotificationPage() {
           setNotification((notifications) =>
             notifications.map((n) => {
               if (n.id === notificationId) {
-                return { ...n, read: true };
+                return { ...n, is_read: true };
               }
               return n;
             })
@@ -135,7 +135,7 @@ export default function NotificationPage() {
                 <RiCircleFill
                   size={10}
                   className={`${
-                    notification.read ? "text-green-500" : "text-red-500"
+                    notification.is_read ? "text-green-500" : "text-red-500"
                   }`}
                 />
               </div>
