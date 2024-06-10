@@ -43,21 +43,7 @@ export default function Navbar() {
       } transition-colors duration-300`}
     >
       <div className="flex gap-5">
-        <img
-          src={ngefly}
-          className="w-[98px] h-[93px] hidden md:flex lg:flex"
-          alt="Ngefly Logo"
-        />
-        <form>
-          <div className="flex items-center md:w-[350px] lg:w-[444px] w-[240px] h-[48px] rounded-full p-4 my-6 bg-[#EEEEEE] border-2 border-black border-opacity-20 focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#C7C8CC] active:bg-[#dddd]">
-            <input
-              type="text"
-              placeholder="Search"
-              className="flex-grow bg-transparent outline-none"
-            />
-            <IoSearchSharp size={24} className="ml-2" color="black" />
-          </div>
-        </form>
+        <img src={ngefly} className="w-[98px] h-[93px] " alt="Ngefly Logo" />
       </div>
       {!isLoggedIn ? (
         <div className="flex items-center">
@@ -72,8 +58,11 @@ export default function Navbar() {
       ) : (
         <div className="flex gap-4 mr-2 items-center">
           <MdOutlineList size={20} />
-          <MdNotificationsNone size={20} />
-          <FiUser size={20} />
+          <MdNotificationsNone
+            size={20}
+            onClick={() => navigate("/notification")}
+          />
+          <FiUser size={20}  />
           <button onClick={() => navigate("/login")}>Logout</button>
         </div>
       )}
