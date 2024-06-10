@@ -6,7 +6,7 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 
 export default function Carousel() {
-  const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState(null);
+  const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -107,7 +107,7 @@ export default function Carousel() {
           ))
         ) : (
           <Icon
-            icon="line-md:loading-alt-loop"
+            icon="eos-icons:bubble-loading"
             className="mt-6"
             fontSize={40}
           />
