@@ -134,8 +134,8 @@ export default function NotificationPage() {
               <div className="py-1">
                 <RiCircleFill
                   size={10}
-                  className={`text-${
-                    notification.read ? "green-500" : "red-500"
+                  className={`${
+                    notification.read ? "text-green-500" : "text-red-500"
                   }`}
                 />
               </div>
