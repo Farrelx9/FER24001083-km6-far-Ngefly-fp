@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ngefly from "../logo/ngefly.png";
-import { IoSearchSharp } from "react-icons/io5";
 import { CiLogin } from "react-icons/ci";
 import { MdNotificationsNone, MdOutlineList } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
@@ -60,7 +59,6 @@ export default function Navbar() {
           <MdOutlineList size={20} />
           <MdNotificationsNone size={20} onClick={() => navigate("/notif")} />
           <FiUser size={20} onClick={() => navigate("/profile")} />
-          <button onClick={() => navigate("/login")}>Logout</button>
         </div>
       )}
     </div>
