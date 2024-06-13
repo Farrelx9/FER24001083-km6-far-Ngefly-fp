@@ -8,8 +8,8 @@ import { formatCurrency, getDuration } from "../../lib/function";
 
 export default function CardFlight({ index, item }) {
   const [accordion, setAccordion] = useState(false);
-  const price = item.flight_classes?.[0]?.price;
-  const flightClass = item.flight_classes?.[0]?.name || "";
+  const price = item.price || 0;
+  const flightClass = item.name || "";
 
   return (
     <div
@@ -21,7 +21,7 @@ export default function CardFlight({ index, item }) {
     >
       <div className="flex items-center justify-between mb-6">
         <p>
-          {item.plane?.airline} -{" "}
+          {item.flight?.plane?.airline} -{" "}
           {FLIGHT_CLASS[flightClass.toString().toLowerCase()] || ""}
         </p>
         <button
@@ -40,22 +40,22 @@ export default function CardFlight({ index, item }) {
           <div className="flex-1 flex items-center justify-between gap-[12px]">
             <div>
               <p className="font-bold text-sm">
-                {moment(item.departureAt).format("HH:mm")}
+                {moment(item.flight?.departureAt).format("HH:mm")}
               </p>
-              <p className="text-xs">{item.from_code}</p>
+              <p className="text-xs">{item.flight?.from_code}</p>
             </div>
             <div className="flex-1 flex items-center flex-col gap-1">
               <span className="text-sm text-[#8A8A8A] font-medium">
-                {getDuration(item.departureAt, item.arriveAt)}
+                {getDuration(item.flight?.departureAt, item.flight?.arriveAt)}
               </span>
               <div className="w-full h-[2px] bg-gray-300" />
               <span className="text-sm text-[#8A8A8A] font-medium">Direct</span>
             </div>
             <div>
               <p className="font-bold text-sm">
-                {moment(item.arriveAt).format("HH:mm")}
+                {moment(item.flight?.arriveAt).format("HH:mm")}
               </p>
-              <p className="text-xs">{item.to_code}</p>
+              <p className="text-xs">{item.flight?.to_code}</p>
             </div>
           </div>
           <Icon
@@ -87,37 +87,37 @@ export default function CardFlight({ index, item }) {
         <div className="flex justify-between gap-5">
           <div>
             <p className="font-bold">
-              {moment(item.departureAt).format("HH:mm")}
+              {moment(item.flight?.departureAt).format("HH:mm")}
             </p>
             <p className="text-sm text-gray-500 mb-1">
-              {moment(item.departureAt).format("DD MMMM YYYY")}
+              {moment(item.flight?.departureAt).format("DD MMMM YYYY")}
             </p>
-            <p>{item.from?.name || ""}</p>
+            <p>{item.flight?.from?.name || ""}</p>
           </div>
           <p className="font-bold text-[#9DDE8B]">Keberangkatan</p>
         </div>
         <Divider className="my-3 mx-auto max-w-[700px]" />
         <div className="pl-10">
           <p className="font-bold">
-            {item.plane?.airline} -{" "}
+            {item.flight?.plane?.airline} -{" "}
             {FLIGHT_CLASS[flightClass.toString().toLowerCase()] || ""}
           </p>
-          <p className="font-bold">{item.plane_code}</p>
+          <p className="font-bold">{item.flight?.plane_code}</p>
           <div className="text-sm mt-4">
             <p className="font-bold">Informasi:</p>
-            <p>Baggage {item.plane?.baggage} kg</p>
-            <p>Cabin Baggage {item.plane?.cabin_baggage} kg</p>
+            <p>Baggage {item.flight?.plane?.baggage} kg</p>
+            <p>Cabin Baggage {item.flight?.plane?.cabin_baggage} kg</p>
             <p>In Flight Entertainment</p>
           </div>
         </div>
         <Divider className="my-3 mx-auto max-w-[700px]" />
         <div className="flex justify-between gap-5">
           <div>
-            <p className="font-bold">{moment(item.arriveAt).format("HH:mm")}</p>
+            <p className="font-bold">{moment(item.flight?.arriveAt).format("HH:mm")}</p>
             <p className="text-sm text-gray-500 mb-1">
-              {moment(item.arriveAt).format("DD MMMM YYYY")}
+              {moment(item.flight?.arriveAt).format("DD MMMM YYYY")}
             </p>
-            <p>{item.to?.name || ""}</p>
+            <p>{item.flight?.to?.name || ""}</p>
           </div>
           <p className="font-bold text-[#9DDE8B]">Kedatangan</p>
         </div>

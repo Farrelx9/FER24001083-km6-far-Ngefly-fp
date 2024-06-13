@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Container from "../components/atoms/Container";
-import Layout from '../components/templates/Layout'
+import Layout from "../components/templates/Layout";
 import WeekPicker from "../components/atoms/WeekPicker";
 import Divider from "../components/atoms/Divider";
 import FilterSearch from "../components/molecules/FilterSearch";
@@ -17,7 +17,10 @@ import moment from "moment";
 
 const OPTION_SORT = [
   {
-    value: "lowest-price",
+    value: {
+      type: "price",
+      order: "asc",
+    },
     label: (
       <>
         <span className="font-medium">Harga</span> - Termurah
@@ -26,16 +29,10 @@ const OPTION_SORT = [
     label_short: "Termurah",
   },
   {
-    value: "short-duration",
-    label: (
-      <>
-        <span className="font-medium">Durasi</span> - Terpendek
-      </>
-    ),
-    label_short: "Durasi Terpendek",
-  },
-  {
-    value: "early-flight",
+    value: {
+      type: "arrival_at",
+      order: "asc",
+    },
     label: (
       <>
         <span className="font-medium">Keberangkatan</span> - Paling Awal
@@ -44,7 +41,10 @@ const OPTION_SORT = [
     label_short: "Keberangkatan Paling Awal",
   },
   {
-    value: "last-flight",
+    value: {
+      type: "arrival_at",
+      order: "desc",
+    },
     label: (
       <>
         <span className="font-medium">Keberangkatan</span> - Paling Akhir
@@ -53,7 +53,10 @@ const OPTION_SORT = [
     label_short: "Keberangkatan Paling Akhir",
   },
   {
-    value: "early-arrival",
+    value: {
+      type: "departure_at",
+      order: "asc",
+    },
     label: (
       <>
         <span className="font-medium">Kedatangan</span> - Paling Awal
@@ -62,7 +65,10 @@ const OPTION_SORT = [
     label_short: "Kedatangan Paling Awal",
   },
   {
-    value: "last-arrival",
+    value: {
+      type: "departure_at",
+      order: "desc",
+    },
     label: (
       <>
         <span className="font-medium">Kedatangan</span> - Paling Akhir
@@ -83,15 +89,31 @@ export default function Search() {
   const params = {
     page: searchParams.get("page") || 1,
     from: searchParams.get("from") || "CGK", // required from url
-    to: searchParams.get("to") || "DPS",
-    p: searchParams.get("p") || 1, // required from url
+    to: searchParams.get("to") || "",
+    p:
+      !isNaN(Number(searchParams.get("adult"))) ||
+      !isNaN(Number(searchParams.get("child")))
+        ? Number(searchParams.get("adult") || 0) +
+          Number(searchParams.get("child") || 0)
+        : searchParams.get("p") || 1, // required from url
     sc: searchParams.get("sc") || "ECONOMY", // required from url
     rt: searchParams.get("rt") || "",
     rd: searchParams.get("rd") || "",
     d: searchParams.get("d") || "",
+    type: searchParams.get("type") || "",
+    order: searchParams.get("order") || "",
   };
-  const [currentSort, setCurrentSort] = useState(OPTION_SORT[0]);
-  const [sort, setSort] = useState(OPTION_SORT[0]);
+
+  const selectedSort =
+    params.order && params.type
+      ? OPTION_SORT.find(
+          (item) =>
+            item.value.type === params.type && item.value.order === params.order
+        ) || OPTION_SORT[0]
+      : OPTION_SORT[0];
+
+  const [currentSort, setCurrentSort] = useState(selectedSort);
+  const [sort, setSort] = useState(selectedSort);
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
 
@@ -99,15 +121,23 @@ export default function Search() {
     const urlParams = new URLSearchParams({
       page: newValue?.page || params.page,
       from: newValue?.from || params.from, // required from url
-      p: newValue?.p || params.p, // required from url
+      p: newValue?.p || params.p || 1, // required from url
       sc: newValue?.sc || params.sc, // required from url
     });
 
+    // if (newValue?.sc || params.sc)
+    //   urlParams.append("sc", newValue?.sc || params.sc);
+    if (newValue?.to || params.to)
+      urlParams.append("to", newValue?.to || params.to);
     if (newValue?.rt || params.rt)
       urlParams.append("rt", newValue?.rt || params.rt);
     if (newValue?.rd || params.rd)
       urlParams.append("rd", newValue?.rd || params.rd);
     if (newValue?.d || params.d) urlParams.append("d", newValue?.d || params.d);
+    if (newValue?.type || params.type)
+      urlParams.append("type", newValue?.type || params.type);
+    if (newValue?.order || params.order)
+      urlParams.append("order", newValue?.order || params.order);
 
     return urlParams.toString();
   };
@@ -190,11 +220,11 @@ export default function Search() {
           </div>
           <WeekPicker
             onChange={(date) => changeDate(date)}
-            defaultDate={params.d}
+            defaultDate={params.d || ""}
           />
           <Divider className="my-7" />
           <div className="flex justify-between xl:justify-end mb-4">
-            <button
+            {/* <button
               className="xl:hidden flex items-center gap-3 px-4 py-3 rounded-full border border-[#40A578] text-[#40A578]"
               onClick={() => {
                 setModal({ ...modal, filter: true });
@@ -202,7 +232,7 @@ export default function Search() {
             >
               <Icon icon="flowbite:filter-outline" width={21} />
               <span>Filter</span>
-            </button>
+            </button> */}
             <button
               className="flex items-center gap-3 px-4 py-3 rounded-full border border-[#40A578] text-[#40A578]"
               onClick={() => {
@@ -215,9 +245,9 @@ export default function Search() {
             </button>
           </div>
           <div className="flex gap-4">
-            <div className="hidden xl:block w-full max-w-[270px]">
+            {/* <div className="hidden xl:block w-full max-w-[270px]">
               <FilterSearch />
-            </div>
+            </div> */}
             <div className="flex-1 ">
               {loading ? (
                 <Loading label="Mencari penerbangan terbaik.." />
@@ -306,12 +336,14 @@ export default function Search() {
           </button>
         </div>
         <div>
-          {OPTION_SORT.map((item) => {
-            const selected = item.value === sort.value;
+          {OPTION_SORT.map((item, index) => {
+            const selected =
+              item.value.order === sort.value.order &&
+              item.value.type === sort.value.type;
 
             return (
               <div
-                key={item.value}
+                key={`options-sort-${index}`}
                 className={twMerge(
                   "px-3 duration-150",
                   selected && "bg-[#40A578] text-white"
@@ -342,6 +374,7 @@ export default function Search() {
             onClick={() => {
               setCurrentSort(sort);
               setModal({ ...modal, sort: false });
+              redirect({ ...sort.value });
             }}
           >
             Pilih

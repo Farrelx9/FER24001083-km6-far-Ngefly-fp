@@ -3,20 +3,22 @@ import { twMerge } from "tailwind-merge";
 import { Fragment, useEffect, useState } from "react";
 import useGetWeek from "../../hooks/useGetWeek";
 
-export default function WeekPicker({ onChange, defaultDate = new Date() }) {
-  const [date, setDate] = useState(defaultDate);
+export default function WeekPicker({ onChange, defaultDate }) {
+  const [date, setDate] = useState(null);
   const week = useGetWeek(new Date());
 
   useEffect(() => {
-    const dateUpdate = moment(defaultDate);
+    if (defaultDate) {
+      const dateUpdate = moment(defaultDate);
 
-    setDate(dateUpdate);
+      setDate(dateUpdate);
+    }
   }, [defaultDate]);
 
   return (
     <div className="flex items-center justify-between mt-6 gap-3 overflow-x-scroll">
       {week.map((item, index) => {
-        const dateNow = moment(date);
+        const dateNow = date ? moment(date) : moment();
         const dateItem = moment(item);
 
         return (
