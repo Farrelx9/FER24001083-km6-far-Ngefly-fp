@@ -8,19 +8,23 @@ import RequestResetPassword from "./assets/Auth/RequestResetPassword";
 import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Register from "./assets/Auth/Register";
 import SendVerif from "./assets/Auth/SendVerif";
+import Search from "./pages/Search";
 
 export default function App() {
+
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset" element={<RequestResetPassword />} />
-        <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/search" element={<Search />} />
       </Routes>
     </Router>
+
   );
 }

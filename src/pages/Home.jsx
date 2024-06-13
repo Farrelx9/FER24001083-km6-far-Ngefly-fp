@@ -7,7 +7,7 @@ import {
   MdOutlineFlight,
 } from "react-icons/md";
 import Carousel from "../assets/Properties/Carousel";
-import Modal from "../assets/Properties/Modal";
+import Modal from "../components/atoms/Modal";
 
 export default function Home() {
   return (
