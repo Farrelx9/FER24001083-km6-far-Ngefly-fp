@@ -122,7 +122,7 @@ export default function Profile() {
       );
 
       if (response.data && response.data.status) {
-        setProfileData(response.data.data || updatedData); 
+        setProfileData(response.data.data || updatedData);
         setShowEditFields(false);
         console.log("Updated profile data:", response.data.data);
         toast.success("Profile updated successfully!");
@@ -214,8 +214,10 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <div className="w-[1440px] h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-        <div className="flex self-start px-44 mt-16">Profile</div>
+      <div className="w-full h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
+        <div className="lg:w-[1100px] md:w-[1200px] w-[400px] px-4 mt-20 ">
+          Profile
+        </div>
         <div className="flex items-center gap-4">
           <div className="w-[968px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
             <IoMdArrowRoundBack
