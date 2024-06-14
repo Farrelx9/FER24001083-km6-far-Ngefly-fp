@@ -30,7 +30,7 @@ const OPTION_SORT = [
   },
   {
     value: {
-      type: "arrival_at",
+      type: "departure_at",
       order: "asc",
     },
     label: (
@@ -42,7 +42,7 @@ const OPTION_SORT = [
   },
   {
     value: {
-      type: "arrival_at",
+      type: "departure_at",
       order: "desc",
     },
     label: (
@@ -54,7 +54,7 @@ const OPTION_SORT = [
   },
   {
     value: {
-      type: "departure_at",
+      type: "arrival_at",
       order: "asc",
     },
     label: (
@@ -66,7 +66,7 @@ const OPTION_SORT = [
   },
   {
     value: {
-      type: "departure_at",
+      type: "arrival_at",
       order: "desc",
     },
     label: (
@@ -88,7 +88,7 @@ export default function Search() {
   // set default value untuk search
   const params = {
     page: searchParams.get("page") || 1,
-    from: searchParams.get("from") || "CGK", // required from url
+    from: searchParams.get("from") || "UPG", // required from url
     to: searchParams.get("to") || "",
     p:
       !isNaN(Number(searchParams.get("adult"))) ||
@@ -253,7 +253,7 @@ export default function Search() {
                 <Loading label="Mencari penerbangan terbaik.." />
               ) : list?.length > 0 ? (
                 list?.map((item, index) => (
-                  <CardFlight key={index} index={index} item={item} />
+                  <CardFlight key={index} index={index} item={item}  />
                 ))
               ) : (
                 <NotFound>
