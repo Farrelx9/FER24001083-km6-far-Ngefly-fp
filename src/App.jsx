@@ -9,6 +9,9 @@ import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Register from "./assets/Auth/Register";
 import SendVerif from "./assets/Auth/SendVerif";
 import Checkout from "./pages/Checkout";
+import Search from "./pages/Search";
+import Notification from "./pages/Notification";
+import Profile from "./pages/Profile";
 
 export default function App() {
   return (
@@ -17,11 +20,14 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset" element={<RequestResetPassword />} />
-        <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        <Route path="/resetpassword" element={<ResetPassword />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/notif" element={<Notification />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </Router>
   );

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import Navbar from "../assets/Properties/Navbar";
 import { RiFlightTakeoffFill } from "react-icons/ri";
 import {
@@ -6,10 +6,92 @@ import {
   MdOutlineAirlineSeatReclineNormal,
   MdOutlineFlight,
 } from "react-icons/md";
+import { TbSwitch3 } from "react-icons/tb";
+import { HiSwitchHorizontal } from "react-icons/hi";
 import Carousel from "../assets/Properties/Carousel";
 import Modal from "../assets/Properties/Modal";
+import { IoSearchOutline } from "react-icons/io5";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../assets/styles/datepicker.css";
+import axios from "axios";
 
 export default function Home() {
+  const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
+  const [showModal4, setShowModal4] = useState(false);
+  const [showModal5, setShowModal5] = useState(false);
+  const [showModal6, setShowModal6] = useState(false);
+  const [airportSuggestions, setAirportSuggestions] = useState([]);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const [isReturnActive, setIsReturnActive] = useState(false);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [infants, setInfants] = useState(1);
+  const [totalPassengers, setTotalPassengers] = useState(
+    adults + children + infants
+  );
+  const [selectedClass, setSelectedClass] = useState("Economy");
+  const [isRotated, setIsRotated] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://binar-project-backend-staging.vercel.app/api/v1/airport`,
+        {
+          headers: {
+            accept: "application/json",
+          },
+        }
+      );
+      console.log("response.data", response.data);
+      setAirportSuggestions(response.data.data); // Menyimpan data airport ke state
+    } catch (error) {
+      console.error("Error Fetching Data: ", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData(); // Memanggil fetchData saat komponen dimuat
+  }, []);
+
+  const handleDeleteSearch = (index) => {
+    const newSearches = [...airportSuggestions];
+    newSearches.splice(index, 1);
+    setAirportSuggestions(newSearches);
+  };
+
+  const handleClearSearches = () => {
+    setAirportSuggestions([]);
+  };
+
+  const increment = (setter, value) => {
+    setter(value + 1);
+  };
+
+  const decrement = (setter, value) => {
+    if (value > 0) {
+      setter(value - 1);
+    }
+  };
+
+  const toggleRotation = () => {
+    setIsRotated(!isRotated);
+  };
+
+  const toggleReturnDate = () => {
+    if (isReturnActive) {
+      setEndDate(null);
+    }
+    setIsReturnActive(!isReturnActive);
+  };
+
+  useEffect(() => {
+    setTotalPassengers(adults + children + infants);
+  }, [adults, children, infants]);
+
   return (
     <Fragment>
       <div className="bg-[#FFFFFF]">
@@ -39,63 +121,298 @@ export default function Home() {
               <div>Choose a Special Flight Schedule on</div>
               <div className="font-bold text-[#006769]">Ngefly!</div>
             </div>
-            <ul className="grid grid-cols-2 gap-10 py-2 ">
-              <li className="flex gap-4 px-10 items-center">
+            <ul className="grid grid-cols-2 gap-8 py-2 ">
+              <li className="flex gap-4 px-10 items-center relative">
                 <MdOutlineFlight size={20} />
                 <div className="text-sm">From</div>
                 <div className="gap-2">
-                  <div className="text-xl mb-2">Jakarta (JKTA) </div>
+                  <input
+                    type="text"
+                    className="w-[300px] h-[34px] text-sm font-semibold px-1"
+                    placeholder=" Jakarta (JKTA)"
+                    onClick={() => setShowModal(true)}
+                  />
                   <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
+                <TbSwitch3
+                  size={20}
+                  className={`absolute left-[100%] transform -translate-x-1/2 ${
+                    isRotated ? "rotate-180 " : ""
+                  }`}
+                  onClick={toggleRotation}
+                />
               </li>
               <li className="flex gap-4 px-10 items-center">
                 <RiFlightTakeoffFill size={20} />
                 <div className="text-sm">Into</div>
                 <div className="gap-2">
-                  <div className=" text-xl mb-2">Jakarta (JKTA) </div>
+                  <input
+                    type="text"
+                    placeholder="Jakarta (JKTA)"
+                    className="w-[300px] h-[34px] text-sm font-semibold px-2 "
+                    onClick={() => setShowModal2(true)}
+                  />
                   <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
               </li>
-              <li className="flex gap-4 px-10 items-center">
+              <li className="flex gap-4 px-10 items-center relative">
                 <MdDateRange size={20} />
                 <div className="text-sm">Date</div>
                 <div className="gap-2">
-                  <div className=" text-sm mb-2">Departure</div>
-                  <div className=" text-xl mb-2">5 Juni 2024 </div>
-                  <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
-                </div>
-                <div className="gap-2">
-                  <div className=" text-sm mb-2">Return</div>
-                  <div className=" text-[#006769] text-xl mb-2">
-                    Pilih Tanggal
+                  <div className="text-sm mb-2">Departure</div>
+                  <div
+                    className="text-sm font-semibold mb-2"
+                    onClick={() => setShowModal3(true)}
+                  >
+                    {startDate.toLocaleDateString("en-GB")}
                   </div>
-                  <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
+                  <div className="w-[140px] h-[1px] bg-[#D0D0D0]"></div>
                 </div>
+                <div className={`gap-2 ${isReturnActive ? "" : "opacity-50"}`}>
+                  <div className="text-sm mb-2">Return</div>
+                  <div
+                    className="text-[#006769] text-sm font-semibold mb-2 cursor-pointer"
+                    onClick={isReturnActive ? () => setShowModal6(true) : null}
+                  >
+                    {endDate
+                      ? endDate.toLocaleDateString("en-GB")
+                      : "Select Date"}
+                  </div>
+                  <div className="w-[140px] h-[1px] bg-[#D0D0D0]"></div>
+                </div>
+                <HiSwitchHorizontal
+                  size={20}
+                  className={`absolute left-[90%] bottom-[70%] transform -translate-x-1/2 cursor-pointer ${
+                    isReturnActive ? "text-[#006769]" : "text-gray-400"
+                  }`}
+                  onClick={toggleReturnDate}
+                />
               </li>
               <li className="flex gap-4 px-10 items-center">
                 <MdOutlineAirlineSeatReclineNormal size={20} />
                 <div className="text-sm">Seat</div>
-                <div className="gap-2 ">
-                  <div className=" text-sm mb-2">Passengers</div>
-                  <div className=" text-xl mb-2">2 Penumpang </div>
+                <div className="gap-2">
+                  <div className=" text-sm mb-2">Total</div>
+                  <div
+                    className=" text-sm font-semibold mb-2"
+                    onClick={() => setShowModal4(true)}
+                  >
+                    {totalPassengers} Passengers
+                  </div>
                   <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
                 <div className="gap-2">
                   <div className=" text-sm mb-2">Seat Class</div>
-                  <div className="text-xl mb-2">Business</div>
+                  <div
+                    className="text-sm font-semibold mb-2"
+                    onClick={() => setShowModal5(true)}
+                  >
+                    {selectedClass}
+                  </div>
                   <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
               </li>
-              <button className="bg-[#006769] w-[968px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white hover:bg-[#006769] ease-in-out duration-300 ">
+              <button className="bg-[#40A578] w-[968px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] ">
                 Search for Flight
               </button>
             </ul>
-            <div className="text-xl mt-4 mb-10">Destinasi Favorit</div>
+            <div className="text-xl mt-4 mb-10">Favorite Destination</div>
             <Carousel />
           </div>
         </div>
       </div>
-      <Modal />
+      <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+        <div className="relative flex flex-col items-center p-2">
+          <form className="flex w-full px-1">
+            <IoSearchOutline
+              size={17}
+              className="absolute ml-2 mt-3 pointer-events-none"
+            />
+            <input
+              type="text"
+              placeholder="Masukkan Kota atau Negara"
+              className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+            />
+          </form>
+          <div className="w-full mt-4">
+            <div className="flex justify-between items-center px-2">
+              <span className="font-semibold">Airport Suggestions</span>
+              <button
+                className="text-red-500"
+                onClick={() => setAirportSuggestions([])}
+              >
+                Clear
+              </button>
+            </div>
+            <ul className="mt-2">
+              {airportSuggestions.map((airport, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center px-2 py-1 border-b border-gray-200"
+                >
+                  <span>{airport.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Modal>
+      <Modal isVisible={showModal2} onClose={() => setShowModal2(false)}>
+        <div className="relative flex flex-col items-center p-2">
+          <form className="flex w-full px-1">
+            <IoSearchOutline
+              size={17}
+              className="absolute ml-2 mt-3 pointer-events-none"
+            />
+            <input
+              type="text"
+              placeholder="Masukkan Kota atau Negara"
+              className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+            />
+          </form>
+          <div className="w-full mt-4">
+            <div className="flex justify-between items-center px-2">
+              <span className="font-semibold">Airport Suggestions</span>
+              <button
+                className="text-red-500"
+                onClick={() => setAirportSuggestions([])}
+              >
+                Clear
+              </button>
+            </div>
+            <ul className="mt-2">
+              {airportSuggestions.map((airport, index) => (
+                <li
+                  key={index}
+                  className="flex justify-between items-center px-2 py-1 border-b border-gray-200"
+                >
+                  <span>{airport.name}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Modal>
+      <Modal isVisible={showModal3} onClose={() => setShowModal3(false)}>
+        <div className="relative flex items-center p-2 w-full">
+          <DatePicker
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            inline
+            monthsShown={2}
+            calendarClassName="tailwind-datepicker w-full"
+          />
+        </div>
+      </Modal>
+      <Modal isVisible={showModal4} onClose={() => setShowModal4(false)}>
+        <div className="p-4">
+          <div className="flex justify-between items-center mb-4">
+            <span className="font-semibold">Dewasa (12 tahun keatas)</span>
+            <div className="flex items-center">
+              <button
+                className="px-2 py-1 border"
+                onClick={() => decrement(setAdults, adults)}
+              >
+                -
+              </button>
+              <span className="px-4">{adults}</span>
+              <button
+                className="px-2 py-1 border"
+                onClick={() => increment(setAdults, adults)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-between items-center mb-4">
+            <span className="font-semibold">Anak (2 - 11 tahun)</span>
+            <div className="flex items-center">
+              <button
+                className="px-2 py-1 border"
+                onClick={() => decrement(setChildren, children)}
+              >
+                -
+              </button>
+              <span className="px-4">{children}</span>
+              <button
+                className="px-2 py-1 border"
+                onClick={() => increment(setChildren, children)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div className="flex justify-between items-center mb-4">
+            <span className="font-semibold">Bayi (Dibawah 2 tahun)</span>
+            <div className="flex items-center">
+              <button
+                className="px-2 py-1 border"
+                onClick={() => decrement(setInfants, infants)}
+              >
+                -
+              </button>
+              <span className="px-4">{infants}</span>
+              <button
+                className="px-2 py-1 border"
+                onClick={() => increment(setInfants, infants)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <button
+            className="bg-[#40A578] w-full py-2 text-white font-semibold rounded"
+            onClick={() => setShowModal4(false)}
+          >
+            Simpan
+          </button>
+        </div>
+      </Modal>
+      <Modal isVisible={showModal5} onClose={() => setShowModal5(false)}>
+        <div className="p-4">
+          {[
+            { class: "Economy", price: "IDR 4,950,000" },
+            { class: "Premium Economy", price: "IDR 7,550,000" },
+            { class: "Business", price: "IDR 29,220,000" },
+            { class: "First Class", price: "IDR 87,620,000" },
+          ].map((seatClass) => (
+            <div
+              key={seatClass.class}
+              className={`flex justify-between items-center text-black   mb-4 p-2 border ${
+                selectedClass === seatClass.class
+                  ? "bg-[#40A578] text-white"
+                  : "bg-white"
+              } cursor-pointer`}
+              onClick={() => setSelectedClass(seatClass.class)}
+            >
+              <div>
+                <span className="font-semibold">{seatClass.class}</span>
+                <div>{seatClass.price}</div>
+              </div>
+              {selectedClass === seatClass.class && (
+                <span className="text-white">✔</span>
+              )}
+            </div>
+          ))}
+          <button
+            className="bg-[#40A578] w-full py-2 text-white font-semibold rounded"
+            onClick={() => setShowModal5(false)}
+          >
+            Simpan
+          </button>
+        </div>
+      </Modal>
+      <Modal isVisible={showModal6} onClose={() => setShowModal6(false)}>
+        <div className="relative flex items-center p-2 w-full">
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            inline
+            monthsShown={2}
+            calendarClassName="tailwind-datepicker w-full"
+          />
+        </div>
+      </Modal>
     </Fragment>
   );
 }

@@ -3,14 +3,15 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
+import { Icon } from "@iconify/react";
 
 export default function Carousel() {
-  const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState(null);
+  const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "https://binar-project-backend-staging.vercel.app/api/v1/flight/favorite",
+        `https://binar-project-backend-staging.vercel.app/api/v1/flight/favorite`,
         { headers: { accept: "application/json" } }
       );
       console.log("response.data", response.data);
@@ -24,6 +25,20 @@ export default function Carousel() {
   useEffect(() => {
     fetchData();
   }, []);
+  const formatDate = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZoneName: "short",
+    };
+
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-ID", options);
+  };
 
   const settings = {
     dots: true,
@@ -61,39 +76,41 @@ export default function Carousel() {
   };
 
   return (
-    <div className="bg-none bg-[#FFFFFF]">
+    <div className="bg-none ">
       <Slider {...settings}>
         {fetchFavoriteFlights ? (
           fetchFavoriteFlights.map((flight) => (
-            <div key={flight.id} className="px-4">
-              <div className="max-w-xs mx-auto bg-white shadow-lg rounded-lg overflow-hidden hover:scale-95 hover:cursor-pointer ">
+            <div key={flight.id} className="px-4 py-3">
+              <div className="max-w-xs mx-auto h-[300px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
                 <div className="relative">
                   <img
                     className="object-cover w-full h-[150px] "
                     src={flight.to.image_url}
                     alt={flight.title}
                   />
-                  <div className="absolute top-2 right-2 bg-green-400 text-white text-xs px-2 py-1 rounded">
-                    {flight.limited}
-                  </div>
                 </div>
                 <div className="p-4">
-                  <div className="text-xl font-semibold truncate">
+                  <div className="text-lg font-semibold truncate">
                     {flight.from.city} -&gt; {flight.to.city}
                   </div>
-                  <div className="text-sm text-[#9DDE8B]">
+                  <div className="text-xs text-[#9DDE8B]">
                     {flight.plane.airline}
                   </div>
                   <p className="text-sm text-gray-600 mb-2">{flight.airline}</p>
                   <p className="text-sm text-gray-600 mb-2">
-                    {flight.arriveAt} - {flight.departureAt}
+                    {formatDate(flight.arriveAt)} -{" "}
+                    {formatDate(flight.departureAt)}
                   </p>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <div>Loading...</div>
+          <Icon
+            icon="eos-icons:bubble-loading"
+            className="mt-6"
+            fontSize={40}
+          />
         )}
       </Slider>
     </div>

@@ -19,6 +19,8 @@ export default function ResetPassword() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword1, setShowPassword1] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const handleSubmit = async () => {
     if (form.newPassword1.length < MIN_CHARACTER || form.newPassword2.length < MIN_CHARACTER) {
@@ -105,27 +107,41 @@ export default function ResetPassword() {
                 }}
               >
                 <label className="mt-4">Masukkan Password Baru</label>
-                <input
-                  className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
-                  placeholder="Password"
-                  type="password"
-                  value={form.newPassword1}
-                  onInput={(e) =>
-                    setForm({ ...form, newPassword1: e.target.value })
-                  }
-                  required
-                />
+                <div className="relative">
+                  <input
+                    className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
+                    placeholder="Password"
+                    type={showPassword1 ? "text" : "password"}
+                    value={form.newPassword1}
+                    onInput={(e) =>
+                      setForm({ ...form, newPassword1: e.target.value })
+                    }
+                    required
+                  />
+                  <Icon
+                    icon={showPassword1 ? "mdi:eye-off" : "mdi:eye"}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword1(!showPassword1)}
+                  />
+                </div>
                 <label className="mt-4">Ulangi Password Baru</label>
-                <input
-                  className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
-                  placeholder="Ulangi Password"
-                  type="password"
-                  value={form.newPassword2}
-                  onInput={(e) =>
-                    setForm({ ...form, newPassword2: e.target.value })
-                  }
-                  required
-                />
+                <div className="relative">
+                  <input
+                    className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
+                    placeholder="Ulangi Password"
+                    type={showPassword2 ? "text" : "password"}
+                    value={form.newPassword2}
+                    onInput={(e) =>
+                      setForm({ ...form, newPassword2: e.target.value })
+                    }
+                    required
+                  />
+                  <Icon
+                    icon={showPassword2 ? "mdi:eye-off" : "mdi:eye"}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    onClick={() => setShowPassword2(!showPassword2)}
+                  />
+                </div>
               </form>
               
               <button
@@ -160,4 +176,5 @@ export default function ResetPassword() {
     </div>
   );
 }
+
 
