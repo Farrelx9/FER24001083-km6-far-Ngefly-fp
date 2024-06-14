@@ -23,16 +23,7 @@ export default function Home() {
   const [showModal4, setShowModal4] = useState(false);
   const [showModal5, setShowModal5] = useState(false);
   const [showModal6, setShowModal6] = useState(false);
-  const [recentSearches, setRecentSearches] = useState([
-    "Jakarta",
-    "Bandung",
-    "Surabaya",
-  ]);
-  const [recentSearches2, setRecentSearches2] = useState([
-    "Jakarta",
-    "Bandung",
-    "Surabaya",
-  ]);
+  const [airportSuggestions, setAirportSuggestions] = useState([]);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [isReturnActive, setIsReturnActive] = useState(false);
@@ -48,43 +39,32 @@ export default function Home() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://binar-project-backend-staging.vercel.app/api/v1/flight?`,
+        `https://binar-project-backend-staging.vercel.app/api/v1/airport`,
         {
           headers: {
             accept: "application/json",
-            Authorization: `Bearer ${token}`,
           },
         }
       );
       console.log("response.data", response.data);
-      const flight = response.data.data;
-      if (Array.isArray(flight)) {
-      } else {
-        console.error("Expected flight to be an array but got");
-      }
+      setAirportSuggestions(response.data.data); // Menyimpan data airport ke state
     } catch (error) {
       console.error("Error Fetching Data: ", error);
     }
   };
 
-  const handleDeleteSearch = (index) => {
-    const newSearches = [...recentSearches];
-    newSearches.splice(index, 1);
-    setRecentSearches(newSearches);
-  };
+  useEffect(() => {
+    fetchData(); // Memanggil fetchData saat komponen dimuat
+  }, []);
 
-  const handleDeleteSearch2 = (index) => {
-    const newSearches = [...recentSearches];
+  const handleDeleteSearch = (index) => {
+    const newSearches = [...airportSuggestions];
     newSearches.splice(index, 1);
-    setRecentSearches2(newSearches);
+    setAirportSuggestions(newSearches);
   };
 
   const handleClearSearches = () => {
-    setRecentSearches([]);
-  };
-
-  const handleClearSearches2 = () => {
-    setRecentSearches2([]);
+    setAirportSuggestions([]);
   };
 
   const increment = (setter, value) => {
@@ -256,24 +236,21 @@ export default function Home() {
           </form>
           <div className="w-full mt-4">
             <div className="flex justify-between items-center px-2">
-              <span className="font-semibold">Recent Searches</span>
-              <button className="text-red-500" onClick={handleClearSearches}>
-                Delete
+              <span className="font-semibold">Airport Suggestions</span>
+              <button
+                className="text-red-500"
+                onClick={() => setAirportSuggestions([])}
+              >
+                Clear
               </button>
             </div>
             <ul className="mt-2">
-              {recentSearches.map((search, index) => (
+              {airportSuggestions.map((airport, index) => (
                 <li
                   key={index}
                   className="flex justify-between items-center px-2 py-1 border-b border-gray-200"
                 >
-                  <span>{search}</span>
-                  <button
-                    className="text-gray-500"
-                    onClick={() => handleDeleteSearch(index)}
-                  >
-                    X
-                  </button>
+                  <span>{airport.name}</span>
                 </li>
               ))}
             </ul>
@@ -295,24 +272,21 @@ export default function Home() {
           </form>
           <div className="w-full mt-4">
             <div className="flex justify-between items-center px-2">
-              <span className="font-semibold">Recent Searches</span>
-              <button className="text-red-500" onClick={handleClearSearches2}>
-                Delete
+              <span className="font-semibold">Airport Suggestions</span>
+              <button
+                className="text-red-500"
+                onClick={() => setAirportSuggestions([])}
+              >
+                Clear
               </button>
             </div>
             <ul className="mt-2">
-              {recentSearches2.map((search, index) => (
+              {airportSuggestions.map((airport, index) => (
                 <li
                   key={index}
                   className="flex justify-between items-center px-2 py-1 border-b border-gray-200"
                 >
-                  <span>{search}</span>
-                  <button
-                    className="text-gray-500"
-                    onClick={() => handleDeleteSearch2(index)}
-                  >
-                    X
-                  </button>
+                  <span>{airport.name}</span>
                 </li>
               ))}
             </ul>
