@@ -108,7 +108,7 @@ export default function NotificationPage() {
             <IoMdArrowRoundBack
               onClick={() => navigate("/")}
               size={20}
-              className="text-white"
+              className="text-white cursor-pointer hover:scale-110 transition-transform duration-200"
             />
             <div className="text-white text-sm font-semibold">Home</div>
           </div>
