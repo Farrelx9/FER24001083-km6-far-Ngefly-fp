@@ -8,14 +8,21 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { RiCircleFill } from "react-icons/ri";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function NotificationPage() {
   const [notification, setNotification] = useState([]);
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
+      if (token === null) {
+        navigate("/login");
+        toast.error("Please login to continue");
+        return;
+      }
       const response = await axios.get(
         `https://binar-project-backend-staging.vercel.app/api/v1/notification/`,
         {
@@ -29,6 +36,7 @@ export default function NotificationPage() {
       const notifications = response.data.data;
       if (Array.isArray(notifications)) {
         setNotification(notifications);
+        setIsReady(true);
       } else {
         console.error(
           "Expected notifications to be an array but got",
@@ -84,8 +92,12 @@ export default function NotificationPage() {
     fetchData();
   }, []);
 
+  if (isReady === false) {
+    return <div>Loading...</div>;
+  }
   return (
     <div className="">
+      <ToastContainer />
       <Navbar />
       <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
         <div className="lg:w-[1200px] md:w-[1200px] w-[400px] px-4 mt-20 font-semibold">
