@@ -15,6 +15,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../assets/styles/datepicker.css";
 import axios from "axios";
+import { FaBaby, FaChild } from "react-icons/fa";
+import { BsPersonRaisedHand } from "react-icons/bs";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -24,17 +27,21 @@ export default function Home() {
   const [showModal5, setShowModal5] = useState(false);
   const [showModal6, setShowModal6] = useState(false);
   const [airportSuggestions, setAirportSuggestions] = useState([]);
+  const [inputValue, setInputValue] = useState("");
+  const [inputValue2, setInputValue2] = useState("");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [isReturnActive, setIsReturnActive] = useState(false);
   const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
-  const [infants, setInfants] = useState(1);
+  const [baby, setBaby] = useState(1);
   const [totalPassengers, setTotalPassengers] = useState(
-    adults + children + infants
+    adults + children + baby
   );
   const [selectedClass, setSelectedClass] = useState("Economy");
   const [isRotated, setIsRotated] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [searchText2, setSearchText2] = useState("");
 
   const fetchData = async () => {
     try {
@@ -47,24 +54,23 @@ export default function Home() {
         }
       );
       console.log("response.data", response.data);
-      setAirportSuggestions(response.data.data); // Menyimpan data airport ke state
+      setAirportSuggestions(response.data.data);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
     }
   };
 
   useEffect(() => {
-    fetchData(); // Memanggil fetchData saat komponen dimuat
+    fetchData();
   }, []);
-
-  const handleDeleteSearch = (index) => {
-    const newSearches = [...airportSuggestions];
-    newSearches.splice(index, 1);
-    setAirportSuggestions(newSearches);
+  const handleSelectSuggestion = (suggestion) => {
+    setInputValue(`${suggestion.airport_code} - ${suggestion.name}`);
+    setShowModal(false);
   };
 
-  const handleClearSearches = () => {
-    setAirportSuggestions([]);
+  const handleSelectSuggestion2 = (suggestion) => {
+    setInputValue2(`${suggestion.airport_code} - ${suggestion.name}`);
+    setShowModal2(false);
   };
 
   const increment = (setter, value) => {
@@ -79,6 +85,9 @@ export default function Home() {
 
   const toggleRotation = () => {
     setIsRotated(!isRotated);
+    let temp = inputValue;
+    setInputValue(inputValue2);
+    setInputValue2(temp);
   };
 
   const toggleReturnDate = () => {
@@ -89,8 +98,25 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setTotalPassengers(adults + children + infants);
-  }, [adults, children, infants]);
+    setTotalPassengers(adults + children + baby);
+  }, [adults, children, baby]);
+
+  const clearInputValue = () => {
+    setInputValue("");
+    setSearchText("");
+  };
+
+  const clearInputValue2 = () => {
+    setInputValue2("");
+    setSearchText2("");
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+    if (!startDate || date < startDate) {
+      setStartDate(date);
+    }
+  };
 
   return (
     <Fragment>
@@ -128,11 +154,16 @@ export default function Home() {
                 <div className="gap-2">
                   <input
                     type="text"
-                    className="w-[300px] h-[34px] text-sm font-semibold px-1"
-                    placeholder=" Jakarta (JKTA)"
+                    className="w-[300px] h-[34px] text-sm font-semibold "
+                    placeholder=" JOG - Adisucipto International Airport"
+                    value={inputValue}
                     onClick={() => setShowModal(true)}
+                    onChange={(e) => {
+                      setInputValue(e.target.value);
+                      setSearchText(e.target.value);
+                    }}
                   />
-                  <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
+                  <div className="w-[300px] h-[1px] bg-gray-300"></div>
                 </div>
                 <TbSwitch3
                   size={20}
@@ -148,9 +179,14 @@ export default function Home() {
                 <div className="gap-2">
                   <input
                     type="text"
-                    placeholder="Jakarta (JKTA)"
-                    className="w-[300px] h-[34px] text-sm font-semibold px-2 "
+                    placeholder="JOG - Adisucipto International Airport"
+                    className="w-[300px] h-[34px] text-sm font-semibold px-1 "
+                    value={inputValue2}
                     onClick={() => setShowModal2(true)}
+                    onChange={(e) => {
+                      setInputValue2(e.target.value);
+                      setSearchText2(e.target.value);
+                    }}
                   />
                   <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
@@ -223,72 +259,98 @@ export default function Home() {
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
         <div className="relative flex flex-col items-center p-2">
-          <form className="flex w-full px-1">
+          <form className="flex w-full px-1 items-center gap-2">
             <IoSearchOutline
               size={17}
-              className="absolute ml-2 mt-3 pointer-events-none"
+              className="absolute ml-2 mt-0 pointer-events-none"
             />
             <input
               type="text"
               placeholder="Masukkan Kota atau Negara"
               className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+              value={inputValue}
+              onChange={(e) => {
+                setInputValue(e.target.value);
+                setSearchText(e.target.value);
+              }}
             />
+            <FaDeleteLeft size={20} onClick={clearInputValue} />
           </form>
           <div className="w-full mt-4">
             <div className="flex justify-between items-center px-2">
               <span className="font-semibold">Airport Suggestions</span>
-              <button
-                className="text-red-500"
-                onClick={() => setAirportSuggestions([])}
-              >
-                Clear
-              </button>
             </div>
             <ul className="mt-2">
-              {airportSuggestions.map((airport, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between items-center px-2 py-1 border-b border-gray-200"
-                >
-                  <span>{airport.name}</span>
-                </li>
-              ))}
+              {airportSuggestions
+                .filter(
+                  (airport) =>
+                    airport.name
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase()) ||
+                    airport.airport_code
+                      .toLowerCase()
+                      .includes(searchText.toLowerCase())
+                )
+                .map((airport, index) => (
+                  <li
+                    key={index}
+                    className="flex justify-between items-center px-2 py-1 border-b border-gray-200 cursor-pointer"
+                    onClick={() => handleSelectSuggestion(airport)}
+                  >
+                    <span>
+                      {airport.airport_code} - {airport.name}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
       </Modal>
       <Modal isVisible={showModal2} onClose={() => setShowModal2(false)}>
         <div className="relative flex flex-col items-center p-2">
-          <form className="flex w-full px-1">
+          <form className="flex w-full px-1 items-center gap-2">
             <IoSearchOutline
               size={17}
-              className="absolute ml-2 mt-3 pointer-events-none"
+              className="absolute ml-2 mt-0 pointer-events-none"
             />
             <input
               type="text"
               placeholder="Masukkan Kota atau Negara"
               className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+              value={inputValue2}
+              onChange={(e) => {
+                setInputValue2(e.target.value);
+                setSearchText2(e.target.value);
+              }}
             />
+            <FaDeleteLeft size={20} onClick={clearInputValue2} />
           </form>
           <div className="w-full mt-4">
             <div className="flex justify-between items-center px-2">
               <span className="font-semibold">Airport Suggestions</span>
-              <button
-                className="text-red-500"
-                onClick={() => setAirportSuggestions([])}
-              >
-                Clear
-              </button>
             </div>
             <ul className="mt-2">
-              {airportSuggestions.map((airport, index) => (
-                <li
-                  key={index}
-                  className="flex justify-between items-center px-2 py-1 border-b border-gray-200"
-                >
-                  <span>{airport.name}</span>
-                </li>
-              ))}
+              {airportSuggestions
+                .filter(
+                  (airport) =>
+                    airport.name
+                      .toLowerCase()
+                      .includes(searchText2.toLowerCase()) ||
+                    airport.airport_code
+                      .toLowerCase()
+                      .includes(searchText2.toLowerCase())
+                )
+                .map((airport, index) => (
+                  <li
+                    key={index}
+                    className="flex justify-between items-center px-2 py-1 border-b border-gray-200 cursor-pointer"
+                    onClick={() => handleSelectSuggestion2(airport)}
+                  >
+                    <span>
+                      {airport.airport_code} - {airport.name}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
@@ -298,6 +360,9 @@ export default function Home() {
           <DatePicker
             selected={startDate}
             onChange={(date) => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
             inline
             monthsShown={2}
             calendarClassName="tailwind-datepicker w-full"
@@ -307,7 +372,10 @@ export default function Home() {
       <Modal isVisible={showModal4} onClose={() => setShowModal4(false)}>
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
-            <span className="font-semibold">Dewasa (12 tahun keatas)</span>
+            <div className="flex items-center gap-2">
+              <BsPersonRaisedHand size={20} />
+              <span className="font-semibold">Adults (12 years old above)</span>
+            </div>
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
@@ -325,7 +393,10 @@ export default function Home() {
             </div>
           </div>
           <div className="flex justify-between items-center mb-4">
-            <span className="font-semibold">Anak (2 - 11 tahun)</span>
+            <div className="flex items-center gap-2">
+              <FaChild size={20} />
+              <span className="font-semibold">Child (2 - 11 years old)</span>
+            </div>
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
@@ -343,18 +414,21 @@ export default function Home() {
             </div>
           </div>
           <div className="flex justify-between items-center mb-4">
-            <span className="font-semibold">Bayi (Dibawah 2 tahun)</span>
+            <div className="flex items-center gap-2">
+              <FaBaby size={20} />
+              <span className="font-semibold">Baby (Under 2 years old)</span>
+            </div>
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setInfants, infants)}
+                onClick={() => decrement(setBaby, baby)}
               >
                 -
               </button>
-              <span className="px-4">{infants}</span>
+              <span className="px-4">{baby}</span>
               <button
                 className="px-2 py-1 border"
-                onClick={() => increment(setInfants, infants)}
+                onClick={() => increment(setBaby, baby)}
               >
                 +
               </button>
@@ -371,14 +445,14 @@ export default function Home() {
       <Modal isVisible={showModal5} onClose={() => setShowModal5(false)}>
         <div className="p-4">
           {[
-            { class: "Economy", price: "IDR 4,950,000" },
-            { class: "Premium Economy", price: "IDR 7,550,000" },
-            { class: "Business", price: "IDR 29,220,000" },
-            { class: "First Class", price: "IDR 87,620,000" },
+            { class: "Economy" },
+            { class: "Premium Economy" },
+            { class: "Business" },
+            { class: "First Class" },
           ].map((seatClass) => (
             <div
               key={seatClass.class}
-              className={`flex justify-between items-center text-black   mb-4 p-2 border ${
+              className={`flex justify-between items-center text-black  mb-4 p-4 border ${
                 selectedClass === seatClass.class
                   ? "bg-[#40A578] text-white"
                   : "bg-white"
@@ -406,7 +480,10 @@ export default function Home() {
         <div className="relative flex items-center p-2 w-full">
           <DatePicker
             selected={endDate}
-            onChange={(date) => setEndDate(date)}
+            onChange={handleEndDateChange}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
             inline
             monthsShown={2}
             calendarClassName="tailwind-datepicker w-full"

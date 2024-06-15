@@ -214,8 +214,10 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <div className="w-full h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-        <div className="lg:w-[1100px] md:w-[1200px] w-[400px] px-4 mt-20 ">
+
+      <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
+        <div className="lg:w-[1100px] md:w-[1200px] w-[400px] px-4 mt-20 font-semibold">
+
           Profile
         </div>
         <div className="flex items-center gap-4">

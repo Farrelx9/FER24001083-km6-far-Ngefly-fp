@@ -1,5 +1,5 @@
 .tailwind-datepicker {
-  @apply w-full    flex justify-center gap-5;
+  @apply w-full flex justify-center gap-5;
 }
 
 .react-datepicker {
@@ -20,14 +20,20 @@
 
 .react-datepicker__day--selected,
 .react-datepicker__day--keyboard-selected {
-  @apply bg-purple-700 text-white rounded-full;
+  @apply bg-[#006769] text-white rounded-full;
 }
-s .react-datepicker__day--in-range {
-  @apply bg-purple-200;
+
+.react-datepicker__day--in-range {
+  @apply bg-[#E1F0DA] text-black;
 }
 
 .react-datepicker__day--in-selecting-range {
-  @apply bg-purple-300;
+  @apply bg-[#E1F0DA];
+}
+
+.react-datepicker__day--range-start,
+.react-datepicker__day--range-end {
+  @apply bg-[#40A578] text-white rounded-full;
 }
 
 .react-datepicker__navigation--previous,
