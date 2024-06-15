@@ -5,6 +5,7 @@ import { useState } from "react";
 import Divider from "../atoms/Divider";
 import { FLIGHT_CLASS } from "../../constant/type";
 import { formatCurrency, getDuration } from "../../lib/function";
+import { Link } from "react-router-dom";
 
 export default function CardFlight({ index, item }) {
   const [accordion, setAccordion] = useState(false);
@@ -69,9 +70,12 @@ export default function CardFlight({ index, item }) {
           <div className="font-bold mb-2 text-[#006769]">
             {formatCurrency(price)}
           </div>
-          <button className="bg-[#40A578] font-medium flex w-fit justify-center items-center text-white rounded-[10px] px-8 py-2 cursor-pointer">
+          <Link
+            to={`/checkout/${item.id}`}
+            className="bg-[#40A578] font-medium flex w-fit justify-center items-center text-white rounded-[10px] px-8 py-2 cursor-pointer"
+          >
             Pilih
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -113,7 +117,9 @@ export default function CardFlight({ index, item }) {
         <Divider className="my-3 mx-auto max-w-[700px]" />
         <div className="flex justify-between gap-5">
           <div>
-            <p className="font-bold">{moment(item.flight?.arriveAt).format("HH:mm")}</p>
+            <p className="font-bold">
+              {moment(item.flight?.arriveAt).format("HH:mm")}
+            </p>
             <p className="text-sm text-gray-500 mb-1">
               {moment(item.flight?.arriveAt).format("DD MMMM YYYY")}
             </p>

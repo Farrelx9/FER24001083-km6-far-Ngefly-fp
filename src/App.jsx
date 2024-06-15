@@ -8,13 +8,15 @@ import RequestResetPassword from "./assets/Auth/RequestResetPassword";
 import VerifyEmail from "./assets/Auth/VerifyEmail";
 import Register from "./assets/Auth/Register";
 import SendVerif from "./assets/Auth/SendVerif";
+import Checkout from "./pages/Checkout";
 import Search from "./pages/Search";
 import Notification from "./pages/Notification";
 import Profile from "./pages/Profile";
-
+import Payment from "./pages/Payment";
+import TicketConfirmation from "./pages/TicketConfirmation";
+import AboutUs from "./pages/AboutUs";
 
 export default function App() {
-
   return (
     <Router>
       <Routes>
@@ -25,11 +27,14 @@ export default function App() {
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/checkout" element={<Checkout />} />
         <Route path="/search" element={<Search />} />
         <Route path="/notif" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/payment" element={<Payment />} />
+        <Route path="/tickectconfirm" element={<TicketConfirmation />} />
+        <Route path="/aboutus" element={<AboutUs />} />
       </Routes>
     </Router>
-
   );
 }
