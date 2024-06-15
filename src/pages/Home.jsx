@@ -18,6 +18,8 @@ import axios from "axios";
 import { FaBaby, FaChild } from "react-icons/fa";
 import { BsPersonRaisedHand } from "react-icons/bs";
 import { FaDeleteLeft } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -42,6 +44,7 @@ export default function Home() {
   const [isRotated, setIsRotated] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchText2, setSearchText2] = useState("");
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -98,8 +101,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setTotalPassengers(adults + children + baby);
-  }, [adults, children, baby]);
+    setTotalPassengers(adults + children);
+  }, [adults, children]);
 
   const clearInputValue = () => {
     setInputValue("");
@@ -118,9 +121,32 @@ export default function Home() {
     }
   };
 
+  const handleSearch = () => {
+    const totalPassengers = adults + children;
+
+    const params = {
+      from: inputValue.split(" - ")[0],
+      to: inputValue2.split(" - ")[0],
+      rt: isReturnActive ? "true" : "null",
+      rd: isReturnActive && endDate ? endDate.toISOString() : "",
+      p: totalPassengers,
+      b: baby,
+      sc: selectedClass.toUpperCase().replace(" ", "_"),
+      page: 1,
+      d: startDate.toISOString(),
+    };
+
+    const queryString = new URLSearchParams(params).toString();
+    toast.success("Let me get your flight!");
+    setTimeout(() => {
+      navigate(`/search?${queryString}`);
+    }, 2000);
+  };
+
   return (
     <Fragment>
       <div className="bg-[#FFFFFF]">
+        <ToastContainer />
         <Navbar />
         <div className="relative flex justify-between  py-10">
           <div
@@ -154,7 +180,7 @@ export default function Home() {
                 <div className="gap-2">
                   <input
                     type="text"
-                    className="w-[300px] h-[34px] text-sm font-semibold "
+                    className="w-[300px] h-[34px] text-sm font-semibold px-1"
                     placeholder=" JOG - Adisucipto International Airport"
                     value={inputValue}
                     onClick={() => setShowModal(true)}
@@ -180,7 +206,7 @@ export default function Home() {
                   <input
                     type="text"
                     placeholder="JOG - Adisucipto International Airport"
-                    className="w-[300px] h-[34px] text-sm font-semibold px-1 "
+                    className="w-[300px] h-[34px] text-sm font-semibold px-2"
                     value={inputValue2}
                     onClick={() => setShowModal2(true)}
                     onChange={(e) => {
@@ -248,7 +274,10 @@ export default function Home() {
                   <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
               </li>
-              <button className="bg-[#40A578] w-[968px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] ">
+              <button
+                className="bg-[#40A578] w-[968px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
+                onClick={handleSearch}
+              >
                 Search for Flight
               </button>
             </ul>
