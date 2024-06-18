@@ -88,7 +88,7 @@ export default function Search() {
   // set default value untuk search
   const params = {
     page: searchParams.get("page") || 1,
-    from: searchParams.get("from") || "UPG", // required from url
+    from: searchParams.get("from") || "CGK", // required from url
     to: searchParams.get("to") || "",
     p:
       !isNaN(Number(searchParams.get("adult"))) ||
