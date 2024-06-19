@@ -88,7 +88,7 @@ export default function Search() {
   // set default value untuk search
   const params = {
     page: searchParams.get("page") || 1,
-    from: searchParams.get("from") || "UPG", // required from url
+    from: searchParams.get("from") || "CGK", // required from url
     to: searchParams.get("to") || "",
     p:
       !isNaN(Number(searchParams.get("adult"))) ||
@@ -155,7 +155,7 @@ export default function Search() {
 
     try {
       const response = await fetch(
-        "https://binar-project-backend-staging.vercel.app/api/v1/flight?" +
+        "https://binar-project-426902.et.r.appspot.com/api/v1/flight?" +
           urlParams,
         {
           method: "GET",
