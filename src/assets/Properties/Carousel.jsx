@@ -5,26 +5,31 @@ import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 
-export default function Carousel() {
+export default function Carousel({ fromAirportCode }) {
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://binar-project-backend-staging.vercel.app/api/v1/flight/favorite`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite?from=${fromAirportCode}`,
         { headers: { accept: "application/json" } }
       );
-      console.log("response.data", response.data);
       const flightsData = response.data.data.flights;
       setFetchFavoriteFlights(flightsData);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
     }
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    if (fromAirportCode) {
+      fetchData();
+    }
+  }, [fromAirportCode]);
+
   const formatDate = (dateString) => {
     const options = {
       year: "numeric",
@@ -76,11 +81,17 @@ export default function Carousel() {
   };
 
   return (
-    <div className="bg-none ">
+    <div className="bg-none mb-16 px-20 ">
       <Slider {...settings}>
-        {fetchFavoriteFlights ? (
+        {isLoading ? (
+          <Icon
+            icon="eos-icons:bubble-loading"
+            className="mt-6"
+            fontSize={40}
+          />
+        ) : (
           fetchFavoriteFlights.map((flight) => (
-            <div key={flight.id} className="px-4 py-3">
+            <div key={flight.id} className="px-4 py-4">
               <div className="max-w-xs mx-auto h-[300px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
                 <div className="relative">
                   <img
@@ -105,12 +116,6 @@ export default function Carousel() {
               </div>
             </div>
           ))
-        ) : (
-          <Icon
-            icon="eos-icons:bubble-loading"
-            className="mt-6"
-            fontSize={40}
-          />
         )}
       </Slider>
     </div>

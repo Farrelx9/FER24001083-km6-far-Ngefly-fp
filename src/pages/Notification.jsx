@@ -24,7 +24,7 @@ export default function NotificationPage() {
         return;
       }
       const response = await axios.get(
-        `https://binar-project-backend-staging.vercel.app/api/v1/notification/`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/notification/`,
         {
           headers: {
             accept: "application/json",
@@ -57,7 +57,7 @@ export default function NotificationPage() {
 
       if (!notificationToMark.is_read) {
         const response = await axios.put(
-          `https://binar-project-backend-staging.vercel.app/api/v1/notification/read`,
+          `https://binar-project-426902.et.r.appspot.com/api/v1/notification/read`,
           { id: notificationId },
           {
             headers: {
