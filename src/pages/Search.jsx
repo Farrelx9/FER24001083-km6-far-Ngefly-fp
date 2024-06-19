@@ -155,7 +155,7 @@ export default function Search() {
 
     try {
       const response = await fetch(
-        "https://binar-project-backend-staging.vercel.app/api/v1/flight?" +
+        "https://binar-project-426902.et.r.appspot.com/api/v1/flight?" +
           urlParams,
         {
           method: "GET",
