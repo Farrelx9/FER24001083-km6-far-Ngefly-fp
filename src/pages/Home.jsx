@@ -20,6 +20,8 @@ import { BsPersonRaisedHand } from "react-icons/bs";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import Footer from "../assets/Properties/Footer";
+import { SlGhost } from "react-icons/sl";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -31,25 +33,24 @@ export default function Home() {
   const [airportSuggestions, setAirportSuggestions] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [inputValue2, setInputValue2] = useState("");
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isReturnActive, setIsReturnActive] = useState(false);
-  const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
-  const [baby, setBaby] = useState(1);
-  const [totalPassengers, setTotalPassengers] = useState(
-    adults + children + baby
-  );
+  const [adult, setAdult] = useState(0);
+  const [child, setChild] = useState(0);
+  const [baby, setBaby] = useState(0);
+  const [totalPassengers, setTotalPassengers] = useState(adult + child);
   const [selectedClass, setSelectedClass] = useState("Economy");
   const [isRotated, setIsRotated] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchText2, setSearchText2] = useState("");
+  const [isDestinationReady, setIsDestinationReady] = useState(false);
   const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://binar-project-backend-staging.vercel.app/api/v1/airport`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/airport`,
         {
           headers: {
             accept: "application/json",
@@ -101,8 +102,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    setTotalPassengers(adults + children);
-  }, [adults, children]);
+    setTotalPassengers(adult + child);
+  }, [adult, child]);
 
   const clearInputValue = () => {
     setInputValue("");
@@ -121,8 +122,21 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    if (inputValue) {
+      setIsDestinationReady(true);
+    } else {
+      setIsDestinationReady(false);
+    }
+  }, [inputValue]);
+
   const handleSearch = () => {
-    const totalPassengers = adults + children;
+    if (!inputValue || !totalPassengers === 0 || !selectedClass) {
+      toast.error(
+        "Please fill in all required fields: Search From, Passengers, and Seat Class."
+      );
+      return;
+    }
 
     const params = {
       from: inputValue.split(" - ")[0],
@@ -130,10 +144,9 @@ export default function Home() {
       rt: isReturnActive ? "true" : "null",
       rd: isReturnActive && endDate ? endDate.toISOString() : "",
       p: totalPassengers,
-      b: baby,
       sc: selectedClass.toUpperCase().replace(" ", "_"),
       page: 1,
-      d: startDate.toISOString(),
+      d: startDate ? startDate.toISOString() : "",
     };
 
     const queryString = new URLSearchParams(params).toString();
@@ -226,7 +239,9 @@ export default function Home() {
                     className="text-sm font-semibold mb-2"
                     onClick={() => setShowModal3(true)}
                   >
-                    {startDate.toLocaleDateString("en-GB")}
+                    {startDate
+                      ? startDate.toLocaleDateString("en-GB")
+                      : "Select Date"}
                   </div>
                   <div className="w-[140px] h-[1px] bg-[#D0D0D0]"></div>
                 </div>
@@ -281,8 +296,6 @@ export default function Home() {
                 Search for Flight
               </button>
             </ul>
-            <div className="text-xl mt-4 mb-10">Favorite Destination</div>
-            <Carousel />
           </div>
         </div>
       </div>
@@ -305,7 +318,10 @@ export default function Home() {
             />
             <FaDeleteLeft size={20} onClick={clearInputValue} />
           </form>
-          <div className="w-full mt-4">
+          <div
+            className="w-full mt-4"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
             <div className="flex justify-between items-center px-2">
               <span className="font-semibold">Airport Suggestions</span>
             </div>
@@ -323,7 +339,7 @@ export default function Home() {
                 .map((airport, index) => (
                   <li
                     key={index}
-                    className="flex justify-between items-center px-2 py-1 border-b border-gray-200 cursor-pointer"
+                    className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer text-sm font-semibold"
                     onClick={() => handleSelectSuggestion(airport)}
                   >
                     <span>
@@ -354,7 +370,10 @@ export default function Home() {
             />
             <FaDeleteLeft size={20} onClick={clearInputValue2} />
           </form>
-          <div className="w-full mt-4">
+          <div
+            className="w-full mt-4"
+            style={{ maxHeight: "200px", overflowY: "auto" }}
+          >
             <div className="flex justify-between items-center px-2">
               <span className="font-semibold">Airport Suggestions</span>
             </div>
@@ -372,7 +391,7 @@ export default function Home() {
                 .map((airport, index) => (
                   <li
                     key={index}
-                    className="flex justify-between items-center px-2 py-1 border-b border-gray-200 cursor-pointer"
+                    className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer text-sm font-semibold "
                     onClick={() => handleSelectSuggestion2(airport)}
                   >
                     <span>
@@ -403,19 +422,19 @@ export default function Home() {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <BsPersonRaisedHand size={20} />
-              <span className="font-semibold">Adults (12 years old above)</span>
+              <span className="font-semibold">Adult (12 years old above)</span>
             </div>
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setAdults, adults)}
+                onClick={() => decrement(setAdult, adult)}
               >
                 -
               </button>
-              <span className="px-4">{adults}</span>
+              <span className="px-4">{adult}</span>
               <button
                 className="px-2 py-1 border"
-                onClick={() => increment(setAdults, adults)}
+                onClick={() => increment(setAdult, adult)}
               >
                 +
               </button>
@@ -429,14 +448,14 @@ export default function Home() {
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setChildren, children)}
+                onClick={() => decrement(setChild, child)}
               >
                 -
               </button>
-              <span className="px-4">{children}</span>
+              <span className="px-4">{child}</span>
               <button
                 className="px-2 py-1 border"
-                onClick={() => increment(setChildren, children)}
+                onClick={() => increment(setChild, child)}
               >
                 +
               </button>
@@ -519,6 +538,22 @@ export default function Home() {
           />
         </div>
       </Modal>
+      <div>
+        <div className="text-xl font-semibold ms-20 mb-2">
+          Favorite Destination
+        </div>
+        {isDestinationReady ? (
+          <Carousel fromAirportCode={inputValue.split(" - ")[0]} />
+        ) : (
+          <div className="flex flex-col items-center justify-center text-green-600">
+            <SlGhost size={40} />
+            <p className="text-center text-black">
+              Please select a departure airport to see favorite destinations!
+            </p>
+          </div>
+        )}
+      </div>
+      <Footer />
     </Fragment>
   );
 }

@@ -29,7 +29,7 @@ export default function Profile() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://binar-project-backend-staging.vercel.app/api/v1/profile`,
+          `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
           {
             headers: {
               accept: "application/json",
@@ -51,7 +51,7 @@ export default function Profile() {
             email: profileData.email || "",
             isVerified: profileData.is_verified || false,
           });
-          console.log("Profile data:", profileData); // Added log to check profile data
+          console.log("Profile data:", profileData);
         } else {
           throw new Error("Profile data is missing");
         }
@@ -111,7 +111,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `https://binar-project-backend-staging.vercel.app/api/v1/profile/`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
         updatedData,
         {
           headers: {
@@ -139,7 +139,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "https://binar-project-backend-staging.vercel.app/api/v1/auth/changepassword",
+        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/changepassword",
         {
           password,
           confirm,
@@ -171,10 +171,10 @@ export default function Profile() {
   return (
     <div>
       <Navbar />
-      <ToastContainer toastClassName="lg:w-[100%] md:w-[90%] w-[70%] lg:mt-0 md:mt-0 mt-36" />
+      <ToastContainer toastClassName="lg:w-[100%] md:w-[90%] w-[70%] lg:mt-0 md:mt-0 mt-36 lg:mx-0 md:mx-0 mx-auto " />
       {isResetConfirmationVisible && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 animate__animated animate__fadeIn">
-          <div className="bg-white p-6 rounded shadow-md animate__animated animate__zoomIn">
+          <div className="bg-white p-6 rounded shadow-md animate__animated animate__zoomIn px">
             <p>Are you sure you want to change your password?</p>
             <div className="flex justify-end gap-2 mt-4">
               <button
