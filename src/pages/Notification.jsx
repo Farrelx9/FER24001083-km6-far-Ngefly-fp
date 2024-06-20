@@ -52,10 +52,10 @@ export default function NotificationPage() {
     try {
       const token = localStorage.getItem("token");
       const notificationToMark = notification.find(
-        (n) => n.id === notificationId
+        (n) => n.id === notificationId && !n.is_read
       );
 
-      if (!notificationToMark.is_read) {
+      if (notificationToMark) {
         const response = await axios.put(
           `https://binar-project-backend-staging.vercel.app/api/v1/notification/read`,
           { id: notificationId },
@@ -131,12 +131,13 @@ export default function NotificationPage() {
                 className="text-yellow-300"
               />
               <div>
-                <div className="text-sm">{notification.title}</div>
-                <div>{notification.message}</div>
-                <div className="text-sm">{notification.details}</div>
+                <div className="text-sm font-semibold">
+                  {notification.title}
+                </div>
+                <div className="text-sm">{notification.message}</div>
               </div>
             </div>
-            <div className="text-sm font-semibold flex gap-2 ">
+            <div className="text-xs font-semibold flex gap-2 ">
               {new Date(notification.createdAt).toLocaleDateString("en-US", {
                 weekday: "long",
                 year: "numeric",
