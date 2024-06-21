@@ -1,240 +1,242 @@
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import Navbar from "../assets/Properties/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import info from "../assets/images/informasi.png";
+import moment from "moment";
 
-const PassengerForm = ({ categoryData, index }) => (
-  <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
-    <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
-    <div>
-      <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
-        <div>
-          Data Diri Penumpang {index + 1} -{" "}
-          {categoryData ? categoryData.type : "Loading..."}
-        </div>
-        <div>Centang</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Title</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`title-${index}`}
-          placeholder="Mr."
-        />
-        <div className="absolute mt-2 right-3">Dropdown</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`fullname-${index}`}
-        placeholder="Harry"
-      />
-      <div className="mb-3 flex justify-between">
-        <div>Punya nama keluarga?</div>
-        <button>Tombol</button>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`famname-${index}`}
-        placeholder="Potter"
-      />
-      <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`birthdate-${index}`}
-          placeholder="dd/mm/yyyy"
-        />
-        <div className="absolute mt-2 right-3">Tanggal</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`nation-${index}`}
-        placeholder="Indonesia"
-      />
-      <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`tandapengenal-${index}`}
-      />
-      <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`country-${index}`}
-        />
-        <div className="absolute mt-2 right-3">Dropdown</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`expirydate-${index}`}
-          placeholder="dd/mm/yyyy"
-        />
-        <div className="absolute mt-2 right-3">Tanggal</div>
-      </div>
-    </div>
-  </div>
-);
+// const PassengerForm = ({ categoryData, index }) => (
+//   <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
+//     <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
+//     <div>
+//       <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
+//         <div>
+//           Data Diri Penumpang {index + 1} -{" "}
+//           {categoryData ? categoryData.type : "Loading..."}
+//         </div>
+//         <div>Centang</div>
+//       </div>
+//       <div className="font-bold mb-1 text-[#006769]">Title</div>
+//       <div className="flex relative">
+//         <input
+//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//           name={`title-${index}`}
+//           placeholder="Mr."
+//         />
+//         <div className="absolute mt-2 right-3">Dropdown</div>
+//       </div>
+//       <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
+//       <input
+//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//         name={`fullname-${index}`}
+//         placeholder="Harry"
+//       />
+//       <div className="mb-3 flex justify-between">
+//         <div>Punya nama keluarga?</div>
+//         <button>Tombol</button>
+//       </div>
+//       <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
+//       <input
+//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//         name={`famname-${index}`}
+//         placeholder="Potter"
+//       />
+//       <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
+//       <div className="flex relative">
+//         <input
+//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//           name={`birthdate-${index}`}
+//           placeholder="dd/mm/yyyy"
+//         />
+//         <div className="absolute mt-2 right-3">Tanggal</div>
+//       </div>
+//       <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
+//       <input
+//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//         name={`nation-${index}`}
+//         placeholder="Indonesia"
+//       />
+//       <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
+//       <input
+//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//         name={`tandapengenal-${index}`}
+//       />
+//       <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
+//       <div className="flex relative">
+//         <input
+//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//           name={`country-${index}`}
+//         />
+//         <div className="absolute mt-2 right-3">Dropdown</div>
+//       </div>
+//       <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
+//       <div className="flex relative">
+//         <input
+//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+//           name={`expirydate-${index}`}
+//           placeholder="dd/mm/yyyy"
+//         />
+//         <div className="absolute mt-2 right-3">Tanggal</div>
+//       </div>
+//     </div>
+//   </div>
+// );
 
-const Checkout = ({ flight_id, category_id }) => {
+const Checkout = ({ category_id }) => {
+  const { flights_id } = useParams();
   const [pemesan, setPemesan] = useState("");
   const [taxData, setTaxData] = useState(null);
-  const [flightData, setFlightData] = useState(null);
-  const [categoryData, setCategoryData] = useState(null);
-  const [passengers] = useState([{}, {}, {}]);
-  // const [passengers, setPassengers] = useState([]);
+  const [flightData, setFlightData] = useState([]);
+  // const [categoryData, setCategoryData] = useState(null);
+  // const [passengers] = useState([{}, {}, {}]);
+  const [passengers, setPassengers] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location?.search);
+  const from = queryParams.get("from") || "UPG";
+  const p = queryParams.get("p") || 1;
+  const sc = queryParams.get("sc") || "ECONOMY";
+  const page = queryParams.get("page") || 1;
+  // const [params, setParams] = useState(null);
+
+  // const params = {
+  //   adult: Number(checkoutParams.get("adult") || 1),
+  //   child: Number(checkoutParams.get("child") || 1),
+  //   baby: Number(checkoutParams.get("baby") || 1),
+  // };
+
+  // const createParamsString = (newValue) => {
+  //   const urlParams = new URLCheckoutParams({
+  //     adult: newValue?.adult || params.adult,
+  //     child: newValue?.child || params.child,
+  //     baby: newValue?.baby || params.baby,
+  //   });
+  //   return urlParams.toString();
+  // };
+
+  // const redirect = (params) => {
+  //   const urlParams = createParamsString(params);
+
+  //   window.location.href = `/checkout?${urlParams}`;
+  // };
 
   useEffect(() => {
     const fetchDataPemesan = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://binar-project-backend-staging.vercel.app/api/profile`
+          `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        setPemesan(response.data);
-        console.log("response pemesan", response.data);
+        setPemesan(response.data.data);
+        console.log("response pemesan", response.data.data);
       } catch (error) {
         console.error("Error fetching data pemesan:", error);
       }
     };
 
-    const fetchTaxData = async () => {
-      try {
-        const response = await axios.get(
-          `https://binar-project-backend-staging.vercel.app/api/tax`
-        );
-        setTaxData(response.data);
-        console.log("response tax", response.data);
-      } catch (error) {
-        console.error("Error fetching tax data:", error);
-      }
-    };
+    // const fetchTaxData = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `https://binar-project-backend-staging.vercel.app/api/tax`
+    //     );
+    //     setTaxData(response.data);
+    //     console.log("response tax", response.data);
+    //   } catch (error) {
+    //     console.error("Error fetching tax data:", error);
+    //   }
+    // };
 
     const fetchFlightData = async () => {
       try {
         const response = await axios.get(
-          `https://binar-project-backend-staging.vercel.app/api/flights/${flight_id}`
+          `https://binar-project-426902.et.r.appspot.com/api/v1/flight?from=${from}&p=${p}&sc=${sc}&page=${page}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
-        setFlightData(response.data);
-        console.log("response flight", response.data);
+
+        const flight = response.data.data.flights; // Adjust this based on actual structure
+        console.log("response.data.data", response.data.data.flights);
+        if (Array.isArray(flight)) {
+          // Memfilter data penerbangan berdasarkan flights_id
+          const filteredData = flight.filter(
+            (flight) => flight?.id === flights_id
+          );
+          setFlightData(filteredData);
+          console.log("Filtered flight data:", filteredData);
+        } else {
+          console.error("Error: Expected an array but got:", typeof flight);
+        }
       } catch (error) {
         console.error("Error fetching flight data:", error);
       }
     };
 
-    const fetchCategoryData = async () => {
-      try {
-        const response = await axios.get(
-          `https://binar-project-backend-staging.vercel.app/api/category/${category_id}`
-        );
-        setCategoryData(response.data);
-        // setPassengers(response.data.passengers);
-        console.log("response category", response.data);
-        console.log("response passengers", response.data.passengers);
-      } catch (error) {
-        console.error("Error fetching category data:", error);
-      }
-    };
+    // const fetchCategoryData = async () => {
+    //   const urlParams = createParamsString(params);
+    //   try {
+    //     const response = await axios.get(
+    //       `https://binar-project-backend-staging.vercel.app/api/category/${category_id}`
+    //     );
+    //     setCategoryData(response.data);
+    //     setPassengers(response.data.passengers);
+    //     console.log("response category", response.data);
+    //     console.log("response passengers", response.data.passengers);
+    //   } catch (error) {
+    //     console.error("Error fetching category data:", error);
+    //   }
+    // };
 
     fetchDataPemesan();
-    fetchTaxData();
+    // fetchTaxData();
     fetchFlightData();
-    fetchCategoryData();
-  }, [flight_id, category_id]);
+    // fetchCategoryData();
+  }, [flights_id, category_id, from, p, sc, page]);
 
-  const handleSubmitIsiDataPenumpang = async (e) => {
-    e.preventDefault();
-    const isEmailValid = validateEmail(email);
-    const isPasswordValid = validatePassword(password);
+  // const handleSubmitIsiDataPenumpang = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const response = await axios.post(
+  //       `https://binar-project-backend-staging.vercel.app/api/bookings/`,
+  //       {
+  //         name: name,
+  //         birthdate: birthdate,
+  //         identity_id: identity_id,
+  //         citizenship: citizenship,
+  //         category: category,
+  //       }
+  //     );
+  //     const { bookings_id } = response.data;
+  //     navigate("/payment", { bookings_id });
+  //   } catch (error) {
+  //     console.error("Error fetching bookings_id:", error);
+  //   }
+  // };
 
-    if (!isEmailValid) {
-      setEmailError(true);
-      setEmailErrorMessage("Email Invalid!");
-      return;
-    }
+  // const calculateTax = () => {
+  //   const basePrice = flightData
+  //     ? flightData.flights.flight_classes * categoryData.discount
+  //     : 0;
+  //   const taxAmount = taxData ? (taxData.percent * basePrice) / 100 : 0;
+  //   return taxAmount;
+  // };
 
-    if (!isPasswordValid) {
-      setPasswordError(true);
-      setPasswordErrorMessage("Password Invalid!");
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `https://binar-project-backend-staging.vercel.app/api/bookings/`,
-        {
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      console.log("ApiResponse", response.data);
-      const { status, data } = response.data;
-
-      if (!status && data.user && data.user.is_verified === false) {
-        setIsEmailVerified(false);
-        setError("Email not verified!");
-        return;
-      }
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        setData(data);
-        setError(null);
-        setEmailError(false);
-        setPasswordError(false);
-        setIsEmailVerified(true);
-
-        setTimeout(() => {
-          navigate("/", { state: { user: data } });
-        }, 2000);
-      } else {
-        setError("Token Expired Broo!");
-        setEmailError(true);
-        setPasswordError(true);
-      }
-    } catch (error) {
-      console.error("API Request Error:", error);
-      if (error.response && error.response.status === 401) {
-        setError("Email not verified!");
-      } else if (error.response && error.response.status === 404) {
-        setError("Account not found!");
-      } else if (
-        error.response &&
-        error.response.status >= 400 &&
-        error.response.status < 500
-      ) {
-        setError("Pasword Invalid!");
-      } else {
-        setError("An unexpected error occurred. Please try again later.");
-      }
-    }
-  };
-
-  const calculateTax = () => {
-    const basePrice = flightData
-      ? flightData.flights.flight_classes * categoryData.discount
-      : 0;
-    const taxAmount = taxData ? (taxData.percent * basePrice) / 100 : 0;
-    return taxAmount;
-  };
-
-  const calculateTotal = () => {
-    // const basePrice = flightData
-    //   ? flightData.flights.flight_classes * categoryData.discount
-    //   : 0; sek bingung
-    const taxAmount = taxData ? (taxData.percent * basePrice) / 100 : 0;
-    return basePrice + taxAmount;
-  };
+  // const calculateTotal = () => {
+  //   // const basePrice = flightData
+  //   //   ? flightData.flights.flight_classes * categoryData.discount
+  //   //   : 0; sek bingung
+  //   const taxAmount = taxData ? (taxData.percent * basePrice) / 100 : 0;
+  //   return basePrice + taxAmount;
+  // };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -244,6 +246,10 @@ const Checkout = ({ flight_id, category_id }) => {
       alert("You've to Login First!");
     }
   }, [navigate]);
+
+  const capitalizeWords = (str) => {
+    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
   return (
     <Fragment>
@@ -348,7 +354,7 @@ const Checkout = ({ flight_id, category_id }) => {
                 </div>
               </div>
 
-              <div>
+              {/* <div>
                 {passengers.map((passenger, index) => (
                   <PassengerForm
                     key={index}
@@ -356,9 +362,9 @@ const Checkout = ({ flight_id, category_id }) => {
                     index={index}
                   />
                 ))}
-              </div>
+              </div> */}
 
-              <button className="bg-[#006769] text-white rounded-lg text-xl p-3 w-full">
+              {/* <button className="bg-[#006769] text-white rounded-lg text-xl p-3 w-full">
                 Simpan
               </button>
               {/* <button className="bg-[#D0D0D0] text-white rounded-lg text-xl p-3 w-full">
@@ -366,73 +372,101 @@ const Checkout = ({ flight_id, category_id }) => {
               </button> */}
             </div>
 
-            <div className="w-full md:w-1/2 h-full bg-gray-100 p-4 rounded-lg">
+            <div className="w-full md:w-1/2 h-full p-4 rounded-lg">
               <h3 className="mb-3 text-xl font-bold text-[#151515] mr-2">
                 Detail Penerbangan
               </h3>
               <div className="space-y-2">
-                <div className="space-y-0">
-                  <div className="flex items-center justify-between">
-                    <div className="font-bold text-lg text-[#151515] mr-2">
-                      {flightData ? flightData.departureAt : "Loading..."}
-                    </div>
-                    <div className="font-extrabold text-[#73CA5C]">
-                      Keberangkatan
-                    </div>
-                  </div>
-                  <div className="text-gray-600">
-                    {flightData ? flightData.departureAt : "Loading..."}
-                  </div>
-                  <div className="text-[#151515]">
-                    {flightData
-                      ? `${flightData.from.name}` -
-                        `${flightData.from.airport_code}`
-                      : "Loading..."}
-                  </div>
-                </div>
-                <div className="w-full max-w-3xl border-t border-gray-600 mt-4"></div>
-                <div className="space-y-0">
-                  <div className="flex items-center justify-between">
-                    <div className="font-bold text-lg text-[#151515] mr-2">
-                      {flightData ? flightData.arriveAt : "Loading..."}
-                    </div>
-                    <div className="font-extrabold text-[#73CA5C]">
-                      Kedatangan
-                    </div>
-                  </div>
-                  <div className="text-gray-600">
-                    {flightData ? flightData.arriveAt : "Loading..."}
-                  </div>
-                  <div className="text-[#151515]">
-                    {flightData ? flightData.to.name : "Loading..."}
-                  </div>
-                </div>
-                <div className="max-w-3xl border-t border-gray-600 py-1">
-                  <div className="text-[#006769] pl-12 text-lg font-extrabold">
-                    {flightData ? flightData.plane.airline : "Loading..."} -{" "}
-                    {flightData ? flightData.class : "Loading..."}
-                  </div>
-                  <div className="text-[#006769] pl-12 text-lg font-extrabold mb-3">
-                    {flightData ? flightData.plane.plane_code : "Loading..."}
-                  </div>
-                  <div className="flex">
-                    <div className="mr-4">logo</div>
-                    <div>
-                      <div className="text-gray-600">Informasi:</div>
-                      <ul className="list-disc pl-5 text-gray-600">
-                        <li>
-                          Baggage{" "}
-                          {flightData ? flightData.plane.baggage : "Loading..."}{" "}
-                          kg
-                        </li>
-                        <li>
-                          Cabin baggage{" "}
+                {flightData.length > 0 ? (
+                  <>
+                    <div className="space-y-0">
+                      <div className="flex items-center justify-between">
+                        <div className="font-bold text-lg text-[#151515] mr-2">
                           {flightData
-                            ? flightData.plane.cabin_baggage
-                            : "Loading..."}{" "}
-                          kg
-                        </li>
-                        <li>
+                            ? moment(flightData[0]?.flight?.departureAt).format(
+                                "HH:mm"
+                              )
+                            : "Loading..."}
+                        </div>
+                        <div className="font-extrabold text-[#73CA5C]">
+                          Keberangkatan
+                        </div>
+                      </div>
+                      <div className="text-gray-600">
+                        {flightData
+                          ? moment(flightData[0]?.flight?.departureAt).format(
+                              "DD MMMM YYYY"
+                            )
+                          : "Loading..."}
+                      </div>
+                      <div className="text-[#151515]">
+                        {flightData
+                          ? flightData[0]?.flight?.from?.name
+                          : "Loading..."}
+                      </div>
+                    </div>
+                    <div className="w-full max-w-3xl border-t border-gray-600 mt-4"></div>
+                    <div className="space-y-0">
+                      <div className="flex items-center justify-between">
+                        <div className="font-bold text-lg text-[#151515] mr-2">
+                          {flightData
+                            ? moment(flightData[0]?.flight?.arriveAt).format(
+                                "HH:mm"
+                              )
+                            : "Loading..."}
+                        </div>
+                        <div className="font-extrabold text-[#73CA5C]">
+                          Kedatangan
+                        </div>
+                      </div>
+                      <div className="text-gray-600">
+                        {flightData
+                          ? moment(flightData[0]?.flight?.arriveAt).format(
+                              "DD MMMM YYYY"
+                            )
+                          : "Loading..."}
+                      </div>
+                      <div className="text-[#151515]">
+                        {flightData
+                          ? flightData[0]?.flight?.to?.name
+                          : "Loading..."}
+                      </div>
+                    </div>
+                    <div className="max-w-3xl border-t border-gray-600 py-1">
+                      <div className="text-[#006769] pl-12 text-lg font-extrabold">
+                        {flightData
+                          ? flightData[0]?.flight?.plane?.airline
+                          : "Loading..."}{" "}
+                        -{" "}
+                        {flightData[0]?.name
+                          ? capitalizeWords(flightData[0]?.name.toLowerCase())
+                          : "Loading..."}
+                      </div>
+                      <div className="text-[#006769] pl-12 text-lg font-extrabold mb-1">
+                        {flightData
+                          ? flightData[0]?.flight?.plane?.plane_code
+                          : "Loading..."}
+                      </div>
+                      <div className="flex">
+                        <img src={info} className="mr-1 mb-11"></img>
+                        <div>
+                          <div className="text-gray-600">Informasi:</div>
+                          <ul className="list-disc pl-5 text-gray-600">
+                            <li>
+                              Baggage{" "}
+                              {flightData
+                                ? flightData[0]?.flight?.plane?.baggage
+                                : "Loading..."}{" "}
+                              kg
+                            </li>
+                            <li>
+                              Cabin baggage{" "}
+                              {flightData
+                                ? flightData[0]?.flight?.plane?.cabin_baggage
+                                : "Loading..."}{" "}
+                              kg
+                            </li>
+                            {/* <li>
                           In Flight Entertainment (
                           {flightData
                             ? flightData.plane.in_flight_entertainment
@@ -440,13 +474,17 @@ const Checkout = ({ flight_id, category_id }) => {
                               : "Not Available"
                             : "Loading..."}
                           )
-                        </li>
-                      </ul>
+                        </li> */}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="w-full max-w-3xl border-t border-gray-600"></div>
-                <div>
+                    <div className="w-full max-w-3xl border-t border-gray-600"></div>
+                  </>
+                ) : (
+                  <p>No flight data found.</p>
+                )}
+                {/* <div>
                   <h4 className="font-bold text-lg mb-1">Rincian Harga</h4>
                   <div className="flex justify-between text-gray-600">
                     <div>2 Adults</div>
@@ -469,10 +507,13 @@ const Checkout = ({ flight_id, category_id }) => {
                       IDR 9.850.000
                     </div>
                   </div>
-                </div>
-                <button className="bg-[#FF0000] text-white rounded-lg text-xl p-3 w-full">
+                </div> */}
+                {/* <button
+                  onClick={handleSubmitIsiDataPenumpang}
+                  className="bg-[#FF0000] text-white rounded-lg text-xl p-3 w-full"
+                >
                   Lanjut Bayar
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
