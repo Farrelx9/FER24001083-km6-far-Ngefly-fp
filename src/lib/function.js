@@ -15,7 +15,7 @@ export function getDuration(startDateTime, endDateTime) {
   const days = Math.floor(diff / msInDay);
   const hours = Math.floor((diff % msInDay) / msInHour);
   const minutes = Math.floor((diff % msInHour) / msInMinute);
-  const seconds = Math.floor((diff % msInMinute) / msInSecond);
+  // const seconds = Math.floor((diff % msInMinute) / msInSecond);
 
   // Collect the non-zero components into an array
   const components = [];
@@ -39,4 +39,44 @@ export function formatCurrency(amount, currency = "IDR") {
 
   // Format the amount
   return formatter.format(amount);
+}
+
+export function countDetailAmount(data) {
+  // get price
+  const price = data?.flight_class?.price || 0;
+
+  // count passengers
+  const adultPassengers = data?.passengers?.length;
+  const childPassengers = 0;
+  const babyPassengers = 0;
+
+  // set percentage
+  const taxPercentage = 5;
+  const childDiscountPercentage = 5;
+
+  // count
+  const amountPerCategory = {
+    adult: adultPassengers * price,
+    child: childPassengers * (price * ((100 - childDiscountPercentage) / 100)),
+    baby: babyPassengers * 0,
+  };
+
+  const totalAmountCategory =
+    amountPerCategory.adult + amountPerCategory.child + amountPerCategory.baby;
+  const taxAmount = totalAmountCategory * (taxPercentage / 100);
+
+  const totalAmount = totalAmountCategory + taxAmount;
+
+  return {
+    category: {
+      adult: adultPassengers,
+      child: childPassengers,
+      baby: babyPassengers,
+    },
+    adult: amountPerCategory.adult,
+    child: amountPerCategory.child,
+    baby: amountPerCategory.baby,
+    tax: taxAmount,
+    total: totalAmount,
+  };
 }

@@ -4,8 +4,10 @@ import { CiLogin } from "react-icons/ci";
 import { MdNotificationsNone, MdOutlineList } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import { twMerge } from "tailwind-merge";
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     const checkTokenStatus = () => {
@@ -14,11 +16,30 @@ export default function Navbar() {
     };
 
     checkTokenStatus();
+
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 w-screen bg-white">
-      <div className="flex justify-between gap-3 bg-none shadow-lg px-3 md:px-10 lg:px-32">
+    <div
+      className={twMerge(
+        "fixed top-0 left-0 w-screen duration-300",
+        isScrolled ? "bg-white shadow-2xl" : "bg-none"
+      )}
+    >
+      <div className="flex justify-between gap-3 px-3 md:px-10 lg:px-32">
         <div className="flex gap-5">
           <img
             src={ngefly}
@@ -40,8 +61,8 @@ export default function Navbar() {
         ) : (
           <div className="flex gap-4 mr-2 items-center">
             <MdOutlineList size={20} />
-            <MdNotificationsNone size={20} />
-            <FiUser size={20} />
+            <MdNotificationsNone size={20} onClick={() => navigate("/notif")} />
+            <FiUser size={20} onClick={() => navigate("/profile")} />
             <button onClick={() => navigate("/login")}>logout</button>
           </div>
         )}
