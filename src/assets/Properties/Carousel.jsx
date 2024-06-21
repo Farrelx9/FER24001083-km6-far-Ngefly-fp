@@ -96,7 +96,7 @@ export default function Carousel({ fromAirportCode }) {
           <div className="flex flex-col items-center justify-center h-full mt-20">
             <Icon
               icon="eos-icons:bubble-loading"
-              className="text-5xl animate-spin mb-4 ms-40"
+              className="text-5xl  mb-4 ms-40"
             />
             <p className="text-center text-lg font-semibold mt-6">
               Looking for a favorite destination...
