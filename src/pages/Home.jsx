@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Footer from "../assets/Properties/Footer";
 import { SlGhost } from "react-icons/sl";
+import AboutUs from "./AboutUs";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -45,6 +46,7 @@ export default function Home() {
   const [searchText, setSearchText] = useState("");
   const [searchText2, setSearchText2] = useState("");
   const [isDestinationReady, setIsDestinationReady] = useState(false);
+
   const navigate = useNavigate();
 
   const fetchData = async () => {
@@ -114,12 +116,21 @@ export default function Home() {
     setInputValue2("");
     setSearchText2("");
   };
-
   const handleEndDateChange = (date) => {
-    setEndDate(date);
-    if (!startDate || date < startDate) {
-      setStartDate(date);
+    const adjustedDate = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+    setEndDate(adjustedDate);
+    if (!startDate || adjustedDate < startDate) {
+      setStartDate(adjustedDate);
     }
+  };
+
+  const handleStartDateChange = (date) => {
+    const adjustedDate = new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    );
+    setStartDate(adjustedDate);
   };
 
   useEffect(() => {
@@ -131,9 +142,9 @@ export default function Home() {
   }, [inputValue]);
 
   const handleSearch = () => {
-    if (!inputValue || !totalPassengers === 0 || !selectedClass) {
+    if (!totalPassengers === 0 || !selectedClass) {
       toast.error(
-        "Please fill in all required fields: Search From, Passengers, and Seat Class."
+        "Please fill in all required fields: Passengers and Seat Class."
       );
       return;
     }
@@ -407,7 +418,12 @@ export default function Home() {
         <div className="relative flex items-center p-2 w-full">
           <DatePicker
             selected={startDate}
-            onChange={(date) => setStartDate(date)}
+            onChange={(date) => {
+              const adjustedDate = new Date(
+                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+              );
+              setStartDate(adjustedDate);
+            }}
             selectsStart
             startDate={startDate}
             endDate={endDate}
@@ -528,7 +544,15 @@ export default function Home() {
         <div className="relative flex items-center p-2 w-full">
           <DatePicker
             selected={endDate}
-            onChange={handleEndDateChange}
+            onChange={(date) => {
+              const adjustedDate = new Date(
+                Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+              );
+              setEndDate(adjustedDate);
+              if (!startDate || adjustedDate < startDate) {
+                setStartDate(adjustedDate);
+              }
+            }}
             selectsEnd
             startDate={startDate}
             endDate={endDate}
@@ -542,17 +566,9 @@ export default function Home() {
         <div className="text-xl font-semibold ms-20 mb-2">
           Favorite Destination
         </div>
-        {isDestinationReady ? (
-          <Carousel fromAirportCode={inputValue.split(" - ")[0]} />
-        ) : (
-          <div className="flex flex-col items-center justify-center text-green-600">
-            <SlGhost size={40} />
-            <p className="text-center text-black">
-              Please select a departure airport to see favorite destinations!
-            </p>
-          </div>
-        )}
+        <Carousel fromAirportCode={inputValue.split(" - ")[0]} />
       </div>
+      <AboutUs />
       <Footer />
     </Fragment>
   );

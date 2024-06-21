@@ -11,23 +11,32 @@ export default function Carousel({ fromAirportCode }) {
 
   const fetchData = async () => {
     setIsLoading(true);
+    const url = fromAirportCode
+      ? `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite?from=${fromAirportCode}`
+      : `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite`;
     try {
-      const response = await axios.get(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite?from=${fromAirportCode}`,
-        { headers: { accept: "application/json" } }
-      );
-      const flightsData = response.data.data.flights;
-      setFetchFavoriteFlights(flightsData);
+      const response = await axios.get(url, {
+        headers: { accept: "application/json" },
+      });
+      if (fromAirportCode) {
+        setTimeout(() => {
+          const flightsData = response.data.data.flights;
+          setFetchFavoriteFlights(flightsData);
+          setIsLoading(false);
+        }, 2000);
+      } else {
+        const flightsData = response.data.data.flights;
+        setFetchFavoriteFlights(flightsData);
+        setIsLoading(false);
+      }
     } catch (error) {
       console.error("Error Fetching Data: ", error);
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (fromAirportCode) {
-      fetchData();
-    }
+    fetchData();
   }, [fromAirportCode]);
 
   const formatDate = (dateString) => {
@@ -84,11 +93,15 @@ export default function Carousel({ fromAirportCode }) {
     <div className="bg-none mb-16 px-20 ">
       <Slider {...settings}>
         {isLoading ? (
-          <Icon
-            icon="eos-icons:bubble-loading"
-            className="mt-6"
-            fontSize={40}
-          />
+          <div className="flex flex-col items-center justify-center h-full mt-20">
+            <Icon
+              icon="eos-icons:bubble-loading"
+              className="text-5xl animate-spin mb-4 ms-40"
+            />
+            <p className="text-center text-lg font-semibold mt-6">
+              Looking for a favorite destination...
+            </p>
+          </div>
         ) : (
           fetchFavoriteFlights.map((flight) => (
             <div key={flight.id} className="px-4 py-4">
