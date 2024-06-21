@@ -5,7 +5,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import moment from "moment";
 import Divider from "../components/atoms/Divider";
-import { formatCurrency } from "../lib/function";
+import { countDetailAmount, formatCurrency } from "../lib/function";
 import { FLIGHT_CLASS, PAYMENT_STATUS } from "../constant/type";
 import { twMerge } from "tailwind-merge";
 import Modal from "../components/atoms/Modal";
@@ -132,6 +132,8 @@ export default function History() {
     window.location.href = "/login";
     return <></>;
   }
+
+  const amount = countDetailAmount(selected);
 
   return (
     <>
@@ -325,12 +327,14 @@ export default function History() {
                 <Divider className="my-3 mx-auto" />
                 <div className="pl-10">
                   <p className="font-bold">
-                    Jet Air -{" "}
+                    {selected?.flight_class?.flight?.plane?.airline || ""} -{" "}
                     {FLIGHT_CLASS[
                       selected.flight_class?.name.toString().toLowerCase()
                     ] || ""}
                   </p>
-                  <p className="font-bold">JT - 203</p>
+                  <p className="font-bold">
+                    {selected?.flight_class?.flight?.plane?.plane_code || ""}
+                  </p>
                   <div className="text-sm mt-4">
                     <p className="font-bold">Informasi:</p>
                     {selected.passengers?.map((passenger, indexPassenger) => (
@@ -362,22 +366,30 @@ export default function History() {
                 </div>
                 <Divider className="my-3 mx-auto" />
                 <p className="font-bold">Rincian harga</p>
-                <div className="flex justify-between items-center">
-                  <p>2 Adults</p>
-                  <p>{formatCurrency(20000)}</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <p>1 Child</p>
-                  <p>{formatCurrency(3000)}</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <p>1 Baby</p>
-                  <p>{formatCurrency(0)}</p>
-                </div>
-                <div className="flex justify-between items-center">
-                  <p>Tax</p>
-                  <p>{formatCurrency(30300)}</p>
-                </div>
+                {amount.category.adult > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p>{amount.category.adult} Adults</p>
+                    <p>{formatCurrency(amount.adult)}</p>
+                  </div>
+                )}
+                {amount.category.child > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p>{amount.category.child} Child</p>
+                    <p>{formatCurrency(amount.child)}</p>
+                  </div>
+                )}
+                {amount.category.baby > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p>{amount.category.baby} Baby</p>
+                    <p>{formatCurrency(amount.baby)}</p>
+                  </div>
+                )}
+                {amount.tax > 0 && (
+                  <div className="flex justify-between items-center">
+                    <p>Tax</p>
+                    <p>{formatCurrency(amount.tax)}</p>
+                  </div>
+                )}
                 <Divider className="my-3 mx-auto" />
                 <div className="flex justify-between gap-5">
                   <p className="font-bold">Total</p>
