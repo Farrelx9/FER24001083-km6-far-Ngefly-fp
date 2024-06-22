@@ -21,8 +21,10 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Footer from "../assets/Properties/Footer";
-import { SlGhost } from "react-icons/sl";
 import AboutUs from "./AboutUs";
+import bg1 from "../assets/images/bg1.jpg";
+import bg2 from "../assets/images/bg2.jpg";
+import bg3 from "../assets/images/bg3.jpg";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -46,8 +48,9 @@ export default function Home() {
   const [searchText, setSearchText] = useState("");
   const [searchText2, setSearchText2] = useState("");
   const [isDestinationReady, setIsDestinationReady] = useState(false);
-
+  const [activeImage, setActiveImage] = useState(1);
   const navigate = useNavigate();
+  const images = [bg1, bg2, bg3];
 
   const fetchData = async () => {
     try {
@@ -167,30 +170,30 @@ export default function Home() {
     }, 2000);
   };
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setActiveImage((prevActiveImage) => (prevActiveImage % 3) + 1);
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
     <Fragment>
       <div className="bg-[#FFFFFF]">
         <ToastContainer />
         <Navbar />
-        <div className="relative flex justify-between  py-10">
-          <div
-            className="relative z-10 bg-[#40A578] w-[236px] h-[150px] my-10"
-            style={{ left: "55px" }}
-          ></div>
+        <div className="relative">
           <img
-            src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnJkMnF2ZDI1YW5xY2kwdWV4YTRoYTI4N3YwNjh3cXkyenY4dmtqbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26gsoOGUHAiiZmUrS/giphy.webp"
-            alt="gambar"
-            className="relative rounded-2xl z-20 w-[1823px] h-[232px] shadow-xl"
+            src={images[activeImage - 1]}
+            alt="Background"
+            className="w-full h-[600px] object-cover"
           />
-          <div
-            className="relative z-10 bg-[#E1F0DA] w-[236px] h-[150px] my-10"
-            style={{ right: "55px" }}
-          ></div>
         </div>
 
         <div
           className="flex justify-center relative z-30 "
-          style={{ bottom: "120px" }}
+          style={{ bottom: "150px" }}
         >
           <div className="shadow-2xl rounded-lg bg-[#FFFFFF] w-[968px] h-[298px] ">
             <div className="flex text-2xl font-semibold p-2 gap-2 mt-4 mb-6 px-10">
