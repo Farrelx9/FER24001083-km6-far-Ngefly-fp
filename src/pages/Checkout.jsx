@@ -3,93 +3,261 @@ import React, { Fragment, useEffect, useState } from "react";
 import Navbar from "../assets/Properties/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import info from "../assets/images/informasi.png";
 import moment from "moment";
 
-// const PassengerForm = ({ categoryData, index }) => (
-//   <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
-//     <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
-//     <div>
-//       <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
-//         <div>
-//           Data Diri Penumpang {index + 1} -{" "}
-//           {categoryData ? categoryData.type : "Loading..."}
-//         </div>
-//         <div>Centang</div>
-//       </div>
-//       <div className="font-bold mb-1 text-[#006769]">Title</div>
-//       <div className="flex relative">
-//         <input
-//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//           name={`title-${index}`}
-//           placeholder="Mr."
-//         />
-//         <div className="absolute mt-2 right-3">Dropdown</div>
-//       </div>
-//       <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
-//       <input
-//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//         name={`fullname-${index}`}
-//         placeholder="Harry"
-//       />
-//       <div className="mb-3 flex justify-between">
-//         <div>Punya nama keluarga?</div>
-//         <button>Tombol</button>
-//       </div>
-//       <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
-//       <input
-//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//         name={`famname-${index}`}
-//         placeholder="Potter"
-//       />
-//       <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
-//       <div className="flex relative">
-//         <input
-//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//           name={`birthdate-${index}`}
-//           placeholder="dd/mm/yyyy"
-//         />
-//         <div className="absolute mt-2 right-3">Tanggal</div>
-//       </div>
-//       <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
-//       <input
-//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//         name={`nation-${index}`}
-//         placeholder="Indonesia"
-//       />
-//       <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
-//       <input
-//         className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//         name={`tandapengenal-${index}`}
-//       />
-//       <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
-//       <div className="flex relative">
-//         <input
-//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//           name={`country-${index}`}
-//         />
-//         <div className="absolute mt-2 right-3">Dropdown</div>
-//       </div>
-//       <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
-//       <div className="flex relative">
-//         <input
-//           className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-//           name={`expirydate-${index}`}
-//           placeholder="dd/mm/yyyy"
-//         />
-//         <div className="absolute mt-2 right-3">Tanggal</div>
-//       </div>
-//     </div>
-//   </div>
-// );
+const PassengerForm = ({ passenger, index }) => {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [birthdate, setBirthdate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
 
-const Checkout = ({ category_id }) => {
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const toggleDarkMode = () => {
+    setIsDarkMode((prevMode) => !prevMode);
+  };
+
+  const openDatePicker = () => {
+    setIsDatePickerOpen(true);
+  };
+
+  const closeDatePicker = () => {
+    setIsDatePickerOpen(false);
+  };
+
+  // const handleDateChange = (e) => {
+  //   setBirthdate(e.target.value);
+  //   closeDatePicker(); // Tutup date picker setelah tanggal dipilih
+  // };
+
+  return (
+    <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
+      <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
+      <div>
+        <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
+          <div>
+            Data Diri Penumpang {index + 1} -{" "}
+            {passenger ? passenger.type : "Loading..."}
+          </div>
+          <div>Centang</div>
+        </div>
+        <div className="font-bold mb-1 text-[#006769]">Title</div>
+        <div className="flex relative">
+          <select
+            className="border p-2 px-4 mb-3 rounded-md border-[#D0D0D0] w-full"
+            name={`title-${index}`}
+            defaultValue=""
+          >
+            <option value="" disabled hidden>
+              Choose Your Title
+            </option>
+            <option value="Mr.">Mr.</option>
+            <option value="Mrs.">Mrs.</option>
+          </select>
+          {/* <div className="absolute mt-2 right-3">Dropdown</div> */}
+        </div>
+        <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
+        <input
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`fullname-${index}`}
+          placeholder="Fill with Full Name"
+        />
+        <div className="mb-3 flex justify-between">
+          <div>Punya nama keluarga?</div>
+          <button
+            className={`slider ${
+              isDarkMode ? "bg-[#006769]" : " bg-gray-400"
+            } w-12 h-6 rounded-full p-1 transition-transform] duration-300 ease-in-out`}
+            onClick={toggleDarkMode}
+          >
+            <div
+              className={`rounded-full w-4 h-4 bg-white shadow-md transform ${
+                isDarkMode ? "translate-x-6" : ""
+              }`}
+            ></div>
+          </button>
+        </div>
+        {isDarkMode && ( // Menampilkan nama keluarga hanya jika dalam mode gelap
+          <>
+            <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
+            <input
+              className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+              name={`famname-${index}`}
+              placeholder="Potter"
+            />
+          </>
+        )}
+        <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
+        <div className="flex relative">
+          <DatePicker
+            className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] cursor-pointer date-picker-custom"
+            selected={selectedDate}
+            onChange={handleDateChange}
+            dateFormat="dd/MM/yyyy"
+            placeholderText="dd/mm/yyyy"
+            peekNextMonth
+            showMonthDropdown
+            showYearDropdown
+            dropdownMode="select"
+            onClickOutside={() => {}}
+          />
+          {/* <div
+            className="absolute mt-2 right-3 cursor-pointer"
+            onClick={openDatePicker}
+          >
+            Tanggal
+          </div> */}
+          {isDatePickerOpen && (
+            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+              <div className="bg-white p-4 rounded-lg">
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  dateFormat="dd/MM/yyyy"
+                  placeholderText="dd/mm/yyyy"
+                  peekNextMonth
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  onClickOutside={closeDatePicker}
+                />
+                <button
+                  className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                  onClick={closeDatePicker}
+                >
+                  Simpan
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
+        <input
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`nation-${index}`}
+          placeholder="Fill Your Nation"
+        />
+        <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
+        <select
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`tandapengenal-${index}`}
+          defaultValue=""
+        >
+          <option value="" disabled hidden>
+            Choose Identity Card
+          </option>
+          <option value="Mr.">KTP</option>
+          <option value="Mrs.">Paspor</option>
+        </select>
+        {/* <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
+        <div className="flex relative">
+          <input
+            className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+            name={`country-${index}`}
+          />
+          <div className="absolute mt-2 right-3">Dropdown</div>
+        </div>
+        <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
+        <div className="flex relative">
+          <input
+            className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+            name={`expirydate-${index}`}
+            placeholder="dd/mm/yyyy"
+          />
+          <div className="absolute mt-2 right-3">Tanggal</div>
+        </div> */}
+      </div>
+    </div>
+  );
+};
+
+const PriceForm = ({ passenger, index }) => (
+  <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
+    <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
+    <div>
+      <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
+        <div>
+          Data Diri Penumpang {index + 1} -{" "}
+          {passenger ? passenger.type : "Loading..."}
+        </div>
+        <div>Centang</div>
+      </div>
+      <div className="font-bold mb-1 text-[#006769]">Title</div>
+      <div className="flex relative">
+        <input
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`title-${index}`}
+          placeholder="Mr."
+        />
+        <div className="absolute mt-2 right-3">Dropdown</div>
+      </div>
+      <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
+      <input
+        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+        name={`fullname-${index}`}
+        placeholder="Harry"
+      />
+      <div className="mb-3 flex justify-between">
+        <div>Punya nama keluarga?</div>
+        <button>Tombol</button>
+      </div>
+      <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
+      <input
+        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+        name={`famname-${index}`}
+        placeholder="Potter"
+      />
+      <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
+      <div className="flex relative">
+        <input
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`birthdate-${index}`}
+          placeholder="dd/mm/yyyy"
+        />
+        <div className="absolute mt-2 right-3">Tanggal</div>
+      </div>
+      <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
+      <input
+        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+        name={`nation-${index}`}
+        placeholder="Indonesia"
+      />
+      <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
+      <input
+        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+        name={`tandapengenal-${index}`}
+      />
+      <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
+      <div className="flex relative">
+        <input
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`country-${index}`}
+        />
+        <div className="absolute mt-2 right-3">Dropdown</div>
+      </div>
+      <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
+      <div className="flex relative">
+        <input
+          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+          name={`expirydate-${index}`}
+          placeholder="dd/mm/yyyy"
+        />
+        <div className="absolute mt-2 right-3">Tanggal</div>
+      </div>
+    </div>
+  </div>
+);
+
+const Checkout = () => {
   const { flights_id } = useParams();
   const [pemesan, setPemesan] = useState("");
   const [taxData, setTaxData] = useState(null);
   const [flightData, setFlightData] = useState([]);
-  // const [categoryData, setCategoryData] = useState(null);
-  // const [passengers] = useState([{}, {}, {}]);
   const [passengers, setPassengers] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -99,28 +267,9 @@ const Checkout = ({ category_id }) => {
   const p = queryParams.get("p") || 1;
   const sc = queryParams.get("sc") || "ECONOMY";
   const page = queryParams.get("page") || 1;
-  // const [params, setParams] = useState(null);
-
-  // const params = {
-  //   adult: Number(checkoutParams.get("adult") || 1),
-  //   child: Number(checkoutParams.get("child") || 1),
-  //   baby: Number(checkoutParams.get("baby") || 1),
-  // };
-
-  // const createParamsString = (newValue) => {
-  //   const urlParams = new URLCheckoutParams({
-  //     adult: newValue?.adult || params.adult,
-  //     child: newValue?.child || params.child,
-  //     baby: newValue?.baby || params.baby,
-  //   });
-  //   return urlParams.toString();
-  // };
-
-  // const redirect = (params) => {
-  //   const urlParams = createParamsString(params);
-
-  //   window.location.href = `/checkout?${urlParams}`;
-  // };
+  const child = Number(queryParams.get("child") || 1);
+  const adult = Number(queryParams.get("adult") || 0);
+  const baby = Number(queryParams.get("baby") || 0);
 
   useEffect(() => {
     const fetchDataPemesan = async () => {
@@ -164,10 +313,9 @@ const Checkout = ({ category_id }) => {
           }
         );
 
-        const flight = response.data.data.flights; // Adjust this based on actual structure
+        const flight = response.data.data.flights;
         console.log("response.data.data", response.data.data.flights);
         if (Array.isArray(flight)) {
-          // Memfilter data penerbangan berdasarkan flights_id
           const filteredData = flight.filter(
             (flight) => flight?.id === flights_id
           );
@@ -181,26 +329,29 @@ const Checkout = ({ category_id }) => {
       }
     };
 
-    // const fetchCategoryData = async () => {
-    //   const urlParams = createParamsString(params);
-    //   try {
-    //     const response = await axios.get(
-    //       `https://binar-project-backend-staging.vercel.app/api/category/${category_id}`
-    //     );
-    //     setCategoryData(response.data);
-    //     setPassengers(response.data.passengers);
-    //     console.log("response category", response.data);
-    //     console.log("response passengers", response.data.passengers);
-    //   } catch (error) {
-    //     console.error("Error fetching category data:", error);
-    //   }
-    // };
-
     fetchDataPemesan();
     // fetchTaxData();
     fetchFlightData();
-    // fetchCategoryData();
-  }, [flights_id, category_id, from, p, sc, page]);
+  }, [flights_id, from, p, sc, page]);
+
+  useEffect(() => {
+    const totalPassengers = adult + child + baby;
+    // Membuat array penumpang
+    const passengersArray = Array(totalPassengers)
+      .fill({})
+      .map((_, index) => {
+        let type = "";
+        if (index < adult) {
+          type = "Adult";
+        } else if (index < adult + child) {
+          type = "Child";
+        } else {
+          type = "Baby";
+        }
+        return { id: index, type };
+      });
+    setPassengers(passengersArray);
+  }, [adult, child, baby]);
 
   // const handleSubmitIsiDataPenumpang = async (e) => {
   //   e.preventDefault();
@@ -242,7 +393,6 @@ const Checkout = ({ category_id }) => {
     const token = localStorage.getItem("token");
     if (!token && navigate) {
       navigate("/login");
-      // Jika tidak ada token, arahkan pengguna kembali ke halaman login
       alert("You've to Login First!");
     }
   }, [navigate]);
@@ -354,7 +504,7 @@ const Checkout = ({ category_id }) => {
                 </div>
               </div>
 
-              {/* <div>
+              <div>
                 {passengers.map((passenger, index) => (
                   <PassengerForm
                     key={index}
@@ -362,9 +512,9 @@ const Checkout = ({ category_id }) => {
                     index={index}
                   />
                 ))}
-              </div> */}
+              </div>
 
-              {/* <button className="bg-[#006769] text-white rounded-lg text-xl p-3 w-full">
+              <button className="bg-[#006769] text-white rounded-lg text-xl p-3 w-full">
                 Simpan
               </button>
               {/* <button className="bg-[#D0D0D0] text-white rounded-lg text-xl p-3 w-full">
