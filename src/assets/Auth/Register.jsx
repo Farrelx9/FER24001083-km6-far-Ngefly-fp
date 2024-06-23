@@ -103,7 +103,7 @@ export default function Register() {
     };
     try {
       const response = await axios.post(
-        `https://binar-project-backend-staging.vercel.app/api/v1/auth/register`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/auth/register`,
         registerData,
         {
           headers: { "Content-Type": "application/json" },

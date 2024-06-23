@@ -37,7 +37,7 @@ const SendVerif = () => {
 
     try {
       const response = await axios.post(
-        "https://binar-project-backend-staging.vercel.app/api/v1/auth/verify/send",
+        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/verify/send",
         { email }
       );
 
@@ -45,6 +45,7 @@ const SendVerif = () => {
         startTimer();
         setStartCountdown(true);
         toast.success(response.data.message);
+        localStorage.removeItem("userEmail");
       }
     } catch (error) {
       if (error.response) {

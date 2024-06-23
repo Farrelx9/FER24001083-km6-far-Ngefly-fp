@@ -28,7 +28,7 @@ export default function App() {
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout/:flights_id" element={<Checkout />} />
         <Route path="/search" element={<Search />} />
         <Route path="/notif" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
