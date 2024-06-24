@@ -60,10 +60,9 @@ export default function Navbar() {
           </>
         ) : (
           <div className="flex gap-4 mr-2 items-center">
-            <MdOutlineList size={20} />
-            <MdNotificationsNone size={20} onClick={() => navigate("/notif")} />
-            <FiUser size={20} onClick={() => navigate("/profile")} />
-            <button onClick={() => navigate("/login")}>logout</button>
+            <MdOutlineList size={20} onClick={() => navigate("/history")} className="cursor-pointer" />
+            <MdNotificationsNone size={20} onClick={() => navigate("/notif")} className="cursor-pointer" />
+            <FiUser size={20} onClick={() => navigate("/profile")} className="cursor-pointer" />
           </div>
         )}
       </div>

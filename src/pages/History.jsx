@@ -395,13 +395,17 @@ export default function History() {
                   <p className="font-bold">Total</p>
                   <p>{formatCurrency(selected.total_price || 0)}</p>
                 </div>
-                <Divider className="my-3 mx-auto" />
-                <button
-                  className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg w-full h-[48px]"
-                  type="button"
-                >
-                  Cetak Tiket
-                </button>
+                {selected.payment?.status === "ISSUED" && (
+                  <>
+                    <Divider className="my-3 mx-auto" />
+                    <button
+                      className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg w-full h-[48px]"
+                      type="button"
+                    >
+                      Cetak Tiket
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
