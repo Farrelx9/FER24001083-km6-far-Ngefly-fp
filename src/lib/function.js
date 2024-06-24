@@ -46,9 +46,9 @@ export function countDetailAmount(data) {
   const price = data?.flight_class?.price || 0;
 
   // count passengers
-  const adultPassengers = data?.passengers?.length;
-  const childPassengers = 0;
-  const babyPassengers = 0;
+  const adultPassengers = data?.passengers?.filter(item => item.category?.type === "adult")?.length;
+  const childPassengers = data?.passengers?.filter(item => item.category?.type === "child")?.length;
+  const babyPassengers = data?.passengers?.filter(item => item.category?.type === "baby")?.length;
 
   // set percentage
   const taxPercentage = 5;
