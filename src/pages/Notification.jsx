@@ -15,7 +15,7 @@ export default function NotificationPage() {
   const [notification, setNotification] = useState([]);
   const [isReady, setIsReady] = useState(false);
   const [filter, setFilter] = useState("all");
-  const [tempFilter, setTempFilter] = useState("all"); // State untuk menyimpan filter sementara
+  const [tempFilter, setTempFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
@@ -53,8 +53,8 @@ export default function NotificationPage() {
   };
 
   const applyFilter = () => {
-    setFilter(tempFilter); // Terapkan filter ketika tombol Choose ditekan
-    setShowModal(false); // Tutup modal
+    setFilter(tempFilter);
+    setShowModal(false);
   };
 
   const markAsRead = async (notificationId) => {

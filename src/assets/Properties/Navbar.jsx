@@ -24,11 +24,11 @@ export default function Navbar() {
 
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
-        setIsScrolled(false); // Navbar akan menghilang
+        setIsScrolled(false); 
       } else {
-        setIsScrolled(true); // Navbar akan muncul
+        setIsScrolled(true); 
       }
-      lastScrollY = window.scrollY; // Update posisi scroll terakhir
+      lastScrollY = window.scrollY; 
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -64,7 +64,11 @@ export default function Navbar() {
         </div>
       ) : (
         <div className="flex gap-4 mr-2 items-center">
-          <MdOutlineList size={20} className="hover:cursor-pointer" />
+          <MdOutlineList
+            size={20}
+            className="hover:cursor-pointer"
+            onClick={() => navigate("/history")}
+          />
           <MdNotificationsNone
             size={20}
             className="hover:cursor-pointer"

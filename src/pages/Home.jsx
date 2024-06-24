@@ -187,20 +187,20 @@ export default function Home() {
           <img
             src={images[activeImage - 1]}
             alt="Background"
-            className="w-full h-[600px] object-cover"
+            className="w-full h-[600px] object-cover rounded-b-2xl"
           />
         </div>
-
-        <div
-          className="flex justify-center relative z-30 "
-          style={{ bottom: "150px" }}
-        >
-          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] w-[968px] h-[298px] ">
-            <div className="flex text-2xl font-semibold p-2 gap-2 mt-4 mb-6 px-10">
-              <div>Choose a Special Flight Schedule on</div>
-              <div className="font-bold text-[#006769]">Ngefly!</div>
+        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[150px] sm:bottom-[150px] ">
+          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[568px] sm:w-[100px] lg:h-[298px] md:h-[298px] sm:h-[598px] ">
+            <div className="flex  font-semibold p-2 gap-2 mt-4 mb-6 px-10">
+              <div className="lg:text-2xl md:text-xl sm:text-xl">
+                Choose a Special Flight Schedule on
+              </div>
+              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl sm:text-xl">
+                Ngefly!
+              </div>
             </div>
-            <ul className="grid grid-cols-2 gap-8 py-2 ">
+            <ul className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-8 py-2 ">
               <li className="flex gap-4 px-10 items-center relative">
                 <MdOutlineFlight size={20} />
                 <div className="text-sm">From</div>
@@ -304,7 +304,7 @@ export default function Home() {
                 </div>
               </li>
               <button
-                className="bg-[#40A578] w-[968px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
+                className="bg-[#40A578] lg:w-[968px] md:w-[568px] sm:w-[100px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
                 onClick={handleSearch}
               >
                 Search for Flight

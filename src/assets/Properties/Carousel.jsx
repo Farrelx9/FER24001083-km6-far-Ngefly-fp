@@ -18,6 +18,7 @@ export default function Carousel({ fromAirportCode }) {
       const response = await axios.get(url, {
         headers: { accept: "application/json" },
       });
+      console.log("carousel", response.data);
       if (fromAirportCode) {
         setTimeout(() => {
           const flightsData = response.data.data.flights;
@@ -47,11 +48,12 @@ export default function Carousel({ fromAirportCode }) {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-      timeZoneName: "short",
+      timeZone: "UTC",
+      
     };
 
     const date = new Date(dateString);
-    return date.toLocaleDateString("en-ID", options);
+    return date.toLocaleDateString("en-CA", options);
   };
 
   const settings = {
@@ -122,8 +124,8 @@ export default function Carousel({ fromAirportCode }) {
                   </div>
                   <p className="text-sm text-gray-600 mb-2">{flight.airline}</p>
                   <p className="text-sm text-gray-600 mb-2">
-                    {formatDate(flight.arriveAt)} -{" "}
-                    {formatDate(flight.departureAt)}
+                    {formatDate(flight.departureAt)} -{" "}
+                    {formatDate(flight.arriveAt)}
                   </p>
                 </div>
               </div>
