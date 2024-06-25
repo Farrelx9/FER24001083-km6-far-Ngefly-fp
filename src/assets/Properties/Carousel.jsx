@@ -19,17 +19,11 @@ export default function Carousel({ fromAirportCode }) {
         headers: { accept: "application/json" },
       });
       console.log("carousel", response.data);
-      if (fromAirportCode) {
-        setTimeout(() => {
-          const flightsData = response.data.data.flights;
-          setFetchFavoriteFlights(flightsData);
-          setIsLoading(false);
-        }, 2000);
-      } else {
-        const flightsData = response.data.data.flights;
+      const flightsData = response.data.data.flights;
+      setTimeout(() => {
         setFetchFavoriteFlights(flightsData);
         setIsLoading(false);
-      }
+      }, 2000);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
       setIsLoading(false);
@@ -49,7 +43,6 @@ export default function Carousel({ fromAirportCode }) {
       minute: "2-digit",
       hour12: false,
       timeZone: "UTC",
-      
     };
 
     const date = new Date(dateString);
@@ -93,24 +86,24 @@ export default function Carousel({ fromAirportCode }) {
 
   return (
     <div className="bg-none mb-16 px-20 ">
-      <Slider {...settings}>
-        {isLoading ? (
-          <div className="flex flex-col items-center justify-center h-full mt-20">
-            <Icon
-              icon="eos-icons:bubble-loading"
-              className="text-5xl  mb-4 ms-40"
-            />
-            <p className="text-center text-lg font-semibold mt-6">
-              Looking for a favorite destination...
-            </p>
-          </div>
-        ) : (
-          fetchFavoriteFlights.map((flight) => (
+      {isLoading ? (
+        <div className="flex flex-col items-center justify-center h-full mt-20">
+          <Icon
+            icon="eos-icons:bubble-loading"
+            className="text-5xl mb-4 ms-30"
+          />
+          <p className="text-center text-lg font-semibold mt-6">
+            Looking for a favorite destination...
+          </p>
+        </div>
+      ) : (
+        <Slider {...settings}>
+          {fetchFavoriteFlights.map((flight) => (
             <div key={flight.id} className="px-4 py-4">
               <div className="max-w-xs mx-auto h-[300px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
                 <div className="relative">
                   <img
-                    className="object-cover w-full h-[150px] "
+                    className="object-cover w-full h-[150px]"
                     src={flight.to.image_url}
                     alt={flight.title}
                   />
@@ -130,9 +123,9 @@ export default function Carousel({ fromAirportCode }) {
                 </div>
               </div>
             </div>
-          ))
-        )}
-      </Slider>
+          ))}
+        </Slider>
+      )}
     </div>
   );
 }

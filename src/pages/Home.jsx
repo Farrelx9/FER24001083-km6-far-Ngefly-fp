@@ -145,9 +145,9 @@ export default function Home() {
   }, [inputValue]);
 
   const handleSearch = () => {
-    if (!totalPassengers === 0 || !selectedClass) {
+    if (!inputValue || !totalPassengers === 0 || !selectedClass) {
       toast.error(
-        "Please fill in all required fields: Passengers and Seat Class."
+        "Please fill in all required fields: Input From, Passengers, and Seat Class."
       );
       return;
     }
@@ -190,24 +190,24 @@ export default function Home() {
             className="w-full h-[600px] object-cover rounded-b-2xl"
           />
         </div>
-        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[150px] sm:bottom-[150px] ">
-          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[568px] sm:w-[100px] lg:h-[298px] md:h-[298px] sm:h-[598px] ">
+        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[120px] sm:bottom-[150px] ">
+          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[568px] sm:w-[100px] lg:h-[298px] md:h-[448px] sm:h-[598px] ">
             <div className="flex  font-semibold p-2 gap-2 mt-4 mb-6 px-10">
-              <div className="lg:text-2xl md:text-xl sm:text-xl">
+              <div className="lg:text-2xl md:text-xl sm:text-sm">
                 Choose a Special Flight Schedule on
               </div>
-              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl sm:text-xl">
+              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl sm:text-sm">
                 Ngefly!
               </div>
             </div>
-            <ul className="grid lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-8 py-2 ">
-              <li className="flex gap-4 px-10 items-center relative">
+            <ul className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-8 py-2 ">
+              <li className="flex lg:gap-4 md:gap-7 px-10 items-center relative">
                 <MdOutlineFlight size={20} />
                 <div className="text-sm">From</div>
                 <div className="gap-2">
                   <input
                     type="text"
-                    className="w-[300px] h-[34px] text-sm font-semibold px-1"
+                    className="lg:w-[300px] md:w-[300px] h-[34px] text-sm font-semibold px-1"
                     placeholder=" JOG - Adisucipto International Airport"
                     value={inputValue}
                     onClick={() => setShowModal(true)}
@@ -222,18 +222,18 @@ export default function Home() {
                   size={20}
                   className={`absolute left-[100%] transform -translate-x-1/2 ${
                     isRotated ? "rotate-180 " : ""
-                  }`}
+                  } lg:top-[0%] lg:left-[100%] md:left-[85%] md:top-[20%] `}
                   onClick={toggleRotation}
                 />
               </li>
-              <li className="flex gap-4 px-10 items-center">
+              <li className="flex lg:gap-4 md:gap-7 px-10 items-center">
                 <RiFlightTakeoffFill size={20} />
                 <div className="text-sm">Into</div>
                 <div className="gap-2">
                   <input
                     type="text"
                     placeholder="JOG - Adisucipto International Airport"
-                    className="w-[300px] h-[34px] text-sm font-semibold px-2"
+                    className="lg:w-[300px] md:w-[300px] h-[34px] text-sm font-semibold px-3"
                     value={inputValue2}
                     onClick={() => setShowModal2(true)}
                     onChange={(e) => {
@@ -244,7 +244,7 @@ export default function Home() {
                   <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
               </li>
-              <li className="flex gap-4 px-10 items-center relative">
+              <li className="flex lg:gap-4 md:gap-7 px-10 items-center relative">
                 <MdDateRange size={20} />
                 <div className="text-sm">Date</div>
                 <div className="gap-2">
@@ -273,13 +273,13 @@ export default function Home() {
                 </div>
                 <HiSwitchHorizontal
                   size={20}
-                  className={`absolute left-[90%] bottom-[70%] transform -translate-x-1/2 cursor-pointer ${
+                  className={`absolute lg:left-[90%] md:left-[75%]  bottom-[70%] transform -translate-x-1/2 cursor-pointer ${
                     isReturnActive ? "text-[#006769]" : "text-gray-400"
-                  }`}
+                  } `}
                   onClick={toggleReturnDate}
                 />
               </li>
-              <li className="flex gap-4 px-10 items-center">
+              <li className="flex lg:gap-4 md:gap-7 px-10 items-center">
                 <MdOutlineAirlineSeatReclineNormal size={20} />
                 <div className="text-sm">Seat</div>
                 <div className="gap-2">
