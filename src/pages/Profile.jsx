@@ -29,7 +29,7 @@ export default function Profile() {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `https://binar-project-backend-staging.vercel.app/api/v1/profile`,
+          `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
           {
             headers: {
               accept: "application/json",
@@ -51,7 +51,7 @@ export default function Profile() {
             email: profileData.email || "",
             isVerified: profileData.is_verified || false,
           });
-          console.log("Profile data:", profileData); // Added log to check profile data
+          console.log("Profile data:", profileData);
         } else {
           throw new Error("Profile data is missing");
         }
@@ -80,7 +80,7 @@ export default function Profile() {
   const handleConfirmLogout = () => {
     localStorage.removeItem("token");
     setIsLogoutConfirmationVisible(false);
-    navigate("/login");
+    navigate("/");
   };
 
   const handleCancelLogout = () => {
@@ -111,7 +111,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `https://binar-project-backend-staging.vercel.app/api/v1/profile/`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
         updatedData,
         {
           headers: {
@@ -139,7 +139,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "https://binar-project-backend-staging.vercel.app/api/v1/auth/changepassword",
+        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/changepassword",
         {
           password,
           confirm,
@@ -171,10 +171,10 @@ export default function Profile() {
   return (
     <div>
       <Navbar />
-      <ToastContainer />
+      <ToastContainer toastClassName="lg:w-[100%] md:w-[90%] w-[70%] lg:mt-0 md:mt-0 mt-36 lg:mx-0 md:mx-0 mx-auto " />
       {isResetConfirmationVisible && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 animate__animated animate__fadeIn">
-          <div className="bg-white p-6 rounded shadow-md animate__animated animate__zoomIn">
+          <div className="bg-white p-6 rounded shadow-md animate__animated animate__zoomIn px">
             <p>Are you sure you want to change your password?</p>
             <div className="flex justify-end gap-2 mt-4">
               <button
@@ -194,8 +194,8 @@ export default function Profile() {
         </div>
       )}
       {isLogoutConfirmationVisible && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 animate__animated animate__bounceInUp">
-          <div className="bg-white p-6 rounded shadow-md animate__animated animate__bounceInUp">
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 animate__animated ">
+          <div className="bg-white p-6 rounded shadow-md animate__animated animate__slideInDown">
             <p>Are you sure you want to logout?</p>
             <div className="flex justify-end gap-2 mt-4">
               <button
@@ -214,12 +214,13 @@ export default function Profile() {
           </div>
         </div>
       )}
-      <div className="w-full h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-        <div className="lg:w-[1100px] md:w-[1200px] w-[400px] px-4 mt-20 ">
+
+      <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
+        <div className="lg:w-[1100px] md:w-[1100px] w-[380px] px-4 mt-20 lg:text-lg md:text-lg text-sm font-semibold">
           Profile
         </div>
         <div className="flex items-center gap-4">
-          <div className="w-[968px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
+          <div className="lg:w-[968px] md:w-[968px] w-[320px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
             <IoMdArrowRoundBack
               size={20}
               className="text-white cursor-pointer hover:scale-110 transition-transform duration-200"
@@ -229,7 +230,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      <div className="flex justify-center gap-4 mt-10">
+      <div className="flex flex-col items-center justify-center lg:flex-row md:flex-row lg:items-start md:items-start gap-4 lg:mt-10 md:mt-10 mt-4">
         <div>
           <div
             className={`flex items-center gap-2 border-b w-[328px] p-2 cursor-pointer ${

@@ -88,7 +88,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `https://binar-project-backend-staging.vercel.app/api/v1/auth/login`,
+        `https://binar-project-426902.et.r.appspot.com/api/v1/auth/login`,
         {
           email: email,
           password: password,

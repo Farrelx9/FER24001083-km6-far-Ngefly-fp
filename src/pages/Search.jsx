@@ -88,15 +88,17 @@ export default function Search() {
   // set default value untuk search
   const params = {
     page: searchParams.get("page") || 1,
-    from: searchParams.get("from") || "UPG", // required from url
+    from: searchParams.get("from") || "", // required from url
     to: searchParams.get("to") || "",
     p:
       !isNaN(Number(searchParams.get("adult"))) ||
-      !isNaN(Number(searchParams.get("child")))
+      !isNaN(Number(searchParams.get("child"))) ||
+      !isNaN(Number(searchParams.get("baby")))
         ? Number(searchParams.get("adult") || 0) +
-          Number(searchParams.get("child") || 0)
+          Number(searchParams.get("child") || 0) +
+          Number(searchParams.get("baby") || 0)
         : searchParams.get("p") || 1, // required from url
-    sc: searchParams.get("sc") || "ECONOMY", // required from url
+    sc: searchParams.get("sc") || "", // required from url
     rt: searchParams.get("rt") || "",
     rd: searchParams.get("rd") || "",
     d: searchParams.get("d") || "",
@@ -155,7 +157,7 @@ export default function Search() {
 
     try {
       const response = await fetch(
-        "https://binar-project-backend-staging.vercel.app/api/v1/flight?" +
+        "https://binar-project-426902.et.r.appspot.com/api/v1/flight?" +
           urlParams,
         {
           method: "GET",
@@ -253,7 +255,7 @@ export default function Search() {
                 <Loading label="Mencari penerbangan terbaik.." />
               ) : list?.length > 0 ? (
                 list?.map((item, index) => (
-                  <CardFlight key={index} index={index} item={item}  />
+                  <CardFlight key={index} index={index} item={item} />
                 ))
               ) : (
                 <NotFound>

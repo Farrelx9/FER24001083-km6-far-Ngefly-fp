@@ -10,7 +10,7 @@ function GoogleLogin({ buttonText }) {
   const registerLoginWithGoogleAction = async (accessToken) => {
     try {
       const response = await axios.post(
-        "https://binar-project-backend-staging.vercel.app/api/v1/auth/googlelogin",
+        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/googlelogin",
         { access_token: accessToken },
         { headers: { "Content-Type": "application/json" } }
       );

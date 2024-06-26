@@ -2,10 +2,11 @@ import moment from "moment";
 import { twMerge } from "tailwind-merge";
 import { Fragment, useEffect, useState } from "react";
 import useGetWeek from "../../hooks/useGetWeek";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export default function WeekPicker({ onChange, defaultDate }) {
   const [date, setDate] = useState(null);
-  const week = useGetWeek(new Date());
+  const { week, nextWeek, prevWeek } = useGetWeek(new Date(defaultDate || ""));
 
   useEffect(() => {
     if (defaultDate) {
@@ -17,6 +18,10 @@ export default function WeekPicker({ onChange, defaultDate }) {
 
   return (
     <div className="flex items-center justify-between mt-6 gap-3 overflow-x-scroll">
+      <button className="h-full duration-150 hover:bg-[#40A578] hover:text-white rounded-[10px] py-2 px-1" onClick={prevWeek}>
+        <Icon icon="ci:chevron-left" width={30} />
+      </button>
+
       {week.map((item, index) => {
         const dateNow = date ? moment(date) : moment();
         const dateItem = moment(item);
@@ -51,6 +56,9 @@ export default function WeekPicker({ onChange, defaultDate }) {
           </Fragment>
         );
       })}
+      <button className="h-full duration-150 hover:bg-[#40A578] hover:text-white rounded-[10px] py-2 px-1" onClick={nextWeek}>
+        <Icon icon="ci:chevron-right" width={30} />
+      </button>
     </div>
   );
 }
