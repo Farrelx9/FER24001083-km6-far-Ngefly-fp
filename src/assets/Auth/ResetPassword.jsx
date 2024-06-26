@@ -36,7 +36,7 @@ export default function ResetPassword() {
 
       try {
         const response = await fetch(
-          `https://binar-project-backend-staging.vercel.app/api/v1/auth/resetpassword/${token}`,
+          `https://binar-project-426902.et.r.appspot.com/api/v1/auth/resetpassword/${token}`,
           {
             method: "POST",
             headers: {

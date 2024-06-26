@@ -20,12 +20,15 @@ export default function Navbar() {
   }, []);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
+      if (window.scrollY > lastScrollY) {
+        setIsScrolled(false); 
       } else {
-        setIsScrolled(false);
+        setIsScrolled(true); 
       }
+      lastScrollY = window.scrollY; 
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -42,7 +45,12 @@ export default function Navbar() {
       } transition-colors duration-300`}
     >
       <div className="flex gap-5">
-        <img src={ngefly} className="w-[98px] h-[93px] " alt="Ngefly Logo" />
+        <img
+          src={ngefly}
+          className="w-[98px] h-[93px] "
+          alt="Ngefly Logo"
+          onClick={() => navigate("/")}
+        />
       </div>
       {!isLoggedIn ? (
         <div className="flex items-center">
@@ -56,9 +64,21 @@ export default function Navbar() {
         </div>
       ) : (
         <div className="flex gap-4 mr-2 items-center">
-          <MdOutlineList size={20} />
-          <MdNotificationsNone size={20} onClick={() => navigate("/notif")} />
-          <FiUser size={20} onClick={() => navigate("/profile")} />
+          <MdOutlineList
+            size={20}
+            className="hover:cursor-pointer"
+            onClick={() => navigate("/history")}
+          />
+          <MdNotificationsNone
+            size={20}
+            className="hover:cursor-pointer"
+            onClick={() => navigate("/notif")}
+          />
+          <FiUser
+            size={20}
+            className="hover:cursor-pointer"
+            onClick={() => navigate("/profile")}
+          />
         </div>
       )}
     </div>
