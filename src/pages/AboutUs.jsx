@@ -1,8 +1,12 @@
 import React from "react";
 import Wonwoo from "../assets/logo/Wonwoo.jpg";
 import ngefly from "../assets/logo/ngefly.png";
-
+import AdiIrawan from "../assets/images/adi irawan.jpeg";
+import Vina from "../assets/images/Vina.png";
+import IKetut from "../assets/images/I Ketut Krisna.png";
+import Nesvia from "../assets/images/Nesvia Nissa Artanti .jpg";
 import { FaHeadset, FaMoneyBill, FaShieldAlt } from "react-icons/fa";
+import Footer from "../assets/Properties/Footer";
 
 const AdvantageSection = () => {
   return (
@@ -18,7 +22,7 @@ const AdvantageSection = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto text-center mb-12">
           <h2 className="text-4xl font-black text-gray-800 mb-4 font-serif">
-            ADVANTAGES
+            KEUNTUNGAN
           </h2>
           <p
             className="text-lg text-gray-700"
@@ -90,26 +94,26 @@ const AboutUsAndTeam = () => {
       image: Wonwoo,
     },
     {
-      name: "FARREL FARHAN GABRIELA",
+      name: "FARREL FARHAN",
       role: "Front End JS Development",
       image: Wonwoo,
     },
     {
       name: "NESVIA NISSA ARTANTI",
       role: "Front End JS Development",
-      image: Wonwoo,
+      image: Nesvia,
     },
     {
       name: "RIZVINA HADI IMANI",
       role: "Front End JS Development",
-      image: Wonwoo,
+      image: Vina,
     },
     {
       name: "I KETUT KRISNA KERTAJAYA",
       role: "Back End JS Development",
-      image: Wonwoo,
+      image: IKetut,
     },
-    { name: "ADI IRAWAN", role: "Back End JS Development", image: Wonwoo },
+    { name: "ADI IRAWAN", role: "Back End JS Development", image: AdiIrawan },
     {
       name: "DEWANGGA NANDA ARJUNA",
       role: "Back End JS Development",
@@ -122,30 +126,30 @@ const AboutUsAndTeam = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="mb-10 mt-20 md:flex md:items-center">
           <div className="md:w-1/2 relative flex justify-center items-center">
-            <div className="relative w-[450px] h-[450px] rounded-full overflow-hidden shadow-lg">
+            <div className="relative w-[350px] h-[350px] rounded-full overflow-hidden shadow-lg">
               <div className="absolute inset-0 bg-gradient-to-br from-[#48C9B0] to-[#0E6655] transform -rotate-45"></div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <img
                   src={ngefly}
                   alt="Gym Storia"
-                  className="w-[350px] h-[350px] object-cover rounded-full shadow-2xl"
+                  className="w-[250px] h-[250px] object-cover rounded-full shadow-2xl"
                   onError={(e) => console.log("Error loading image:", e)}
                 />
               </div>
             </div>
           </div>
 
-          <div className="md:w-1/2 md:pl-10 mt-20">
+          <div className="md:w-1/2 md:pl-10 mt-10">
             <h2 className="text-4xl font-black text-black mb-4 font-serif">
-              ABOUT US
+              TENTANG KAMI{" "}
             </h2>
             <h3 className="text-2xl text-[#006769] mb-6 font-extrabold font-serif">
-              Welcome To NgeFly.com
+              Selamat Datang di NgeFly.com
             </h3>
-            <p className="text-lg text-gray-700 font-serif leading-relaxed">
-              Di <span className="font-bold">NgeFly.com</span>, kami berkomitmen
-              untuk membantu Anda memesan tiket pesawat dengan mudah dan nyaman.
-              Kami memahami bahwa setiap perjalanan memiliki kebutuhan yang
+            <p className="text-lg text-gray-700 font-serif leading-relaxed text-justify">
+              <span className="font-bold">NgeFly.com</span> berkomitmen untuk
+              membantu Anda memesan tiket pesawat dengan mudah dan nyaman. Kami
+              memahami bahwa setiap perjalanan memiliki kebutuhan yang
               berbeda-beda, dan itulah sebabnya kami hadir untuk menyediakan
               solusi pemesanan tiket pesawat yang fleksibel dan sesuai dengan
               preferensi Anda.
@@ -153,8 +157,8 @@ const AboutUsAndTeam = () => {
           </div>
         </div>
         <AdvantageSection />
-        <h2 className="text-4xl font-extrabold text-center mb-20 mt-20 text-black font-serif">
-          OUR TEAM
+        <h2 className="text-4xl font-extrabold text-center mb-10 mt-20 text-black font-serif">
+          DREAM HIGH, FLY HIGH{" "}
         </h2>
         <div className="flex flex-wrap justify-center gap-6">
           {teamMembers.map((member, index) => (
@@ -209,6 +213,7 @@ function App() {
   return (
     <div className="App">
       <AboutUsAndTeam />
+      <Footer />
     </div>
   );
 }

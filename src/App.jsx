@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import TicketConfirmation from "./pages/TicketConfirmation";
 import AboutUs from "./pages/AboutUs";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 export default function App() {
   return (
@@ -27,13 +28,14 @@ export default function App() {
         <Route path="/verify/:token" element={<VerifyEmail />} />
         <Route path="/sendverif" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/checkout/:flights_id" element={<Checkout />} />
         <Route path="/search" element={<Search />} />
         <Route path="/notif" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/tickectconfirm" element={<TicketConfirmation />} />
+        <Route path="/payments/:payment_id" element={<TicketConfirmation />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/paymentsuccess" element={<PaymentSuccess />} />
       </Routes>
     </Router>
   );
