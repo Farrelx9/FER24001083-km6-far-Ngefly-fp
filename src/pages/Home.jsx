@@ -151,16 +151,19 @@ export default function Home() {
       );
       return;
     }
-
-    const params = {
+    const setParams = {
       from: inputValue.split(" - ")[0],
       to: inputValue2.split(" - ")[0],
-      rt: isReturnActive ? "true" : "null",
-      rd: isReturnActive && endDate ? endDate.toISOString() : "",
       p: totalPassengers,
       sc: selectedClass.toUpperCase().replace(" ", "_"),
       page: 1,
-      d: startDate ? startDate.toISOString() : "",
+    };
+
+    const params = {
+      ...setParams,
+      ...(isReturnActive && { rt: "true" }),
+      ...(isReturnActive && endDate && { rd: endDate.toISOString() }),
+      ...(startDate && { d: startDate.toISOString() }),
     };
 
     const queryString = new URLSearchParams(params).toString();

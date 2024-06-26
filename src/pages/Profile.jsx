@@ -216,11 +216,11 @@ export default function Profile() {
       )}
 
       <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-        <div className="lg:w-[1100px] md:w-[1100px] w-[380px] px-4 mt-20 lg:text-lg md:text-lg text-sm font-semibold">
+        <div className="lg:w-[1100px] md:w-[750px] w-[360px] px-4 mt-20 lg:text-lg md:text-lg text-sm font-semibold">
           Profile
         </div>
         <div className="flex items-center gap-4">
-          <div className="lg:w-[968px] md:w-[968px] w-[320px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
+          <div className="lg:w-[968px] md:w-[668px] w-[290px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
             <IoMdArrowRoundBack
               size={20}
               className="text-white cursor-pointer hover:scale-110 transition-transform duration-200"
@@ -230,7 +230,7 @@ export default function Profile() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center lg:flex-row md:flex-row lg:items-start md:items-start gap-4 lg:mt-10 md:mt-10 mt-4">
+      <div className="flex flex-col items-center justify-center lg:flex-row md:flex-col lg:items-start md:items-center gap-4 lg:mt-10 md:mt-10 mt-4">
         <div>
           <div
             className={`flex items-center gap-2 border-b w-[328px] p-2 cursor-pointer ${
@@ -268,9 +268,14 @@ export default function Profile() {
         </div>
         <div className="flex flex-col">
           {activeSection === "Change Profile" && (
-            <div className="border-2 w-[518px] p-4">
-              <div className="mb-2 font-semibold text-lg">Change Profile</div>
-              <div className="w-[454px] rounded-t-lg bg-black text-white p-2 mb-2 mx-4 px-2">
+            <div
+              className="border-2 lg:w-[518px] md:w-[518px] w-[300px]  p-4 mb-10"
+              style={{ height: showEditFields ? "738px" : "338px" }}
+            >
+              <div className="lg:ms-2 md:ms-2 ms-2 mb-2 font-semibold text-lg">
+                Change Profile
+              </div>
+              <div className="lg:w-[454px] md:w-[454px] w-[230px] rounded-t-lg bg-black text-white p-2 mb-2 mx-4 px-2">
                 Personal Data
               </div>
               <div>
@@ -324,7 +329,7 @@ export default function Profile() {
                     <label htmlFor="name">Name:</label>
                     <input
                       id="name"
-                      className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                      className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                       defaultValue={profileData?.name}
                     />
                   </div>
@@ -332,7 +337,7 @@ export default function Profile() {
                     <label htmlFor="address">Address:</label>
                     <input
                       id="address"
-                      className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                      className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                       defaultValue={profileData?.address}
                     />
                   </div>
@@ -340,7 +345,7 @@ export default function Profile() {
                     <label htmlFor="phone">Phone:</label>
                     <input
                       id="phone"
-                      className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                      className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                       defaultValue={profileData?.phone}
                     />
                   </div>
@@ -348,7 +353,7 @@ export default function Profile() {
                     <label htmlFor="occupation">Occupation:</label>
                     <input
                       id="occupation"
-                      className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                      className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                       defaultValue={profileData?.occupation}
                     />
                   </div>
@@ -356,7 +361,7 @@ export default function Profile() {
                     <label htmlFor="birthdate">Birth Date:</label>
                     <input
                       id="birthdate"
-                      className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                      className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                       defaultValue={
                         profileData?.birthdate
                           ? new Date(profileData.birthdate)
@@ -387,9 +392,11 @@ export default function Profile() {
           )}
 
           {activeSection === "Account Settings" && (
-            <div className="border-2 w-[518px] h-[348px] p-4">
-              <div className="mb-2 font-semibold text-lg">Account Settings</div>
-              <div className="w-[454px] rounded-t-lg bg-black text-white p-2 mb-2 mx-4 px-2">
+            <div className="border-2 lg:w-[518px] md:w-[518px] w-[300px] mb-10  p-4">
+              <div className="lg:ms-2 md:ms-2 ms-2 mb-2 font-semibold text-lg">
+                Account Settings
+              </div>
+              <div className="lg:w-[454px] md:w-[454px] w-[230px] rounded-t-lg bg-black text-white p-2 mb-2 mx-4 px-2">
                 Change Password
               </div>
               <form
@@ -398,7 +405,7 @@ export default function Profile() {
               >
                 <div>New Password</div>
                 <input
-                  className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                  className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                   placeholder="********"
                   type="password"
                   name="newPassword"
@@ -406,7 +413,7 @@ export default function Profile() {
                 />
                 <div>Confirm Password</div>
                 <input
-                  className="border-black border rounded-md w-[454px] h-[40px] px-2"
+                  className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
                   placeholder="********"
                   type="password"
                   name="confirmPassword"

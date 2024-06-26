@@ -110,11 +110,11 @@ export default function NotificationPage() {
         <ToastContainer />
         <Navbar />
         <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-          <div className="lg:w-[1200px] md:w-[1200px] w-[400px] px-4 mt-20 font-semibold">
+          <div className="lg:w-[1200px] md:w-[790px] w-[390px] px-4 mt-20 font-semibold">
             Notification
           </div>
           <div className="flex items-center gap-4">
-            <div className="w-[968px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
+            <div className="lg:w-[968px] md:w-[568px] w-[220px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
               <IoMdArrowRoundBack
                 onClick={() => navigate("/")}
                 size={20}
@@ -142,7 +142,7 @@ export default function NotificationPage() {
             .map((notification) => (
               <div
                 key={notification.id}
-                className="flex justify-between border-b-2  w-[780px] h-[87px] py-3 p-4"
+                className="flex justify-between border-b-2 lg:w-[780px] md:w-[680px] w-full lg:h-[87px] md:h-[87px] h-auto py-3 p-4"
                 onClick={() => markAsRead(notification.id)}
               >
                 <div className="flex gap-2 px-2">
@@ -151,13 +151,15 @@ export default function NotificationPage() {
                     className="text-yellow-300"
                   />
                   <div>
-                    <div className="text-sm font-semibold">
+                    <div className="lg:text-sm md:text-sm text-xs font-semibold">
                       {notification.title}
                     </div>
-                    <div className="text-sm">{notification.message}</div>
+                    <div className="text-sm lg:w-[500px] md:w-[290px] w-[140px]">
+                      {notification.message}
+                    </div>
                   </div>
                 </div>
-                <div className="text-xs font-semibold flex gap-2 ">
+                <div className="text-xs font-semibold flex gap-2 lg:w-[500px] md:w-[170px] w-[75px]">
                   {new Date(notification.createdAt).toLocaleDateString(
                     "en-US",
                     {
