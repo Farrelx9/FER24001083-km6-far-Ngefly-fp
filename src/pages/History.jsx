@@ -1,16 +1,18 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Layout from "../components/templates/Layout";
 import Container from "../components/atoms/Container";
 import { Link, useSearchParams } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import moment from "moment";
 import Divider from "../components/atoms/Divider";
-import { countDetailAmount, formatCurrency } from "../lib/function";
+import { countDetailAmount, dateFormat, formatCurrency } from "../lib/function";
 import { FLIGHT_CLASS, PAYMENT_STATUS } from "../constant/type";
 import { twMerge } from "tailwind-merge";
 import Modal from "../components/atoms/Modal";
 import Loading from "../components/atoms/Loading";
 import NotFound from "../components/atoms/NotFound";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "../assets/styles/datepicker.css";
 
 const OPTION_FILTER = [
   {
@@ -38,10 +40,13 @@ export default function History() {
   const [list, setList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
+  const [modalFilter, setModalFilter] = useState(false);
 
   const params = {
     page: searchParams.get("page") || 1,
     status: searchParams.get("status") || "", // required from url
+    startDate: searchParams.get("startDate") || "",
+    endDate: searchParams.get("endDate") || "",
   };
 
   const selectedFilter = params.status
@@ -51,6 +56,18 @@ export default function History() {
 
   const [filter, setFilter] = useState(selectedFilter);
   const [currentFilter, setCurrentFilter] = useState(selectedFilter);
+  const [startDate, setStartDate] = useState(
+    params.startDate ? new Date(params.startDate) : null
+  );
+  const [endDate, setEndDate] = useState(
+    params.endDate ? new Date(params.endDate) : null
+  );
+  const onChangeDate = (dates) => {
+    const [start, end] = dates;
+
+    setStartDate(start);
+    setEndDate(end);
+  };
 
   const createParamsString = (newValue) => {
     const urlParams = new URLSearchParams({
@@ -62,6 +79,20 @@ export default function History() {
       (params.status && newValue?.status !== "all")
     )
       urlParams.append("status", newValue?.status || params.status);
+
+    if (
+      !(newValue?.skipFilter || false) &&
+      ((startDate && endDate) || (params.startDate && params.endDate))
+    ) {
+      const startD = dateFormat(
+        startDate || newValue?.startDate || params.startDate
+      ).format();
+      const endD = dateFormat(
+        endDate || newValue?.endDate || params.endDate
+      ).format();
+      urlParams.append("startDate", startD);
+      urlParams.append("endDate", endD);
+    }
 
     return urlParams.toString();
   };
@@ -101,7 +132,7 @@ export default function History() {
         // group by month
         let dataMonth = [];
         data.forEach((item) => {
-          const dateItem = moment(item.createdAt).format("MMMM YYYY");
+          const dateItem = dateFormat(item.createdAt).format("MMMM YYYY");
 
           if (dataMonth.find((item) => item.date === dateItem)) {
             const index = dataMonth.findIndex((item) => item.date === dateItem);
@@ -147,6 +178,15 @@ export default function History() {
               </Link>
               <div className="font-medium">Beranda</div>
             </div>
+            <button
+              className="flex items-center gap-3 px-4 py-3 rounded-full border border-[#40A578] text-[#40A578]"
+              onClick={() => {
+                setModalFilter(true);
+              }}
+            >
+              <Icon icon="flowbite:filter-outline" width={21} />
+              <span>Filter</span>
+            </button>
             <button
               className="flex items-center gap-3 px-4 py-3 rounded-full border border-[#40A578] text-[#40A578]"
               onClick={() => {
@@ -199,19 +239,21 @@ export default function History() {
                         </div>
                         <div className="flex justify-between items-center gap-5 mt-5">
                           <div className="flex gap-3 min-w-[100px]">
-                            <Icon icon="fa:map-marker" width={12} />
+                            <div className="min-w-[12px]">
+                              <Icon icon="fa:map-marker" width={12} />
+                            </div>
                             <div>
                               <p className="font-bold">
                                 {subItem.flight_class?.flight?.from?.city || ""}
                               </p>
                               <p className="text-xs whitespace-nowrap">
-                                {moment(
+                                {dateFormat(
                                   subItem.flight_class?.flight?.departureAt ||
                                     ""
                                 ).format("D MMMM YYYY")}
                               </p>
                               <p className="text-xs whitespace-nowrap">
-                                {moment(
+                                {dateFormat(
                                   subItem.flight_class?.flight?.departureAt ||
                                     ""
                                 ).format("HH:mm")}
@@ -221,18 +263,20 @@ export default function History() {
                           <div className="w-full h-[2px] bg-gray-300" />
 
                           <div className="flex gap-3 min-w-[100px]">
-                            <Icon icon="fa:map-marker" width={12} />
+                            <div className="min-w-[12px]">
+                              <Icon icon="fa:map-marker" width={12} />
+                            </div>
                             <div>
                               <p className="font-bold">
                                 {subItem.flight_class?.flight?.to?.city || ""}
                               </p>
                               <p className="text-xs whitespace-nowrap">
-                                {moment(
+                                {dateFormat(
                                   subItem.flight_class?.flight?.arriveAt || ""
                                 ).format("D MMMM YYYY")}
                               </p>
                               <p className="text-xs whitespace-nowrap">
-                                {moment(
+                                {dateFormat(
                                   subItem.flight_class?.flight?.arriveAt || ""
                                 ).format("HH:mm")}
                               </p>
@@ -309,12 +353,12 @@ export default function History() {
                 <div className="flex justify-between gap-5">
                   <div>
                     <p className="font-bold">
-                      {moment(
+                      {dateFormat(
                         selected.flight_class?.flight?.departureAt || ""
                       ).format("HH:mm")}
                     </p>
                     <p className="text-sm text-gray-500 mb-1">
-                      {moment(
+                      {dateFormat(
                         selected.flight_class?.flight?.departureAt || ""
                       ).format("DD MMMM YYYY")}
                     </p>
@@ -351,12 +395,12 @@ export default function History() {
                 <div className="flex justify-between gap-5">
                   <div>
                     <p className="font-bold">
-                      {moment(
+                      {dateFormat(
                         selected.flight_class?.flight?.arriveAt || ""
                       ).format("HH:mm")}
                     </p>
                     <p className="text-sm text-gray-500 mb-1">
-                      {moment(
+                      {dateFormat(
                         selected.flight_class?.flight?.arriveAt || ""
                       ).format("DD MMMM YYYY")}
                     </p>
@@ -411,6 +455,47 @@ export default function History() {
           </div>
         </Container>
       </Layout>
+      <Modal open={modalFilter} onClose={() => setModalFilter(false)}>
+        <div className="flex justify-end p-3">
+          <button onClick={() => setModalFilter(false)} className="p-1">
+            <Icon icon="iconamoon:sign-times-bold" width={28} />
+          </button>
+        </div>
+        <div className="py-3 px-3">
+          <DatePicker
+            selected={startDate}
+            onChange={onChangeDate}
+            startDate={startDate}
+            endDate={endDate}
+            selectsRange
+            inline
+            calendarClassName="tailwind-datepicker w-full"
+          />
+        </div>
+        <div className="flex justify-end p-3 gap-4">
+          {startDate && endDate && (
+            <button
+              className="px-10 py-2 rounded-[10px] border-2 border-[#006769] hover:border-[#104b4c] hover:bg-[#104b4c] duration-150 text-[#006769] hover:text-white"
+              onClick={() => {
+                redirect({ skipFilter: true });
+              }}
+            >
+              Restart
+            </button>
+          )}
+
+          <button
+            className="px-10 py-2 rounded-[10px] bg-[#006769] hover:bg-[#104b4c] duration-150 text-white"
+            onClick={() => {
+              setCurrentFilter(filter);
+              setModalFilter(false);
+              redirect({ status: filter.value });
+            }}
+          >
+            Simpan
+          </button>
+        </div>
+      </Modal>
       <Modal open={modal} onClose={() => setModal(false)}>
         <div className="flex justify-end p-3">
           <button onClick={() => setModal(false)} className="p-1">

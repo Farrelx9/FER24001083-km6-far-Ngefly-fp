@@ -42,8 +42,9 @@ export default function Navbar() {
       <div className="flex justify-between gap-3 px-3 md:px-10 lg:px-32">
         <div className="flex gap-5">
           <img
+            onClick={() => navigate("/")}
             src={ngefly}
-            className="w-[98px] h-[93px] hidden md:flex lg:flex"
+            className="w-[98px] h-[93px] cursor-pointer"
           />
         </div>
         {!isLoggedIn ? (
