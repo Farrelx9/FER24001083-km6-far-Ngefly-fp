@@ -1,10 +1,9 @@
-import moment from "moment";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import Divider from "../atoms/Divider";
 import { FLIGHT_CLASS } from "../../constant/type";
-import { formatCurrency, getDuration } from "../../lib/function";
+import { dateFormat, formatCurrency, getDuration } from "../../lib/function";
 import { Link } from "react-router-dom";
 
 export default function CardFlight({ index, item }) {
@@ -41,7 +40,7 @@ export default function CardFlight({ index, item }) {
           <div className="flex-1 flex items-center justify-between gap-[12px]">
             <div>
               <p className="font-bold text-sm">
-                {moment(item.flight?.departureAt).format("HH:mm")}
+                {dateFormat(item.flight?.departureAt).format("HH:mm")}
               </p>
               <p className="text-xs">{item.flight?.from_code}</p>
             </div>
@@ -54,7 +53,7 @@ export default function CardFlight({ index, item }) {
             </div>
             <div>
               <p className="font-bold text-sm">
-                {moment(item.flight?.arriveAt).format("HH:mm")}
+                {dateFormat(item.flight?.arriveAt).format("HH:mm")}
               </p>
               <p className="text-xs">{item.flight?.to_code}</p>
             </div>
@@ -91,10 +90,10 @@ export default function CardFlight({ index, item }) {
         <div className="flex justify-between gap-5">
           <div>
             <p className="font-bold">
-              {moment(item.flight?.departureAt).format("HH:mm")}
+              {dateFormat(item.flight?.departureAt).format("HH:mm")}
             </p>
             <p className="text-sm text-gray-500 mb-1">
-              {moment(item.flight?.departureAt).format("DD MMMM YYYY")}
+              {dateFormat(item.flight?.departureAt).format("DD MMMM YYYY")}
             </p>
             <p>{item.flight?.from?.name || ""}</p>
           </div>
@@ -111,17 +110,16 @@ export default function CardFlight({ index, item }) {
             <p className="font-bold">Informasi:</p>
             <p>Baggage {item.flight?.plane?.baggage} kg</p>
             <p>Cabin Baggage {item.flight?.plane?.cabin_baggage} kg</p>
-            <p>In Flight Entertainment</p>
           </div>
         </div>
         <Divider className="my-3 mx-auto max-w-[700px]" />
         <div className="flex justify-between gap-5">
           <div>
             <p className="font-bold">
-              {moment(item.flight?.arriveAt).format("HH:mm")}
+              {dateFormat(item.flight?.arriveAt).format("HH:mm")}
             </p>
             <p className="text-sm text-gray-500 mb-1">
-              {moment(item.flight?.arriveAt).format("DD MMMM YYYY")}
+              {dateFormat(item.flight?.arriveAt).format("DD MMMM YYYY")}
             </p>
             <p>{item.flight?.to?.name || ""}</p>
           </div>

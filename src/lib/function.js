@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export function getDuration(startDateTime, endDateTime) {
   // Parse the datetime strings into Date objects
   const start = new Date(startDateTime);
@@ -46,9 +48,15 @@ export function countDetailAmount(data) {
   const price = data?.flight_class?.price || 0;
 
   // count passengers
-  const adultPassengers = data?.passengers?.filter(item => item.category?.type === "adult")?.length;
-  const childPassengers = data?.passengers?.filter(item => item.category?.type === "child")?.length;
-  const babyPassengers = data?.passengers?.filter(item => item.category?.type === "baby")?.length;
+  const adultPassengers = data?.passengers?.filter(
+    (item) => item.category?.type === "adult"
+  )?.length;
+  const childPassengers = data?.passengers?.filter(
+    (item) => item.category?.type === "child"
+  )?.length;
+  const babyPassengers = data?.passengers?.filter(
+    (item) => item.category?.type === "baby"
+  )?.length;
 
   // set percentage
   const taxPercentage = 5;
@@ -79,4 +87,9 @@ export function countDetailAmount(data) {
     tax: taxAmount,
     total: totalAmount,
   };
+}
+
+export function dateFormat(value) {
+  const date = value ? new Date(value) : new Date();
+  return moment(date).utcOffset("-00:00");
 }

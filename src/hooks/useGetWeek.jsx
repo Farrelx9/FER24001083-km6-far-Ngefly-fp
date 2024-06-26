@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-export default function useGetWeek(fromDate = "") {
-  const [date, setDate] = useState(fromDate);
+export default function useGetWeek(fromDate) {
+  const [date, setDate] = useState(fromDate || new Date());
 
   var sunday = new Date(date.setDate(date.getDate() - date.getDay())),
     result = [new Date(sunday)];

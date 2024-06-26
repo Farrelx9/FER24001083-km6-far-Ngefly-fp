@@ -3,9 +3,7 @@ import Container from "../components/atoms/Container";
 import Layout from "../components/templates/Layout";
 import WeekPicker from "../components/atoms/WeekPicker";
 import Divider from "../components/atoms/Divider";
-import FilterSearch from "../components/molecules/FilterSearch";
 import Loading from "../components/atoms/Loading";
-import Empty from "../components/atoms/Empty";
 import NotFound from "../components/atoms/NotFound";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -13,7 +11,7 @@ import Modal from "../components/atoms/Modal";
 import { Link, useSearchParams } from "react-router-dom";
 import CardFlight from "../components/molecules/CardFlight";
 import { FLIGHT_CLASS } from "../constant/type";
-import moment from "moment";
+import { dateFormat } from "../lib/function";
 
 const OPTION_SORT = [
   {
@@ -90,14 +88,15 @@ export default function Search() {
     page: searchParams.get("page") || 1,
     from: searchParams.get("from") || "", // required from url
     to: searchParams.get("to") || "",
-    p:
-      !isNaN(Number(searchParams.get("adult"))) ||
-      !isNaN(Number(searchParams.get("child"))) ||
-      !isNaN(Number(searchParams.get("baby")))
-        ? Number(searchParams.get("adult") || 0) +
-          Number(searchParams.get("child") || 0) +
-          Number(searchParams.get("baby") || 0)
-        : searchParams.get("p") || 1, // required from url
+    p: searchParams.get("p")
+      ? Number(searchParams.get("p"))
+      : !isNaN(Number(searchParams.get("adult"))) ||
+        !isNaN(Number(searchParams.get("child"))) ||
+        !isNaN(Number(searchParams.get("baby")))
+      ? Number(searchParams.get("adult") || 0) +
+        Number(searchParams.get("child") || 0) +
+        Number(searchParams.get("baby") || 0)
+      : 1, // required from url
     sc: searchParams.get("sc") || "", // required from url
     rt: searchParams.get("rt") || "",
     rd: searchParams.get("rd") || "",
@@ -127,8 +126,6 @@ export default function Search() {
       sc: newValue?.sc || params.sc, // required from url
     });
 
-    // if (newValue?.sc || params.sc)
-    //   urlParams.append("sc", newValue?.sc || params.sc);
     if (newValue?.to || params.to)
       urlParams.append("to", newValue?.to || params.to);
     if (newValue?.rt || params.rt)
@@ -188,9 +185,21 @@ export default function Search() {
   }, [searchParams]);
 
   const changeDate = (date) => {
-    const d = moment(date).format();
+    const d = dateFormat(date).format();
 
     redirect({ d });
+  };
+
+  const totalPassenger = {
+    adult: !isNaN(Number(searchParams.get("adult")))
+      ? Number(searchParams.get("adult"))
+      : 0,
+    child: !isNaN(Number(searchParams.get("child")))
+      ? Number(searchParams.get("child"))
+      : 0,
+    baby: !isNaN(Number(searchParams.get("baby")))
+      ? Number(searchParams.get("baby"))
+      : 0,
   };
 
   return (
@@ -209,8 +218,16 @@ export default function Search() {
                   {" > "}
                   {params.to}{" "}
                 </span>{" "}
-                - <span>{params.p} Penumpang</span> -{" "}
-                <span>{FLIGHT_CLASS[params.sc.toLowerCase()] || ""}</span>
+                -{" "}
+                <span>
+                  {params.p
+                    ? params.p
+                    : totalPassenger.adult +
+                      totalPassenger.child +
+                      totalPassenger.baby}{" "}
+                  Penumpang
+                </span>{" "}
+                - <span>{FLIGHT_CLASS[params.sc.toLowerCase()] || ""}</span>
               </div>
             </div>
             <div
@@ -279,6 +296,53 @@ export default function Search() {
           </div>
         </Container>
       </Layout>
+
+      <Modal
+        open={modal.filter}
+        onClose={() => setModal({ ...modal, filter: false })}
+      >
+        <div className="flex justify-end p-3">
+          <button onClick={() => setModal(false)} className="p-1">
+            <Icon icon="iconamoon:sign-times-bold" width={28} />
+          </button>
+        </div>
+        <div className="flex gap-2 flex-col px-3">
+          <div className="flex items-center justify-between cursor-pointer">
+            <div className="flex items-center gap-2 cursor-pointer py-3">
+              <Icon icon="mynaui:box" width={25} />
+              <span>Transit</span>
+            </div>
+            <Icon icon="octicon:chevron-right-24" width={25} />
+          </div>
+          <Divider />
+          <div className="flex items-center justify-between cursor-pointer">
+            <div className="flex items-center gap-2 cursor-pointer py-3">
+              <Icon icon="tabler:heart" width={25} />
+              <span>Fasilitas</span>
+            </div>
+            <Icon icon="octicon:chevron-right-24" width={25} />
+          </div>
+          <Divider />
+          <div className="flex items-center justify-between cursor-pointer ">
+            <div className="flex items-center gap-2 cursor-pointer py-3">
+              <Icon icon="mynaui:dollar" width={25} />
+              <span>Harga</span>
+            </div>
+            <Icon icon="octicon:chevron-right-24" width={25} />
+          </div>
+        </div>
+        <div className="flex justify-end p-3">
+          <button
+            className="px-10 py-2 rounded-[10px] bg-[#006769] hover:bg-[#104b4c] duration-150 text-white"
+            onClick={() => {
+              setCurrentSort(sort);
+              setModal({ ...modal, sort: false });
+            }}
+          >
+            Pilih
+          </button>
+        </div>
+      </Modal>
       <Modal
         open={modal.filter}
         onClose={() => setModal({ ...modal, filter: false })}
