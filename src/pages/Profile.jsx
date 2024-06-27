@@ -9,6 +9,7 @@ import { MdSettings } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../assets/Properties/Navbar";
 import "animate.css";
+import Footer from "../assets/Properties/Footer";
 
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("Change Profile");
@@ -430,6 +431,7 @@ export default function Profile() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
