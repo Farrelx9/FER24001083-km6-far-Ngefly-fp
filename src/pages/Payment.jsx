@@ -1,7 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import { FaQrcode } from "react-icons/fa";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Navbar from "../assets/Properties/Navbar";
 import Footer from "../assets/Properties/Footer";
@@ -56,7 +61,7 @@ const PaymentMethod = ({
             onClick={onConfirmPayment}
             className="w-full bg-[#006769] text-white py-3 rounded-lg"
           >
-            Cek Status Pembayaran
+            Bayar
           </button>
 
           {/* Separator with "or" */}
@@ -83,6 +88,7 @@ const Payment = () => {
   // const { flights_id } = useParams();
   const flights_id = "d32d9883-004f-4406-824d-16fb1f768a14";
   const booking_id = "1af91650-78b8-4b31-9f59-996038e4259c";
+  const navigate = useNavigate(); // Correct usage inside the functional component
   const [showQRIS, setShowQRIS] = useState(false);
   // const [taxData, setTaxData] = useState(null);
   const [flightData, setFlightData] = useState([]);
@@ -182,19 +188,53 @@ const Payment = () => {
   //   return totalBasePrice + taxAmount;
   // };
 
+  // const handleConfirmPayment = async () => {
+  //   try {
+  //     const payment_id = "5320e389-75b5-447f-b302-4c4852b9ce0a"; // Replace with actual payment ID
+  //     const response = await axios.put(
+  //       `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`,
+  //       { status: "PAID" }
+  //     );
+  //     console.log("Payment confirmed:", response.data);
+  //     alert("Payment successful!");
+  //     window.location.reload(); // Refresh the page upon successful payment
+  //   } catch (error) {
+  //     console.error("Error confirming payment:", error);
+  //     alert("Error confirming payment. Please try again.");
+  //   }
+  // };
+
+  // const handleConfirmPayment = async () => {
+  //   try {
+  //     const payment_id = "5320e389-75b5-447f-b302-4c4852b9ce0a"; // Ganti dengan ID pembayaran yang sebenarnya
+  //     const response = await axios.put(
+  //       `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`,
+  //       { status: "PAID" }
+  //     );
+  //     console.log("Payment confirmed:", response.data);
+  //     alert("Pembayaran berhasil!");
+  //     navigate("/tickectconfirm"); // Mengarahkan pengguna ke halaman konfirmasi tiket
+  //   } catch (error) {
+  //     console.error("Error confirming payment:", error);
+  //     alert("Gagal mengonfirmasi pembayaran. Silakan coba lagi.");
+  //   }
+  // };
+
   const handleConfirmPayment = async () => {
     try {
-      const payment_id = "5320e389-75b5-447f-b302-4c4852b9ce0a"; // Replace with actual payment ID
+      const payment_id = "5320e389-75b5-447f-b302-4c4852b9ce0a"; // Replace with the actual payment ID
       const response = await axios.put(
         `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`,
         { status: "PAID" }
       );
       console.log("Payment confirmed:", response.data);
-      alert("Payment successful!");
-      window.location.reload(); // Refresh the page upon successful payment
+      alert("Pembayaran berhasil!");
+
+      const ticketId = response.data.ticketId; // Assuming the response contains a ticketId
+      navigate(`/ticketconfirm/${payment_id}`); // Redirect with the correct path
     } catch (error) {
       console.error("Error confirming payment:", error);
-      alert("Error confirming payment. Please try again.");
+      alert("Gagal mengonfirmasi pembayaran. Silakan coba lagi.");
     }
   };
 
