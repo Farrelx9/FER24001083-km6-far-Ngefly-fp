@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ngefly from "../logo/ngefly.png"
+import ngefly from "../logo/ngefly.png";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
 import pesawatbawah from "../logo/pesawatbawah.png";
@@ -16,7 +16,7 @@ export default function VerifyEmail() {
     async function verifyAccount() {
       try {
         const response = await fetch(
-          `https://binar-project-backend-staging.vercel.app/api/v1/auth/verify/${token}`,
+          `https://binar-project-426902.et.r.appspot.com/api/v1/auth/verify/${token}`,
           {
             method: "PUT",
             headers: {
@@ -28,7 +28,7 @@ export default function VerifyEmail() {
 
         setLoading(false);
         if (result.status) {
-          console.log(result)
+          console.log(result);
           alert(result.message);
           setResult(result.data || null);
           setSuccess(true);
@@ -80,7 +80,10 @@ export default function VerifyEmail() {
               />
               <div>
                 <p className="font-bold text-3xl mb-2">
-                  Hi <span className="text-[#35b950]">{result?.user?.name || ''}</span>
+                  Hi{" "}
+                  <span className="text-[#35b950]">
+                    {result?.user?.name || ""}
+                  </span>
                 </p>
                 <p>Your account is verified. Enjoy the journey.</p>
               </div>
@@ -103,7 +106,6 @@ export default function VerifyEmail() {
                 <p className="text-sm md:text-base text-gray-600 mb-6">
                   Verify token expired or invalid. Please try resend
                   verification email again
-
                 </p>
               </div>
             </div>
