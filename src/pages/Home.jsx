@@ -193,13 +193,13 @@ export default function Home() {
             className="w-full h-[600px] object-cover rounded-b-2xl"
           />
         </div>
-        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[120px] sm:bottom-[150px] ">
-          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[568px] sm:w-[100px] lg:h-[298px] md:h-[448px] sm:h-[598px] ">
-            <div className="flex  font-semibold p-2 gap-2 mt-4 mb-6 px-10">
-              <div className="lg:text-2xl md:text-xl sm:text-sm">
+        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[120px] bottom-[100px] ">
+          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[568px] sm:w-[100px] lg:h-[298px] md:h-[448px] h-[448px] ">
+            <div className="flex items-center font-semibold p-2 gap-2 mt-4 mb-6 px-10">
+              <div className="lg:text-2xl md:text-xl text-sm">
                 Choose a Special Flight Schedule on
               </div>
-              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl sm:text-sm">
+              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl text-sm">
                 Ngefly!
               </div>
             </div>
@@ -569,7 +569,7 @@ export default function Home() {
         </div>
       </Modal>
       <div>
-        <div className="text-xl font-semibold ms-20 mb-2">
+        <div className="text-xl font-semibold lg:ms-20 md:ms-14 ms-10 mb-2">
           Favorite Destination
         </div>
         <Carousel fromAirportCode={inputValue.split(" - ")[0]} />
