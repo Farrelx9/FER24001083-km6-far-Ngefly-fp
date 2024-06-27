@@ -4,10 +4,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import { Icon } from "@iconify/react";
+import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function Carousel({ fromAirportCode }) {
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -23,7 +26,7 @@ export default function Carousel({ fromAirportCode }) {
       setTimeout(() => {
         setFetchFavoriteFlights(flightsData);
         setIsLoading(false);
-      }, 2000);
+      }, 500);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
       setIsLoading(false);
@@ -49,6 +52,25 @@ export default function Carousel({ fromAirportCode }) {
     return date.toLocaleDateString("en-CA", options);
   };
 
+  const handleCarouselClick = (flight) => {
+    const params = {
+      from: flight.from.airport_code,
+      to: flight.to.airport_code,
+      p: 1,
+      sc: "ECONOMY",
+      page: 1,
+      d: new Date(flight.departureAt).toISOString(),
+      rt: "false", // Set rt to false for all favorites
+    };
+
+    const queryString = new URLSearchParams(params).toString();
+
+    setTimeout(() => {
+      toast.success("Lets go to favorite flight!");
+      navigate(`/search?${queryString}`);
+    }, 2000);
+  };
+
   const settings = {
     dots: true,
     infinite: false,
@@ -62,7 +84,7 @@ export default function Carousel({ fromAirportCode }) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
+          infinite: false,
           dots: true,
         },
       },
@@ -86,6 +108,7 @@ export default function Carousel({ fromAirportCode }) {
 
   return (
     <div className="bg-none mb-16 px-20 ">
+      <ToastContainer />
       {isLoading ? (
         <div className="flex flex-col items-center justify-center h-full mt-20">
           <Icon
@@ -99,13 +122,17 @@ export default function Carousel({ fromAirportCode }) {
       ) : (
         <Slider {...settings}>
           {fetchFavoriteFlights.map((flight) => (
-            <div key={flight.id} className="px-4 py-4">
-              <div className="max-w-xs mx-auto h-[300px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
+            <div
+              key={flight.id}
+              className="lg:px-6 md:px-3 px-0 lg:py-8 md:py-8 py-12 lg:gap-0 md:gap-10 "
+            >
+              <div className="lg:w-[270px] md:w-[200px] w-[230px] lg:h-[300px] md:h-[300px] h-[300px]  bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
                 <div className="relative">
                   <img
                     className="object-cover w-full h-[150px]"
                     src={flight.to.image_url}
                     alt={flight.title}
+                    onClick={() => handleCarouselClick(flight)}
                   />
                 </div>
                 <div className="p-4">
