@@ -35,9 +35,12 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/history" element={<History />} />
         <Route path="/payment" element={<Payment />} />
-        <Route path="/payments/:payment_id" element={<TicketConfirmation />} />
+        <Route
+          path="/ticketconfirm/:payment_id"
+          element={<TicketConfirmation />}
+        />
         <Route path="/aboutus" element={<AboutUs />} />
-        <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+        <Route path="/payments/:payment_id" element={<PaymentSuccess />} />
       </Routes>
     </Router>
   );
