@@ -1,5 +1,5 @@
 .tailwind-datepicker {
-  @apply w-full flex justify-center gap-5;
+  @apply w-full flex lg:flex md:flex flex-col lg:flex-row md:flex-row justify-center gap-5;
 }
 
 .react-datepicker {

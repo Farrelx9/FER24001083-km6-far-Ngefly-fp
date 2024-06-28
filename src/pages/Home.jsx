@@ -175,7 +175,7 @@ export default function Home() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setActiveImage((prevActiveImage) => (prevActiveImage % 3) + 1);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -189,16 +189,16 @@ export default function Home() {
           <img
             src={images[activeImage - 1]}
             alt="Background"
-            className=" w-full h-[600px] object-cover rounded-b-2xl"
+            className=" w-full lg:h-[600px] md:h-[500px] h-[400px] object-cover rounded-b-2xl"
           />
         </div>
-        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[120px] bottom-[100px] ">
-          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[538px] w-[370px] lg:h-[298px] md:h-[448px] h-[438px] ">
+        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[100px] bottom-[70px] ">
+          <div className="shadow-2xl lg:rounded-lg md:rounded-xl rounded-2xl bg-[#FFFFFF] lg:w-[968px] md:w-[538px] w-[370px] lg:h-[298px] md:h-[448px] h-[438px] ">
             <div className="flex items-center font-semibold p-2 gap-1 mt-4 mb-6 lg:px-10 md:px-10 px-10">
-              <div className="lg:text-2xl md:text-xl text-sm lg:w-[400px] md:w-[335px] w-[245px] ">
+              <div className="lg:text-2xl md:text-xl text-sm lg:w-[400px] md:w-[330px] w-[230px] ">
                 Choose a Special Flight Schedule on
               </div>
-              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl text-sm lg:w-[35px] md:w-[25px] w-[5px]">
+              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl text-sm lg:w-[15px] md:w-[10px] w-[5px]">
                 Ngefly!
               </div>
             </div>
@@ -306,7 +306,7 @@ export default function Home() {
                 </div>
               </li>
               <button
-                className="bg-[#40A578] lg:w-[968px] md:w-[538px] w-[370px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
+                className="bg-[#40A578] lg:w-[968px] md:w-[538px] w-[370px] shadow-xl font-semibold text-lg h-[48px] lg:rounded-b-lg md:rounded-b-xl rounded-b-2xl text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
                 onClick={handleSearch}
               >
                 Search for Flight
@@ -325,7 +325,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Masukkan Kota atau Negara"
-              className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+              className="lg:w-[630px] md:w-[630px] w-[350px] h-[40px] border-2 border-gray-300 pl-8 p-2"
               value={inputValue}
               onChange={(e) => {
                 setInputValue(e.target.value);
@@ -377,7 +377,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Masukkan Kota atau Negara"
-              className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+              className="lg:w-[630px] md:w-[630px] w-[350px] h-[40px] border-2 border-gray-300 pl-8 p-2"
               value={inputValue2}
               onChange={(e) => {
                 setInputValue2(e.target.value);
@@ -441,9 +441,11 @@ export default function Home() {
       <Modal isVisible={showModal4} onClose={() => setShowModal4(false)}>
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-">
               <BsPersonRaisedHand size={20} />
-              <span className="font-semibold">Adult (12 years old above)</span>
+              <span className="font-semibold lg:text-base md:text-base text-sm">
+                Adult (12 years old above)
+              </span>
             </div>
             <div className="flex items-center">
               <button
@@ -464,7 +466,9 @@ export default function Home() {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <FaChild size={20} />
-              <span className="font-semibold">Child (2 - 11 years old)</span>
+              <span className="font-semibold lg:text-base md:text-base text-sm">
+                Child (2 - 11 years old)
+              </span>
             </div>
             <div className="flex items-center">
               <button
@@ -485,7 +489,9 @@ export default function Home() {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <FaBaby size={20} />
-              <span className="font-semibold">Baby (Under 2 years old)</span>
+              <span className="font-semibold lg:text-base md:text-base text-sm">
+                Baby (Under 2 years old)
+              </span>
             </div>
             <div className="flex items-center">
               <button

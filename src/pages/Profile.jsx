@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "../assets/Properties/Navbar";
 import "animate.css";
 import Footer from "../assets/Properties/Footer";
+import { PacmanLoader } from "react-spinners";
 
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("Change Profile");
@@ -23,10 +24,18 @@ export default function Profile() {
     password: "",
     confirm: "",
   });
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
+      const token = localStorage.getItem("token");
+      if (token === null) {
+        setTimeout(() => {
+          navigate("/login", { state: { fromProfile: true } });
+        }, 3000);
+        return;
+      }
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
@@ -52,6 +61,7 @@ export default function Profile() {
             email: profileData.email || "",
             isVerified: profileData.is_verified || false,
           });
+          setIsReady(true);
           console.log("Profile data:", profileData);
         } else {
           throw new Error("Profile data is missing");
@@ -168,6 +178,14 @@ export default function Profile() {
     setTempPasswords({ password: newPassword, confirm: confirmPassword });
     setIsResetConfirmationVisible(true);
   };
+
+  if (isReady === false) {
+    return (
+      <div className="flex items-center justify-center bg-[#9DDE8B] h-screen">
+        <PacmanLoader size={70} color={"#006769"} loading={true} />
+      </div>
+    );
+  }
 
   return (
     <div>
