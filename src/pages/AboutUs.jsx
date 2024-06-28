@@ -6,7 +6,6 @@ import Vina from "../assets/images/Vina.png";
 import IKetut from "../assets/images/I Ketut Krisna.png";
 import Nesvia from "../assets/images/Nesvia Nissa Artanti .jpg";
 import { FaHeadset, FaMoneyBill, FaShieldAlt } from "react-icons/fa";
-import Footer from "../assets/Properties/Footer";
 
 const AdvantageSection = () => {
   return (
@@ -213,7 +212,6 @@ function App() {
   return (
     <div className="App">
       <AboutUsAndTeam />
-      <Footer />
     </div>
   );
 }

@@ -15,7 +15,7 @@ const Footer = () => {
         background: "linear-gradient(#006769, #006769, #9DDE8B, #D6FFDE)",
         color: "#f8f9fa",
         fontFamily: "'Montserrat', sans-serif",
-        width: "103%",
+        width: "100%",
         position: "relative",
         top: 20,
         bottom: 0,
