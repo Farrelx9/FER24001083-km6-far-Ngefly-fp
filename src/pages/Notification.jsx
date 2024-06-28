@@ -19,7 +19,7 @@ export default function NotificationPage() {
   const [tempFilter, setTempFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-
+  const API_URL = process.env.API_URL;
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -29,15 +29,12 @@ export default function NotificationPage() {
         }, 3000);
         return;
       }
-      const response = await axios.get(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/notification/`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/notification/`, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("response.data", response.data);
       const notifications = response.data.data;
       if (Array.isArray(notifications)) {
@@ -68,7 +65,7 @@ export default function NotificationPage() {
 
       if (notificationToMark) {
         const response = await axios.put(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/notification/read`,
+          `${API_URL}/notification/read`,
           { id: notificationId },
           {
             headers: {

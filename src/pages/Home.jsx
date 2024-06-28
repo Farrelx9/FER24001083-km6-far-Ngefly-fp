@@ -51,17 +51,15 @@ export default function Home() {
   const [activeImage, setActiveImage] = useState(1);
   const navigate = useNavigate();
   const images = [bg1, bg2, bg3];
+  const API_URL = process.env.API_URL;
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/airport`,
-        {
-          headers: {
-            accept: "application/json",
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/airport`, {
+        headers: {
+          accept: "application/json",
+        },
+      });
       console.log("response.data", response.data);
       setAirportSuggestions(response.data.data);
     } catch (error) {
@@ -157,6 +155,9 @@ export default function Home() {
       p: totalPassengers,
       sc: selectedClass.toUpperCase().replace(" ", "_"),
       page: 1,
+      adult: adult,
+      child: child,
+      baby: baby,
     };
 
     const params = {

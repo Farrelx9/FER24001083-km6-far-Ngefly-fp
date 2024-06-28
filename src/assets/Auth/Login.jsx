@@ -23,7 +23,7 @@ export default function Login() {
   const [isEmailVerified, setIsEmailVerified] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const API_URL = process.env.API_URL;
   useEffect(() => {
     localStorage.removeItem("token");
   }, []);
@@ -90,7 +90,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/auth/login`,
+        `${API_URL}/auth/login`,
         {
           email: email,
           password: password,
