@@ -24,6 +24,7 @@ import AboutUs from "./AboutUs";
 import bg1 from "../assets/images/bg1.jpg";
 import bg2 from "../assets/images/bg2.jpg";
 import bg3 from "../assets/images/bg3.jpg";
+import Footer from "../assets/Properties/Footer";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -189,7 +190,7 @@ export default function Home() {
           <img
             src={images[activeImage - 1]}
             alt="Background"
-            className=" w-full lg:h-[600px] md:h-[500px] h-[400px] object-cover rounded-b-2xl"
+            className=" w-full lg:h-[600px] md:h-[500px] h-[400px] object-cover rounded-b-xl"
           />
         </div>
         <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[100px] bottom-[70px] ">
@@ -580,6 +581,7 @@ export default function Home() {
         <Carousel fromAirportCode={inputValue.split(" - ")[0]} />
       </div>
       <AboutUs />
+      <Footer />
     </Fragment>
   );
 }
