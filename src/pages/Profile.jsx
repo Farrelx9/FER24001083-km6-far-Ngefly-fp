@@ -26,6 +26,7 @@ export default function Profile() {
   });
   const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.API_URL;
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -38,15 +39,12 @@ export default function Profile() {
       }
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
-          {
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/profile/`, {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log("Response data:", response.data);
 
         if (response.data && response.data.data) {
@@ -121,16 +119,12 @@ export default function Profile() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
-        updatedData,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.put(`${API_URL}/profile/`, updatedData, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.data && response.data.status) {
         setProfileData(response.data.data || updatedData);
@@ -150,7 +144,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/changepassword",
+        `${API_URL}/auth/changepassword`,
         {
           password,
           confirm,

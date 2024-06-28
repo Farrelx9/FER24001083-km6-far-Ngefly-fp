@@ -6,11 +6,11 @@ import { FcGoogle } from "react-icons/fc";
 
 function GoogleLogin({ buttonText }) {
   const navigate = useNavigate();
-
+  const API_URL = process.env.API_URL;
   const registerLoginWithGoogleAction = async (accessToken) => {
     try {
       const response = await axios.post(
-        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/googlelogin",
+        `${API_URL}/auth/googlelogin`,
         { access_token: accessToken },
         { headers: { "Content-Type": "application/json" } }
       );

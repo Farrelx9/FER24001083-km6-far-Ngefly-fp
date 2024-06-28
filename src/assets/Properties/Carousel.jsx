@@ -10,12 +10,13 @@ export default function Carousel({ fromAirportCode }) {
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.API_URL;
 
   const fetchData = async () => {
     setIsLoading(true);
     const url = fromAirportCode
-      ? `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite?from=${fromAirportCode}`
-      : `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite`;
+      ? `${API_URL}/flight/favorite?from=${fromAirportCode}`
+      : `${API_URL}/flight/favorite`;
     try {
       const response = await axios.get(url, {
         headers: { accept: "application/json" },
@@ -25,7 +26,7 @@ export default function Carousel({ fromAirportCode }) {
       setTimeout(() => {
         setFetchFavoriteFlights(flightsData);
         setIsLoading(false);
-      }, 500);
+      }, 2000);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
       setIsLoading(false);
@@ -117,7 +118,7 @@ export default function Carousel({ fromAirportCode }) {
           {fetchFavoriteFlights.map((flight) => (
             <div
               key={flight.id}
-              className="lg:px-12 md:px-3 px-10 py-8 lg:pb-4 md:pb-0 pb-12  "
+              className="lg:px-12 md:px-3 px-10 py-8 lg:pb-4 md:pb-4 pb-12  "
             >
               <div className="lg:w-[230px] md:w-[200px] w-[180px] lg:h-[300px] md:h-[300px] h-[240px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
                 <div className="relative">
