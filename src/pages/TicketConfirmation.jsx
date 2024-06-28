@@ -4,6 +4,8 @@ import { jsPDF } from "jspdf";
 import jsBarcode from "jsbarcode";
 import vector from "../assets/logo/vector.png";
 import { useParams } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import Navbar from "../assets/Properties/Navbar";
 // import logo from "../assets/logo/logo.png"; // Make sure you have the correct path to your logo
 
 function TicketConfirmation() {
@@ -15,7 +17,7 @@ function TicketConfirmation() {
 
   useEffect(() => {
     const updatePaymentStatus = async () => {
-      const payment_id = "9cdf6d28-4989-4e1c-be34-61e4001e32d6"; // Replace with actual payment ID
+      // const payment_id = "ba792a12-5145-4982-b43a-b635de92c6cf"; // Replace with the actual payment ID
       const url = `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`;
 
       setLoading(true);
@@ -40,7 +42,7 @@ function TicketConfirmation() {
             seat: "Seat Number",
             date: "Date and Time",
           });
-          alert("Payment status updated successfully.");
+          toast.success("Payment status updated successfully.");
         }
       } catch (error) {
         if (error.response) {
@@ -48,35 +50,41 @@ function TicketConfirmation() {
 
           if (status === 404) {
             setErrorMessage("Payment not found. Please check your payment ID.");
-            alert("Payment not found. Please check your payment ID.");
-          } else if (status === 409) {
+            toast.error("Payment not found. Please check your payment ID.");
+          } else if (status === 400) {
             if (data.message === "Payment already expired") {
               setErrorMessage(
                 "Payment already expired. Please make a new payment."
               );
-              alert("Payment already expired. Please make a new payment.");
+              toast.error(
+                "Payment already expired. Please make a new payment."
+              );
             } else if (data.message === "Payment data not found") {
               setErrorMessage(
                 "Payment data not found. Please check your payment details."
               );
-              alert(
+              toast.error(
                 "Payment data not found. Please check your payment details."
               );
             } else {
               setErrorMessage("Payment already updated.");
-              alert("Payment already updated.");
+              toast.error("Payment already updated.");
             }
           } else {
             setErrorMessage(
               "An unexpected error occurred. Please try again later."
             );
-            alert("An unexpected error occurred. Please try again later.");
+            toast.error(
+              "An unexpected error occurred. Please try again later."
+            );
           }
         } else {
           setErrorMessage(
             "Failed to connect to the server. Please try again later."
           );
-          alert("Failed to connect to the server. Please try again later.");
+          toast.error(
+            "Failed to connect to the server. Please try again later."
+          );
         }
       } finally {
         setLoading(false);
@@ -354,19 +362,10 @@ function TicketConfirmation() {
 
   return (
     <div className="bg-white min-h-screen flex flex-col items-center p-4">
-      <header className="w-full max-w-4xl flex items-center justify-between p-4">
-        <div className="flex items-center space-x-2">
-          {/* <img src={logo} alt="Tiketku Logo" className="w-16 h-auto" /> */}
-          <div className="text-2xl font-bold text-purple-600">Tiketku</div>
-        </div>
-        <input
-          type="text"
-          placeholder="Cari di sini ..."
-          className="p-2 w-1/3 border rounded"
-        />
-      </header>
+      <Navbar />
+      <ToastContainer />
 
-      <div className="w-full max-w-8xl border-t border-gray-300 mt-4"></div>
+      <div className="w-full max-w-8xl border-t border-gray-300 mt-20"></div>
 
       <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-4">
         <span className="text-black font-semibold">Isi Data Diri</span>
@@ -382,7 +381,7 @@ function TicketConfirmation() {
         </div>
       )}
 
-      <p>Payment ID: {payment_id}</p>
+      {/* <p>Payment ID: {payment_id}</p> */}
 
       {paymentStatus === "success" && (
         <div className="w-full max-w-3xl bg-[#73CA5C] text-white p-3 mt-4 rounded-lg text-center">
