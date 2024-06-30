@@ -212,12 +212,12 @@ const Payment = () => {
   //   }
   // }, []);
 
-  useEffect(() => {
-    if (!localStorage.getItem("token"))
-      toast.error("Anda harus login untuk mengakses halaman ini!");
+  // useEffect(() => {
+  //   if (!localStorage.getItem("token"))
+  //     toast.error("Anda harus login untuk mengakses halaman ini!");
 
-    navigate("/login");
-  }, []);
+  //   navigate("/login");
+  // }, []);
 
   return (
     <Fragment>
