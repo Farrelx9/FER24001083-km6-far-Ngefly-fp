@@ -111,8 +111,7 @@ export default function Register() {
       );
       console.log("response", response);
       if (response?.status === 201) {
-        localStorage.setItem("userEmail", response.data.data.user.email); // Simpan email ke localStorage
-        navigate("/sendverif");
+        navigate(`/sendverif/${email}`);
         alert(
           `Register Sukses, ${name}. Silakan Verifikasi Email terlebih dahulu agar bisa melakukan login`
         );

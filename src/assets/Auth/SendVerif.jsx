@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import cover from "../logo/cover.png";
 import pesawatatas from "../logo/pesawatatas.png";
@@ -6,19 +6,24 @@ import pesawatbawah from "../logo/pesawatbawah.png";
 import ngefly from "../logo/ngefly.png";
 import Confirmed from "../Background/Confirmed.png";
 import { Icon } from "@iconify/react";
+import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const SendVerif = () => {
-  const [email, setEmail] = useState(localStorage.getItem("userEmail") || "");
   const [seconds, setSeconds] = useState(0);
   const [loading, setLoading] = useState(false);
   const [startCountdown, setStartCountdown] = useState(false);
+  const [notification, setNotification] = useState({ message: "", type: "" });
   const intervalRef = useRef();
+  const { email } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
+    if (email) {
+      handleResend(); // Automatically resend email if email param is present
+    }
     return () => clearInterval(intervalRef.current);
-  }, []);
+  }, [email]);
 
   const startTimer = () => {
     setSeconds(60);
@@ -44,8 +49,7 @@ const SendVerif = () => {
       if (response.status === 200) {
         startTimer();
         setStartCountdown(true);
-        toast.success(response.data.message);
-        localStorage.removeItem("userEmail");
+        setNotification({ message: response.data.message, type: "success" });
       }
     } catch (error) {
       if (error.response) {
@@ -53,26 +57,30 @@ const SendVerif = () => {
 
         if (status === 404) {
           toast.error("Account not found. Please check your email address.");
+          navigate("/register"); // Redirect to login or any other page
         } else if (status === 409) {
-          toast.warning("Account already verified.");
+          toast.error("Account already verified.");
+          navigate("/register"); // Redirect to login or any other page
         } else {
-          toast.error("An unexpected error occurred. Please try again later.");
+          setNotification({
+            message: "An unexpected error occurred. Please try again later.",
+            type: "register",
+          });
         }
       } else {
-        toast.error("Failed to connect to the server. Please try again later.");
+        setNotification({
+          message: "Failed to connect to the server. Please try again later.",
+          type: "error",
+        });
       }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleManualResend = () => {
-    handleResend();
-  };
-
   return (
     <div
-      className="bg-white relative min-h-screen flex flex-col items-center justify-center"
+      className="bg-white relative min-h-screen flex flex-col items-center justify-center p-4"
       style={{
         backgroundImage: `url(${cover})`,
         backgroundSize: "cover",
@@ -87,32 +95,31 @@ const SendVerif = () => {
       />
       <img
         src={ngefly}
-        className="w-60 h-60 md:w-60 md:h-60 absolute top-2 md:top-4"
+        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
         alt="Ngefly"
       />
-
       <img
         src={pesawatatas}
         className="hidden md:block w-32 h-32 md:w-64 md:h-64 absolute top-4 right-4"
         alt="Pesawat Atas"
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-[453px] absolute top-[60%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:h-auto max-sm:max-w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-xl p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div className="text-2xl font-bold mb-4">Kirim Verifikasi Email</div>
         <div className="flex flex-col justify-center items-center text-center mb-4">
           <div className="bg-green-300 text-white p-2 rounded-full inline-block mb-4">
             <img
               src={Confirmed}
               alt="Confirmed"
-              className="w-24 h-24 md:w-48 md:h-48 object-cover rounded-full"
+              className="w-48 h-48 md:w-48 md:h-48 object-cover rounded-full"
             />
           </div>
-          <p className="text-sm md:text-base text-gray-600 mb-6">
+          <p className="text-sm md:text-base text-gray-600 mb-6 sm:text-base">
             Klik tombol di bawah untuk mengirim email verifikasi ke akun Anda.
           </p>
         </div>
         <button
           type="submit"
-          onClick={handleManualResend}
+          onClick={handleResend}
           className="bg-[#006769] text-white rounded-lg w-full min-h-[48px] px-2 py-3 flex items-center justify-center gap-3"
           disabled={loading || (startCountdown && seconds !== 0)}
         >
@@ -127,6 +134,29 @@ const SendVerif = () => {
           )}
         </button>
       </div>
+
+      {notification.message && (
+        <div
+          style={{
+            backgroundColor:
+              notification.type === "success"
+                ? "#73CA5C"
+                : notification.type === "error"
+                ? "#FF0000"
+                : "#FFA500",
+            color: "white",
+            padding: "10px 20px",
+            borderRadius: "10px",
+            position: "absolute",
+            top: `calc(436px + 453px / 2 + 20px)`,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1000,
+          }}
+        >
+          {notification.message}
+        </div>
+      )}
     </div>
   );
 };
