@@ -83,6 +83,7 @@ export default function Search() {
     sort: false,
     filter: false,
   });
+  const API_URL = process.env.API_URL;
 
   // set default value untuk search
   const params = {
@@ -161,8 +162,7 @@ export default function Search() {
 
     try {
       const response = await fetch(
-        "https://binar-project-426902.et.r.appspot.com/api/v1/flight?" +
-          urlParams,
+        `${API_URL}/flight?` + urlParams,
         {
           method: "GET",
           headers: {

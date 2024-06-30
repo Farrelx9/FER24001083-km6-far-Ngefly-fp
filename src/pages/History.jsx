@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import Layout from "../components/templates/Layout";
 import Container from "../components/atoms/Container";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Divider from "../components/atoms/Divider";
 import { countDetailAmount, dateFormat, formatCurrency } from "../lib/function";
@@ -13,6 +13,7 @@ import NotFound from "../components/atoms/NotFound";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../assets/styles/datepicker.css";
+import { PacmanLoader } from "react-spinners";
 
 const OPTION_FILTER = [
   {
@@ -41,6 +42,8 @@ export default function History() {
   const [loading, setLoading] = useState(true);
   const [modal, setModal] = useState(false);
   const [modalFilter, setModalFilter] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const API_URL = process.env.API_URL;
 
   const params = {
     page: searchParams.get("page") || 1,
@@ -106,12 +109,19 @@ export default function History() {
   const fetchData = async () => {
     const urlParams = createParamsString();
 
+    const token = localStorage.getItem("token");
+      if (token === null) {
+        setTimeout(() => {
+          navigate("/login", { state: { fromHistory: true } });
+        }, 2000);
+        return;
+      }
+
     setLoading(true);
     console.log("urlParams", urlParams);
     try {
       const response = await fetch(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/?` +
-          urlParams,
+        `${API_URL}/bookings/?` + urlParams,
         {
           method: "GET",
           headers: {
@@ -125,6 +135,7 @@ export default function History() {
       if (response.status === 404) {
         return;
       }
+      setIsReady(true)
 
       if (response.status === 200 && result.status) {
         const data = result.data.bookings || [];
@@ -166,6 +177,14 @@ export default function History() {
 
   const amount = countDetailAmount(selected);
 
+  if (isReady === false) {
+    return (
+      <div className="flex items-center justify-center bg-[#9DDE8B] h-screen">
+        <PacmanLoader size={70} color={"#006769"} loading={true} />
+      </div>
+    );
+  }
+  
   return (
     <>
       <Layout>

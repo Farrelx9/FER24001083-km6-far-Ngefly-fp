@@ -14,6 +14,7 @@ export default function Request() {
   const [seconds, setSeconds] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const API_URL = process.env.API_URL;
 
   useEffect(() => {
     console.log(seconds);
@@ -33,7 +34,7 @@ export default function Request() {
 
     try {
       const response = await fetch(
-        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/forgotpassword",
+        `${API_URL}/auth/forgotpassword`,
         {
           method: "POST",
           headers: {
@@ -75,7 +76,7 @@ export default function Request() {
     >
       <img
         src={pesawatbawah}
-        className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
+        className="w-[249px] h-[194px] md:hidden lg:flex hidden absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <img
         src={ngefly}
@@ -83,7 +84,7 @@ export default function Request() {
       />
       <img
         src={pesawatatas}
-        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
+        className="w-[249px] h-[194px] md:hidden lg:flex hidden absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-fit absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>

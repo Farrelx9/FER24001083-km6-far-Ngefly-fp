@@ -21,6 +21,7 @@ export default function ResetPassword() {
   const [passwordError, setPasswordError] = useState("");
   const [showPassword1, setShowPassword1] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
+  const API_URL = process.env.API_URL;
 
   const handleSubmit = async () => {
     if (form.newPassword1.length < MIN_CHARACTER || form.newPassword2.length < MIN_CHARACTER) {
@@ -36,7 +37,7 @@ export default function ResetPassword() {
 
       try {
         const response = await fetch(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/auth/resetpassword/${token}`,
+          `${API_URL}/auth/resetpassword/${token}`,
           {
             method: "POST",
             headers: {
@@ -77,7 +78,7 @@ export default function ResetPassword() {
     >
       <img
         src={pesawatbawah}
-        className="w-[249px] h-[194px] absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
+        className="w-[249px] h-[194px] md:hidden lg:flex hidden absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <img
         src={ngefly}
@@ -85,7 +86,7 @@ export default function ResetPassword() {
       />
       <img
         src={pesawatatas}
-        className="w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
+        className="w-[249px] h-[194px] md:hidden lg:flex hidden absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-fit absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
