@@ -77,7 +77,7 @@ export default function PaymentStatus() {
     const token = localStorage.getItem("token");
     if (!token && navigate) {
       navigate("/login");
-      toast.error("You've to Login First!");
+      alert("You've to Login First!");
     }
   }, [navigate]);
 

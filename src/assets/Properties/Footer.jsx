@@ -198,7 +198,7 @@ const Footer = () => {
           {" "}
           <div className="text-sm mt-3">
             {" "}
-            <strong style={{ color: "#D6FFDE", fontSize: "1rem" }}>
+            <strong style={{ color: "#006769", fontSize: "1rem" }}>
               © {new Date().getFullYear()} Ngefly.com | Hak Cipta Dilindungi
             </strong>
           </div>
