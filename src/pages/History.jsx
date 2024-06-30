@@ -1,7 +1,12 @@
 import { Fragment, useEffect, useState } from "react";
 import Layout from "../components/templates/Layout";
 import Container from "../components/atoms/Container";
-import { Link, useLocation, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Divider from "../components/atoms/Divider";
 import { countDetailAmount, dateFormat, formatCurrency } from "../lib/function";
@@ -34,8 +39,7 @@ const OPTION_FILTER = [
   },
 ];
 export default function History() {
-  const token = window?.localStorage?.getItem("token") || "";
-
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [selected, setSelected] = useState(null);
   const [list, setList] = useState([]);
@@ -110,34 +114,31 @@ export default function History() {
     const urlParams = createParamsString();
 
     const token = localStorage.getItem("token");
-      if (token === null) {
-        setTimeout(() => {
-          navigate("/login", { state: { fromHistory: true } });
-        }, 2000);
-        return;
-      }
+    if (token === null) {
+      setTimeout(() => {
+        navigate("/login", { state: { fromHistory: true } });
+      }, 2000);
+      return;
+    }
 
     setLoading(true);
     console.log("urlParams", urlParams);
     try {
-      const response = await fetch(
-        `${API_URL}/bookings/?` + urlParams,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/bookings/?` + urlParams, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const result = await response.json();
       setLoading(false);
       if (response.status === 404) {
         return;
       }
-      setIsReady(true)
 
       if (response.status === 200 && result.status) {
+        setIsReady(true);
         const data = result.data.bookings || [];
 
         // group by month
@@ -162,6 +163,7 @@ export default function History() {
       }
     } catch (error) {
       setLoading(false);
+      setIsReady(false);
       console.error("Error:", error);
     }
   };
@@ -169,11 +171,6 @@ export default function History() {
   useEffect(() => {
     fetchData();
   }, [searchParams]);
-
-  if (!token) {
-    window.location.href = "/login";
-    return <></>;
-  }
 
   const amount = countDetailAmount(selected);
 
@@ -184,7 +181,7 @@ export default function History() {
       </div>
     );
   }
-  
+
   return (
     <>
       <Layout>
