@@ -5,13 +5,14 @@ import cover from "../assets/logo/cover.png";
 import pesawatatas from "../assets/logo/pesawatatas.png";
 import pesawatbawah from "../assets/logo/pesawatbawah.png";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PaymentStatus() {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const { payment_id } = useParams();
+  const navigate = useNavigate();
 
   const url = `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`;
 
@@ -71,6 +72,14 @@ export default function PaymentStatus() {
     // Memanggil handleScan() untuk memperbarui status pembayaran saat komponen dimuat
     handleScan();
   }, []); // Dependency array kosong, artinya hanya dipanggil sekali saat komponen dimuat
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token && navigate) {
+      navigate("/login");
+      toast.error("You've to Login First!");
+    }
+  }, [navigate]);
 
   return (
     <div

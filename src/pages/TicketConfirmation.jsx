@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import vector from "../assets/logo/vector.png";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../assets/Properties/Navbar";
 
@@ -10,10 +10,17 @@ function TicketConfirmation() {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { payment_id } = useParams();
-  const navigate = useNavigate(); // Panggil useNavigate sebagai fungsi
+  const navigate = useNavigate();
 
   useEffect(() => {
     const updatePaymentStatus = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        alert("You've to Login First!");
+        return;
+      }
+
       const url = `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`;
 
       setLoading(true);
@@ -83,13 +90,6 @@ function TicketConfirmation() {
     updatePaymentStatus();
   }, []);
 
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token"))
-  //     alert("Anda harus login untuk mengakses halaman ini!");
-
-  //   navigate("/login");
-  // }, []);
-
   return (
     <div className="bg-white min-h-screen flex flex-col items-center p-4">
       <Navbar />
@@ -98,22 +98,24 @@ function TicketConfirmation() {
       <div className="w-full max-w-8xl border-t border-gray-300 mt-20"></div>
 
       <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-4">
-        <span className="text-black font-semibold">Isi Data Diri</span>
-        <span className="text-black font-semibold">›</span>
-        <span className="text-black font-semibold">Bayar</span>
-        <span className="text-black font-semibold">›</span>
-        <span className="text-black font-semibold">Selesai</span>
+        <span className="text-black font-extrabold">
+          Fill in your personal data
+        </span>
+        <span className="text-black font-extrabold">›</span>
+        <span className="text-black font-extrabold">Pay</span>
+        <span className="text-black font-extrabold">›</span>
+        <span className="text-black font-extrabold">Finished</span>
       </div>
 
       {loading && (
         <div className="w-full max-w-3xl bg-blue-600 text-white p-3 mt-4 rounded-lg text-center">
-          <p>Memproses pembayaran, harap tunggu...</p>
+          <p>Processing payment, please wait...</p>
         </div>
       )}
 
       {paymentStatus === "success" && (
         <div className="w-full max-w-3xl bg-[#73CA5C] text-white p-3 mt-4 rounded-lg text-center">
-          <p>Terima kasih atas pembayaran transaksi</p>
+          <p>Thank you for the transaction payment</p>
         </div>
       )}
 
@@ -133,8 +135,8 @@ function TicketConfirmation() {
             className="mx-auto mb-4"
             style={{ width: "200px", height: "auto" }}
           />
-          <h2 className="text-xl font-bold text-green-600">Selamat!</h2>
-          <p>Transaksi Pembayaran Tiket sukses!</p>
+          <h2 className="text-xl font-bold text-green-600">Congratulations!</h2>
+          <p>Ticket Payment Transaction successful!</p>
         </div>
       )}
 
@@ -144,13 +146,13 @@ function TicketConfirmation() {
             className="bg-[#006769] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-green-600 transition-colors duration-300 ease-in-out"
             onClick={() => navigate("/history")}
           >
-            Terbitkan Tiket
+            Issue Tickets
           </button>
           <button
             className="bg-[#9DDE8B] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-[#82BB99] transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-opacity-50"
             onClick={() => navigate("/")}
           >
-            Cari Penerbangan Lain
+            Search for Other Flights
           </button>
         </div>
       )}
