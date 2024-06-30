@@ -28,18 +28,22 @@ export default function App() {
         <Route path="/reset" element={<RequestResetPassword />} />
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
         <Route path="/verify/:token" element={<VerifyEmail />} />
-        <Route path="/sendverif" element={<SendVerif />} />
+        <Route path="/sendverif/:email" element={<SendVerif />} />
         <Route path="/register" element={<Register />} />
         <Route path="/checkout/:flights_id" element={<Checkout />} />
         <Route path="/search" element={<Search />} />
         <Route path="/notif" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/history" element={<History />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/payments/:payment_id" element={<TicketConfirmation />} />
+        <Route path="/payment/:booking_id" element={<Payment />} />
+        <Route
+          path="/ticketconfirm/:payment_id"
+          element={<TicketConfirmation />}
+        />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/print/:id" element={<PrintCheckout />} />
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
+        <Route path="/payments/:payment_id" element={<PaymentSuccess />} />
       </Routes>
     </Router>
   );

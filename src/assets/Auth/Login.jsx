@@ -6,8 +6,9 @@ import pesawatbawah from "../logo/pesawatbawah.png";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaEyeSlash } from "react-icons/fa";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import GoogleLogin from "./GoogleLogin";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,8 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isEmailVerified, setIsEmailVerified] = useState(true);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const API_URL = process.env.API_URL;
   useEffect(() => {
     localStorage.removeItem("token");
   }, []);
@@ -88,7 +90,7 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/auth/login`,
+        `${API_URL}/auth/login`,
         {
           email: email,
           password: password,
@@ -143,6 +145,12 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+    if (location.state?.fromNotification || location.state?.fromProfile) {
+      toast.error("You need to log in first!");
+    }
+  }, [location.state]);
+
   return (
     <div
       className="bg-white relative h-screen"
@@ -152,6 +160,7 @@ export default function Login() {
         backgroundPosition: "center",
       }}
     >
+      <ToastContainer />
       <img
         src={pesawatbawah}
         className="w-[249px] h-[194px] md:hidden lg:flex hidden absolute top-[631px] left-[calc(50%-470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"

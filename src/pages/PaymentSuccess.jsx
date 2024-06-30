@@ -1,24 +1,76 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import ngefly from "../assets/logo/ngefly.png";
 import cover from "../assets/logo/cover.png";
 import pesawatatas from "../assets/logo/pesawatatas.png";
 import pesawatbawah from "../assets/logo/pesawatbawah.png";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useParams } from "react-router-dom";
 
 export default function PaymentStatus() {
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(true); // Change this based on actual payment status
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
+  const { payment_id } = useParams();
 
-  const handleButtonClick = () => {
-    setLoading(true);
-    // Simulate an API call or any other logic
-    setTimeout(() => {
+  const url = `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`;
+
+  const handleScan = async () => {
+    try {
+      const response = await axios.put(
+        url,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response", response);
+      if (response.status === 200) {
+        setSuccess(true);
+        setError(null);
+      } else {
+        setSuccess(false);
+        setError("Unexpected response status: " + response.status);
+      }
+    } catch (error) {
+      setSuccess(false);
+      setError(error.message);
+      if (error.response) {
+        const { status, data } = error.response;
+        console.log("Error response:", status, data);
+        if (status === 404) {
+          setError("Payment not found. Please check your payment ID.");
+        } else if (status === 400) {
+          if (data.message === "Payment already expired") {
+            setError("Payment already expired. Please make a new payment.");
+          } else if (data.message === "Payment data not found") {
+            setError(
+              "Payment data not found. Please check your payment details."
+            );
+          } else if (data.message === "Payment already updated") {
+            setError("Payment already updated.");
+          } else if (data.message === "Payment already cancelled") {
+            setError("Payment already cancelled. No further action is needed.");
+          } else {
+            setError(
+              "An unexpected conflict occurred. Please try again later."
+            );
+          }
+        }
+      } else {
+        setError("Failed to connect to the server. Please try again later.");
+      }
+    } finally {
       setLoading(false);
-      navigate("/tickectconfirm"); // Navigate to ticket confirmation page
-    }, 2000); // Simulate loading
+    }
   };
+
+  useEffect(() => {
+    // Memanggil handleScan() untuk memperbarui status pembayaran saat komponen dimuat
+    handleScan();
+  }, []); // Dependency array kosong, artinya hanya dipanggil sekali saat komponen dimuat
 
   return (
     <div
@@ -42,7 +94,12 @@ export default function PaymentStatus() {
         className="w-w-[249px] h-[194px] absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-fit absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
-        {success ? (
+        {loading ? (
+          <div className="flex flex-col justify-center items-center text-center p-5 min-h-[270px] gap-5">
+            <Icon icon="eos-icons:loading" width={110} color="#006769" />
+            <p className="font-bold text-3xl mb-2">Loading...</p>
+          </div>
+        ) : success ? (
           <div className="flex flex-col justify-center items-center text-center p-5 min-h-[270px] gap-5">
             <Icon icon="icon-park-solid:success" width={110} color="#35b950" />
             <div>
@@ -52,17 +109,6 @@ export default function PaymentStatus() {
                 successfully.
               </p>
             </div>
-            <button
-              onClick={handleButtonClick}
-              className="bg-[#006769] text-white rounded-lg mt-6 w-full min-h-[48px] px-2 py-3 flex items-center justify-center gap-3"
-              disabled={loading}
-            >
-              {loading ? (
-                <Icon icon="eos-icons:loading" width={24} color="#fff" />
-              ) : (
-                "Ke cetak tiket"
-              )}
-            </button>
           </div>
         ) : (
           <div className="flex flex-col justify-center items-center text-center p-5 min-h-[270px] gap-5">
@@ -74,17 +120,11 @@ export default function PaymentStatus() {
                 contact support for assistance.
               </p>
             </div>
-            <button
-              onClick={handleButtonClick}
-              className="bg-[#006769] text-white rounded-lg mt-6 w-full min-h-[48px] px-2 py-3 flex items-center justify-center gap-3"
-              disabled={loading}
-            >
-              {loading ? (
-                <Icon icon="eos-icons:loading" width={24} color="#fff" />
-              ) : (
-                "Try Again"
-              )}
-            </button>
+          </div>
+        )}
+        {error && (
+          <div className="text-red-600 text-center mt-4">
+            <p>{error}</p>
           </div>
         )}
       </div>

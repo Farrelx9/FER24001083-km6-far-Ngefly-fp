@@ -20,11 +20,11 @@ import { BsPersonRaisedHand } from "react-icons/bs";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import Footer from "../assets/Properties/Footer";
 import AboutUs from "./AboutUs";
 import bg1 from "../assets/images/bg1.jpg";
 import bg2 from "../assets/images/bg2.jpg";
 import bg3 from "../assets/images/bg3.jpg";
+import Footer from "../assets/Properties/Footer";
 
 export default function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -51,17 +51,15 @@ export default function Home() {
   const [activeImage, setActiveImage] = useState(1);
   const navigate = useNavigate();
   const images = [bg1, bg2, bg3];
+  const API_URL = process.env.API_URL;
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/airport`,
-        {
-          headers: {
-            accept: "application/json",
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/airport`, {
+        headers: {
+          accept: "application/json",
+        },
+      });
       console.log("response.data", response.data);
       setAirportSuggestions(response.data.data);
     } catch (error) {
@@ -157,6 +155,9 @@ export default function Home() {
       p: totalPassengers,
       sc: selectedClass.toUpperCase().replace(" ", "_"),
       page: 1,
+      adult: adult,
+      child: child,
+      baby: baby,
     };
 
     const params = {
@@ -176,7 +177,7 @@ export default function Home() {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setActiveImage((prevActiveImage) => (prevActiveImage % 3) + 1);
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -190,27 +191,27 @@ export default function Home() {
           <img
             src={images[activeImage - 1]}
             alt="Background"
-            className="w-full h-[600px] object-cover rounded-b-2xl"
+            className=" w-full lg:h-[600px] md:h-[500px] h-[400px] object-cover rounded-b-xl"
           />
         </div>
-        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[120px] bottom-[100px] ">
-          <div className="shadow-2xl rounded-lg bg-[#FFFFFF] lg:w-[968px] md:w-[568px] sm:w-[100px] lg:h-[298px] md:h-[448px] h-[448px] ">
-            <div className="flex items-center font-semibold p-2 gap-2 mt-4 mb-6 px-10">
-              <div className="lg:text-2xl md:text-xl text-sm">
+        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[100px] bottom-[70px] ">
+          <div className="shadow-2xl lg:rounded-lg md:rounded-xl rounded-2xl bg-[#FFFFFF] lg:w-[968px] md:w-[538px] w-[370px] lg:h-[298px] md:h-[448px] h-[438px] ">
+            <div className="flex items-center font-semibold p-2 gap-1 mt-4 mb-6 lg:px-10 md:px-10 px-10">
+              <div className="lg:text-2xl md:text-xl text-sm lg:w-[400px] md:w-[330px] w-[230px] ">
                 Choose a Special Flight Schedule on
               </div>
-              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl text-sm">
+              <div className="font-bold text-[#006769] lg:text-2xl md:text-xl text-sm lg:w-[15px] md:w-[10px] w-[5px]">
                 Ngefly!
               </div>
             </div>
             <ul className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-8 py-2 ">
-              <li className="flex lg:gap-4 md:gap-7 px-10 items-center relative">
+              <li className="flex lg:gap-4 md:gap-8 gap-4 px-10 items-center relative">
                 <MdOutlineFlight size={20} />
                 <div className="text-sm">From</div>
                 <div className="gap-2">
                   <input
                     type="text"
-                    className="lg:w-[300px] md:w-[300px] h-[34px] text-sm font-semibold px-1"
+                    className="lg:w-[300px] md:w-[300px] w-[200px] h-[34px] text-sm font-semibold px-1"
                     placeholder=" JOG - Adisucipto International Airport"
                     value={inputValue}
                     onClick={() => setShowModal(true)}
@@ -219,24 +220,24 @@ export default function Home() {
                       setSearchText(e.target.value);
                     }}
                   />
-                  <div className="w-[300px] h-[1px] bg-gray-300"></div>
+                  <div className="lg:w-[300px] md:w-[300px] w-[200px] h-[1px] bg-gray-300"></div>
                 </div>
                 <TbSwitch3
                   size={20}
                   className={`absolute left-[100%] transform -translate-x-1/2 ${
                     isRotated ? "rotate-180 " : ""
-                  } lg:top-[0%] lg:left-[100%] md:left-[85%] md:top-[20%] `}
+                  } lg:top-[0%] lg:left-[100%] md:left-[89%] md:top-[20%] left-[92%] `}
                   onClick={toggleRotation}
                 />
               </li>
-              <li className="flex lg:gap-4 md:gap-7 px-10 items-center">
+              <li className="flex lg:gap-4 md:gap-8 gap-4 px-10 items-center">
                 <RiFlightTakeoffFill size={20} />
                 <div className="text-sm">Into</div>
                 <div className="gap-2">
                   <input
                     type="text"
                     placeholder="JOG - Adisucipto International Airport"
-                    className="lg:w-[300px] md:w-[300px] h-[34px] text-sm font-semibold px-3"
+                    className="lg:w-[300px] md:w-[300px] w-[200px] lg:ms-0 md:ms-0 ms-1 h-[34px] text-sm font-semibold px-3"
                     value={inputValue2}
                     onClick={() => setShowModal2(true)}
                     onChange={(e) => {
@@ -244,10 +245,10 @@ export default function Home() {
                       setSearchText2(e.target.value);
                     }}
                   />
-                  <div className="w-[300px] h-[1px] bg-[#D0D0D0] "></div>
+                  <div className="lg:w-[300px] md:w-[300px] w-[200px] lg:ms-0 md:ms-0 ms-2 h-[1px] bg-[#D0D0D0] "></div>
                 </div>
               </li>
-              <li className="flex lg:gap-4 md:gap-7 px-10 items-center relative">
+              <li className="flex lg:gap-4 md:gap-8 gap-4 px-10 items-center relative">
                 <MdDateRange size={20} />
                 <div className="text-sm">Date</div>
                 <div className="gap-2">
@@ -260,7 +261,7 @@ export default function Home() {
                       ? startDate.toLocaleDateString("en-GB")
                       : "Select Date"}
                   </div>
-                  <div className="w-[140px] h-[1px] bg-[#D0D0D0]"></div>
+                  <div className="lg:w-[140px] md:w-[140px] w-[90px] h-[1px] bg-[#D0D0D0]"></div>
                 </div>
                 <div className={`gap-2 ${isReturnActive ? "" : "opacity-50"}`}>
                   <div className="text-sm mb-2">Return</div>
@@ -272,17 +273,17 @@ export default function Home() {
                       ? endDate.toLocaleDateString("en-GB")
                       : "Select Date"}
                   </div>
-                  <div className="w-[140px] h-[1px] bg-[#D0D0D0]"></div>
+                  <div className="lg:w-[140px] md:w-[140px] w-[90px] h-[1px] bg-[#D0D0D0]"></div>
                 </div>
                 <HiSwitchHorizontal
                   size={20}
-                  className={`absolute lg:left-[90%] md:left-[75%]  bottom-[70%] transform -translate-x-1/2 cursor-pointer ${
+                  className={`absolute lg:left-[90%] md:left-[83%] left-[84%]  bottom-[70%] transform -translate-x-1/2 cursor-pointer ${
                     isReturnActive ? "text-[#006769]" : "text-gray-400"
                   } `}
                   onClick={toggleReturnDate}
                 />
               </li>
-              <li className="flex lg:gap-4 md:gap-7 px-10 items-center">
+              <li className="flex lg:gap-4 md:gap-8 gap-4 px-10 items-center">
                 <MdOutlineAirlineSeatReclineNormal size={20} />
                 <div className="text-sm">Seat</div>
                 <div className="gap-2">
@@ -293,7 +294,7 @@ export default function Home() {
                   >
                     {totalPassengers} Passengers
                   </div>
-                  <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
+                  <div className="lg:w-[140px] md:w-[140px] w-[90px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
                 <div className="gap-2">
                   <div className=" text-sm mb-2">Seat Class</div>
@@ -303,11 +304,11 @@ export default function Home() {
                   >
                     {selectedClass}
                   </div>
-                  <div className="w-[140px] h-[1px] bg-[#D0D0D0] "></div>
+                  <div className="lg:w-[140px] md:w-[140px] w-[90px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
               </li>
               <button
-                className="bg-[#40A578] lg:w-[968px] md:w-[568px] sm:w-[100px] shadow-xl font-semibold text-lg h-[48px] rounded-b-lg text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
+                className="bg-[#40A578] lg:w-[968px] md:w-[538px] w-[370px] shadow-xl font-semibold text-lg h-[48px] lg:rounded-b-lg md:rounded-b-xl rounded-b-2xl text-white focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769] "
                 onClick={handleSearch}
               >
                 Search for Flight
@@ -326,7 +327,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Masukkan Kota atau Negara"
-              className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+              className="lg:w-[630px] md:w-[630px] w-[350px] h-[40px] border-2 border-gray-300 pl-8 p-2"
               value={inputValue}
               onChange={(e) => {
                 setInputValue(e.target.value);
@@ -378,7 +379,7 @@ export default function Home() {
             <input
               type="text"
               placeholder="Masukkan Kota atau Negara"
-              className="w-[630px] h-[40px] border-2 border-gray-300 pl-8 p-2"
+              className="lg:w-[630px] md:w-[630px] w-[350px] h-[40px] border-2 border-gray-300 pl-8 p-2"
               value={inputValue2}
               onChange={(e) => {
                 setInputValue2(e.target.value);
@@ -442,9 +443,11 @@ export default function Home() {
       <Modal isVisible={showModal4} onClose={() => setShowModal4(false)}>
         <div className="p-4">
           <div className="flex justify-between items-center mb-4">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-">
               <BsPersonRaisedHand size={20} />
-              <span className="font-semibold">Adult (12 years old above)</span>
+              <span className="font-semibold lg:text-base md:text-base text-sm">
+                Adult (12 years old above)
+              </span>
             </div>
             <div className="flex items-center">
               <button
@@ -465,7 +468,9 @@ export default function Home() {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <FaChild size={20} />
-              <span className="font-semibold">Child (2 - 11 years old)</span>
+              <span className="font-semibold lg:text-base md:text-base text-sm">
+                Child (2 - 11 years old)
+              </span>
             </div>
             <div className="flex items-center">
               <button
@@ -486,7 +491,9 @@ export default function Home() {
           <div className="flex justify-between items-center mb-4">
             <div className="flex items-center gap-2">
               <FaBaby size={20} />
-              <span className="font-semibold">Baby (Under 2 years old)</span>
+              <span className="font-semibold lg:text-base md:text-base text-sm">
+                Baby (Under 2 years old)
+              </span>
             </div>
             <div className="flex items-center">
               <button
@@ -569,7 +576,7 @@ export default function Home() {
         </div>
       </Modal>
       <div>
-        <div className="text-xl font-semibold lg:ms-20 md:ms-14 ms-10 mb-2">
+        <div className="lg:text-xl md:text-xl text-lg font-semibold lg:ms-20 md:ms-14 ms-6 lg:mb-2 md:mb-2 mb-0">
           Favorite Destination
         </div>
         <Carousel fromAirportCode={inputValue.split(" - ")[0]} />
@@ -579,3 +586,4 @@ export default function Home() {
     </Fragment>
   );
 }
+1;

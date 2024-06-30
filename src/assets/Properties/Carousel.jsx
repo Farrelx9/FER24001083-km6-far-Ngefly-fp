@@ -4,16 +4,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import { Icon } from "@iconify/react";
+import { useNavigate } from "react-router-dom";
 
 export default function Carousel({ fromAirportCode }) {
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const API_URL = process.env.API_URL;
 
   const fetchData = async () => {
     setIsLoading(true);
     const url = fromAirportCode
-      ? `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite?from=${fromAirportCode}`
-      : `https://binar-project-426902.et.r.appspot.com/api/v1/flight/favorite`;
+      ? `${API_URL}/flight/favorite?from=${fromAirportCode}`
+      : `${API_URL}/flight/favorite`;
     try {
       const response = await axios.get(url, {
         headers: { accept: "application/json" },
@@ -49,6 +52,20 @@ export default function Carousel({ fromAirportCode }) {
     return date.toLocaleDateString("en-CA", options);
   };
 
+  const handleCarouselClick = (flight) => {
+    const params = {
+      from: flight.from.airport_code,
+      to: flight.to.airport_code,
+      p: 1,
+      sc: "ECONOMY",
+      page: 1,
+      d: new Date(flight.departureAt).toISOString(),
+      rt: "false",
+    };
+    const queryString = new URLSearchParams(params).toString();
+    navigate(`/search?${queryString}`);
+  };
+
   const settings = {
     dots: true,
     infinite: false,
@@ -62,7 +79,7 @@ export default function Carousel({ fromAirportCode }) {
         settings: {
           slidesToShow: 3,
           slidesToScroll: 3,
-          infinite: true,
+          infinite: false,
           dots: true,
         },
       },
@@ -99,24 +116,30 @@ export default function Carousel({ fromAirportCode }) {
       ) : (
         <Slider {...settings}>
           {fetchFavoriteFlights.map((flight) => (
-            <div key={flight.id} className="px-4 py-4">
-              <div className="max-w-xs mx-auto h-[300px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
+            <div
+              key={flight.id}
+              className="lg:px-12 md:px-3 px-10 py-8 lg:pb-4 md:pb-4 pb-12  "
+            >
+              <div className="lg:w-[230px] md:w-[200px] w-[180px] lg:h-[300px] md:h-[300px] h-[240px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
                 <div className="relative">
                   <img
-                    className="object-cover w-full h-[150px]"
+                    className="object-cover w-full lg:h-[150px] md:h-[150px] h-[110px]"
                     src={flight.to.image_url}
                     alt={flight.title}
+                    onClick={() => handleCarouselClick(flight)}
                   />
                 </div>
                 <div className="p-4">
-                  <div className="text-lg font-semibold truncate">
+                  <div className="lg:text-lg md:text-lg text-xs font-semibold truncate">
                     {flight.from.city} -&gt; {flight.to.city}
                   </div>
-                  <div className="text-xs text-[#9DDE8B]">
+                  <div className="text-xs font-semibold text-[#9DDE8B]">
                     {flight.plane.airline}
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">{flight.airline}</p>
-                  <p className="text-sm text-gray-600 mb-2">
+                  <p className="lg:text-sm md:text-sm text-xs text-gray-600 mb-2">
+                    {flight.airline}
+                  </p>
+                  <p className="lg:text-sm md:text-sm text-xs text-gray-600 mb-2">
                     {formatDate(flight.departureAt)} -{" "}
                     {formatDate(flight.arriveAt)}
                   </p>

@@ -9,6 +9,8 @@ import { MdSettings } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../assets/Properties/Navbar";
 import "animate.css";
+import Footer from "../assets/Properties/Footer";
+import { PacmanLoader } from "react-spinners";
 
 export default function Profile() {
   const [activeSection, setActiveSection] = useState("Change Profile");
@@ -22,21 +24,27 @@ export default function Profile() {
     password: "",
     confirm: "",
   });
+  const [isReady, setIsReady] = useState(false);
   const navigate = useNavigate();
+  const API_URL = process.env.API_URL;
 
   useEffect(() => {
     const fetchProfile = async () => {
+      const token = localStorage.getItem("token");
+      if (token === null) {
+        setTimeout(() => {
+          navigate("/login", { state: { fromProfile: true } });
+        }, 3000);
+        return;
+      }
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
-          {
-            headers: {
-              accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/profile/`, {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         console.log("Response data:", response.data);
 
         if (response.data && response.data.data) {
@@ -51,6 +59,7 @@ export default function Profile() {
             email: profileData.email || "",
             isVerified: profileData.is_verified || false,
           });
+          setIsReady(true);
           console.log("Profile data:", profileData);
         } else {
           throw new Error("Profile data is missing");
@@ -110,16 +119,12 @@ export default function Profile() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.put(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
-        updatedData,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.put(`${API_URL}/profile/`, updatedData, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       if (response.data && response.data.status) {
         setProfileData(response.data.data || updatedData);
@@ -139,7 +144,7 @@ export default function Profile() {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/changepassword",
+        `${API_URL}/auth/changepassword`,
         {
           password,
           confirm,
@@ -167,6 +172,14 @@ export default function Profile() {
     setTempPasswords({ password: newPassword, confirm: confirmPassword });
     setIsResetConfirmationVisible(true);
   };
+
+  if (isReady === false) {
+    return (
+      <div className="flex items-center justify-center bg-[#9DDE8B] h-screen">
+        <PacmanLoader size={70} color={"#006769"} loading={true} />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -430,6 +443,7 @@ export default function Profile() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -8,6 +8,21 @@ import {
 } from "react-icons/fa";
 
 const Footer = () => {
+  const scrollToSection = (sectionId, event, scrollOffset = 0) => {
+    event.preventDefault(); // Mencegah perilaku default dari tautan <a>
+
+    const section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+
+      // Optional: Adjust scroll position with additional offset
+      window.scrollBy(0, scrollOffset);
+    }
+  };
+
   return (
     <footer
       className="text-black py-6 sm:text-white" // Decreased py-8 to py-6 for smaller padding
@@ -15,7 +30,7 @@ const Footer = () => {
         background: "linear-gradient(#006769, #006769, #9DDE8B, #D6FFDE)",
         color: "#f8f9fa",
         fontFamily: "'Montserrat', sans-serif",
-        width: "103%",
+        width: "100%",
         position: "relative",
         top: 20,
         bottom: 0,
@@ -46,7 +61,7 @@ const Footer = () => {
               {" "}
               {/* Decreased mt-6 to mt-4, sm:mt-6 to sm:mt-5 */}
               <a
-                href="#"
+                href="https://www.instagram.com/ngefly.com01?igsh=MW01NzFpN3pnM2l6Yg=="
                 className="text-black sm:text-white hover:text-blue-600 transition duration-300"
               >
                 <FaFacebookF className="text-xl sm:text-2xl" />
@@ -80,18 +95,16 @@ const Footer = () => {
           {/* Quick Links */}
           <div className="flex flex-col items-center mt-3 md:mt-0">
             {" "}
-            {/* Decreased mt-4 to mt-3 */}
             <h4 className="text-xl font-semibold mb-2 text-center text-black sm:text-white">
               {" "}
-              {/* Decreased mb-4 to mb-2 */}
               Informasi{" "}
             </h4>
             <ul className="text-sm flex flex-col items-center gap-1 sm:gap-3 text-black sm:text-white">
               {" "}
-              {/* Decreased gap-2 to gap-1, sm:gap-4 to sm:gap-3 */}
               <li>
                 <a
                   href="/"
+                  onClick={() => scrollToSection("home")}
                   className="hover:text-primary transition duration-300"
                 >
                   Home
@@ -99,26 +112,20 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/"
+                  onClick={(e) => scrollToSection("aboutUsSection", e, -1800)}
                   className="hover:text-primary transition duration-300"
                 >
-                  Tentang Kami{" "}
+                  Tentang Kami
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/"
+                  onClick={(e) => scrollToSection("advantagesection", e, -1200)}
                   className="hover:text-primary transition duration-300"
                 >
                   Keuntungan
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="hover:text-primary transition duration-300"
-                >
-                  Kontak
                 </a>
               </li>
             </ul>
@@ -130,27 +137,33 @@ const Footer = () => {
             <h4 className="text-xl font-semibold mb-2 text-center md:text-right text-black sm:text-white">
               {" "}
               {/* Decreased mb-4 to mb-2 */}
-              Kontak Kami{" "}
+              Kontak{" "}
             </h4>
             <ul className="text-sm text-center md:text-right text-black sm:text-white">
               <li className="mb-2">
                 <a
-                  href="mailto:info@imovie.com"
-                  className="hover:text-primary transition duration-300"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent the default anchor tag behavior
+                    window.open(
+                      "https://mail.google.com/mail/?view=cm&fs=1&to=ngefly.com01@gmail.com",
+                      "_blank"
+                    );
+                  }}
+                  className="hover:text-primary transition duration-300 cursor-pointer"
                 >
-                  info@ngefly.com
+                  ngefly.com01@gmail.com
                 </a>
               </li>
               <li className="mb-2">
                 <a
-                  href="tel:+123456789"
-                  className="hover:text-primary transition duration-300"
+                  onClick={(e) => {
+                    e.preventDefault(); // Prevent the default anchor tag behavior
+                    window.open("https://wa.me/6281231288119", "_blank");
+                  }}
+                  className="hover:text-primary transition duration-300 cursor-pointer"
                 >
-                  +1 234 567 89
+                  +62284019088
                 </a>
-              </li>
-              <li>
-                <span>123 Ngefly Lane, Film City</span>
               </li>
             </ul>
           </div>
@@ -159,10 +172,8 @@ const Footer = () => {
         {/* Additional Links */}
         <div className="border-t pt-3 mt-4 text-center text-black sm:text-white">
           {" "}
-          {/* Decreased pt-4 to pt-3 */}
           <div className="text-sm mt-3">
             {" "}
-            {/* Decreased mt-4 to mt-3 */}
             <strong style={{ color: "#006769", fontSize: "1rem" }}>
               © {new Date().getFullYear()} Ngefly.com | Hak Cipta Dilindungi
             </strong>

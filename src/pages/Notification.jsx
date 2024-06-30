@@ -8,8 +8,9 @@ import {
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { RiCircleFill } from "react-icons/ri";
-import { ToastContainer, toast } from "react-toastify";
 import Modal from "../assets/Properties/Modal";
+import { PacmanLoader } from "react-spinners";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function NotificationPage() {
   const [notification, setNotification] = useState([]);
@@ -18,24 +19,22 @@ export default function NotificationPage() {
   const [tempFilter, setTempFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-
+  const API_URL = process.env.API_URL;
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
       if (token === null) {
-        navigate("/login");
-        toast.error("Please login to continue");
+        setTimeout(() => {
+          navigate("/login", { state: { fromNotification: true } });
+        }, 3000);
         return;
       }
-      const response = await axios.get(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/notification/`,
-        {
-          headers: {
-            accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${API_URL}/notification/`, {
+        headers: {
+          accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       console.log("response.data", response.data);
       const notifications = response.data.data;
       if (Array.isArray(notifications)) {
@@ -66,7 +65,7 @@ export default function NotificationPage() {
 
       if (notificationToMark) {
         const response = await axios.put(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/notification/read`,
+          `${API_URL}/notification/read`,
           { id: notificationId },
           {
             headers: {
@@ -102,12 +101,15 @@ export default function NotificationPage() {
   }, []);
 
   if (isReady === false) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center bg-[#9DDE8B] h-screen">
+        <PacmanLoader size={70} color={"#006769"} loading={true} />
+      </div>
+    );
   }
   return (
     <Fragment>
       <div className="">
-        <ToastContainer />
         <Navbar />
         <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
           <div className="lg:w-[1200px] md:w-[790px] w-[390px] px-4 mt-20 font-semibold">
