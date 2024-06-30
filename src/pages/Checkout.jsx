@@ -1,280 +1,98 @@
 import axios from "axios";
 import React, { Fragment, useEffect, useState } from "react";
 import Navbar from "../assets/Properties/Navbar";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import info from "../assets/images/informasi.png";
 import moment from "moment";
-
-const PassengerForm = ({ passenger, index }) => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
-  const [birthdate, setBirthdate] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
-
-  const toggleDarkMode = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
-
-  const openDatePicker = () => {
-    setIsDatePickerOpen(true);
-  };
-
-  const closeDatePicker = () => {
-    setIsDatePickerOpen(false);
-  };
-
-  // const handleDateChange = (e) => {
-  //   setBirthdate(e.target.value);
-  //   closeDatePicker(); // Tutup date picker setelah tanggal dipilih
-  // };
-
-  return (
-    <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
-      <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
-      <div>
-        <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
-          <div>
-            Data Diri Penumpang {index + 1} -{" "}
-            {passenger ? passenger.type : "Loading..."}
-          </div>
-          <div>Centang</div>
-        </div>
-        <div className="font-bold mb-1 text-[#006769]">Title</div>
-        <div className="flex relative">
-          <select
-            className="border p-2 px-4 mb-3 rounded-md border-[#D0D0D0] w-full"
-            name={`title-${index}`}
-            defaultValue=""
-          >
-            <option value="" disabled hidden>
-              Choose Your Title
-            </option>
-            <option value="Mr.">Mr.</option>
-            <option value="Mrs.">Mrs.</option>
-          </select>
-          {/* <div className="absolute mt-2 right-3">Dropdown</div> */}
-        </div>
-        <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`fullname-${index}`}
-          placeholder="Fill with Full Name"
-        />
-        <div className="mb-3 flex justify-between">
-          <div>Punya nama keluarga?</div>
-          <button
-            className={`slider ${
-              isDarkMode ? "bg-[#006769]" : " bg-gray-400"
-            } w-12 h-6 rounded-full p-1 transition-transform] duration-300 ease-in-out`}
-            onClick={toggleDarkMode}
-          >
-            <div
-              className={`rounded-full w-4 h-4 bg-white shadow-md transform ${
-                isDarkMode ? "translate-x-6" : ""
-              }`}
-            ></div>
-          </button>
-        </div>
-        {isDarkMode && ( // Menampilkan nama keluarga hanya jika dalam mode gelap
-          <>
-            <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
-            <input
-              className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-              name={`famname-${index}`}
-              placeholder="Potter"
-            />
-          </>
-        )}
-        <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
-        <div className="flex relative">
-          <DatePicker
-            className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] cursor-pointer date-picker-custom"
-            selected={selectedDate}
-            onChange={handleDateChange}
-            dateFormat="dd/MM/yyyy"
-            placeholderText="dd/mm/yyyy"
-            peekNextMonth
-            showMonthDropdown
-            showYearDropdown
-            dropdownMode="select"
-            onClickOutside={() => {}}
-          />
-          {/* <div
-            className="absolute mt-2 right-3 cursor-pointer"
-            onClick={openDatePicker}
-          >
-            Tanggal
-          </div> */}
-          {isDatePickerOpen && (
-            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-4 rounded-lg">
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={handleDateChange}
-                  dateFormat="dd/MM/yyyy"
-                  placeholderText="dd/mm/yyyy"
-                  peekNextMonth
-                  showMonthDropdown
-                  showYearDropdown
-                  dropdownMode="select"
-                  onClickOutside={closeDatePicker}
-                />
-                <button
-                  className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-                  onClick={closeDatePicker}
-                >
-                  Simpan
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`nation-${index}`}
-          placeholder="Fill Your Nation"
-        />
-        <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
-        <select
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`tandapengenal-${index}`}
-          defaultValue=""
-        >
-          <option value="" disabled hidden>
-            Choose Identity Card
-          </option>
-          <option value="Mr.">KTP</option>
-          <option value="Mrs.">Paspor</option>
-        </select>
-        {/* <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
-        <div className="flex relative">
-          <input
-            className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-            name={`country-${index}`}
-          />
-          <div className="absolute mt-2 right-3">Dropdown</div>
-        </div>
-        <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
-        <div className="flex relative">
-          <input
-            className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-            name={`expirydate-${index}`}
-            placeholder="dd/mm/yyyy"
-          />
-          <div className="absolute mt-2 right-3">Tanggal</div>
-        </div> */}
-      </div>
-    </div>
-  );
-};
-
-const PriceForm = ({ passenger, index }) => (
-  <div key={index} className="border-2 border-black p-5 mb-6 rounded-lg">
-    <h3 className="text-2xl font-bold mb-4">Isi Data Penumpang</h3>
-    <div>
-      <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
-        <div>
-          Data Diri Penumpang {index + 1} -{" "}
-          {passenger ? passenger.type : "Loading..."}
-        </div>
-        <div>Centang</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Title</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`title-${index}`}
-          placeholder="Mr."
-        />
-        <div className="absolute mt-2 right-3">Dropdown</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Nama Lengkap</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`fullname-${index}`}
-        placeholder="Harry"
-      />
-      <div className="mb-3 flex justify-between">
-        <div>Punya nama keluarga?</div>
-        <button>Tombol</button>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Nama Keluarga</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`famname-${index}`}
-        placeholder="Potter"
-      />
-      <div className="font-bold mb-1 text-[#006769]">Tanggal Lahir</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`birthdate-${index}`}
-          placeholder="dd/mm/yyyy"
-        />
-        <div className="absolute mt-2 right-3">Tanggal</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Kewarganegaraan</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`nation-${index}`}
-        placeholder="Indonesia"
-      />
-      <div className="font-bold mb-1 text-[#006769]">KTP/Paspor</div>
-      <input
-        className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-        name={`tandapengenal-${index}`}
-      />
-      <div className="font-bold mb-1 text-[#006769]">Negara Penerbit</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`country-${index}`}
-        />
-        <div className="absolute mt-2 right-3">Dropdown</div>
-      </div>
-      <div className="font-bold mb-1 text-[#006769]">Berlaku Sampai</div>
-      <div className="flex relative">
-        <input
-          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-          name={`expirydate-${index}`}
-          placeholder="dd/mm/yyyy"
-        />
-        <div className="absolute mt-2 right-3">Tanggal</div>
-      </div>
-    </div>
-  </div>
-);
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Checkout = () => {
-  const { flights_id } = useParams();
   const [pemesan, setPemesan] = useState("");
   const [taxData, setTaxData] = useState(null);
   const [flightData, setFlightData] = useState([]);
+  const [categoryData, setCategoryData] = useState(null);
   const [passengers, setPassengers] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const { flights_id } = useParams();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const token = localStorage.getItem("token");
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [bookingId, setBookingId] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(15 * 60);
 
-  const queryParams = new URLSearchParams(location?.search);
-  const from = queryParams.get("from") || "UPG";
-  const p = queryParams.get("p") || 1;
-  const sc = queryParams.get("sc") || "ECONOMY";
-  const page = queryParams.get("page") || 1;
-  const child = Number(queryParams.get("child") || 1);
-  const adult = Number(queryParams.get("adult") || 0);
-  const baby = Number(queryParams.get("baby") || 0);
+  const params = {
+    page: searchParams.get("page") || 1,
+    from: searchParams.get("from") || "SUB",
+    to: searchParams.get("to") || "",
+    p:
+      !isNaN(Number(searchParams.get("adult"))) ||
+      !isNaN(Number(searchParams.get("child"))) ||
+      !isNaN(Number(searchParams.get("baby")))
+        ? Number(searchParams.get("adult") || 0) +
+          Number(searchParams.get("child") || 1) +
+          Number(searchParams.get("baby") || 0)
+        : searchParams.get("p") || 1,
+    sc: searchParams.get("sc") || "ECONOMY",
+    rt: searchParams.get("rt") || "",
+    rd: searchParams.get("rd") || "",
+    d: searchParams.get("d") || "",
+    type: searchParams.get("type") || "",
+    order: searchParams.get("order") || "",
+  };
+
+  const createParamsString = (newValue) => {
+    const urlParams = new URLSearchParams({
+      page: newValue?.page || params.page,
+      from: newValue?.from || params.from,
+      p: newValue?.p || params.p,
+      sc: newValue?.sc || params.sc,
+    });
+
+    if (newValue?.to || params.to)
+      urlParams.append("to", newValue?.to || params.to);
+    if (newValue?.rt || params.rt)
+      urlParams.append("rt", newValue?.rt || params.rt);
+    if (newValue?.rd || params.rd)
+      urlParams.append("rd", newValue?.rd || params.rd);
+    if (newValue?.d || params.d) urlParams.append("d", newValue?.d || params.d);
+    if (newValue?.type || params.type)
+      urlParams.append("type", newValue?.type || params.type);
+    if (newValue?.order || params.order)
+      urlParams.append("order", newValue?.order || params.order);
+
+    return urlParams.toString();
+  };
+
+  const toggleDarkMode = (index) => {
+    setPassengers((prevState) => {
+      const updatedPassengers = [...prevState];
+      updatedPassengers[index].isDarkMode =
+        !updatedPassengers[index].isDarkMode;
+      return updatedPassengers;
+    });
+  };
+
+  const countAdultInUrl = () => {
+    const searchParams = new URLSearchParams(location.search);
+    return searchParams.get("adult") || 0;
+  };
+
+  const countChildInUrl = () => {
+    const searchParams = new URLSearchParams(location.search);
+    return searchParams.get("child") || 1;
+  };
+
+  const countBabyInUrl = () => {
+    const searchParams = new URLSearchParams(location.search);
+    return searchParams.get("baby") || 0;
+  };
 
   useEffect(() => {
     const fetchDataPemesan = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get(
           `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
           {
@@ -284,7 +102,6 @@ const Checkout = () => {
           }
         );
         setPemesan(response.data.data);
-        console.log("response pemesan", response.data.data);
       } catch (error) {
         console.error("Error fetching data pemesan:", error);
       }
@@ -293,7 +110,7 @@ const Checkout = () => {
     // const fetchTaxData = async () => {
     //   try {
     //     const response = await axios.get(
-    //       `https://binar-project-backend-staging.vercel.app/api/tax`
+    //       `https://binar-project-426902.et.r.appspot.com/api/v1/tax`
     //     );
     //     setTaxData(response.data);
     //     console.log("response tax", response.data);
@@ -303,24 +120,27 @@ const Checkout = () => {
     // };
 
     const fetchFlightData = async () => {
+      if (!params.from || !params.p || !params.page || !params.sc) {
+        console.error("Missing required parameters");
+        return;
+      }
+      const urlParams = createParamsString(params);
       try {
         const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/flight?from=${from}&p=${p}&sc=${sc}&page=${page}`,
+          `https://binar-project-426902.et.r.appspot.com/api/v1/flight?${urlParams}`,
           {
             headers: {
               "Content-Type": "application/json",
             },
           }
         );
-
         const flight = response.data.data.flights;
-        console.log("response.data.data", response.data.data.flights);
         if (Array.isArray(flight)) {
-          const filteredData = flight.filter(
+          const filteredData = flight?.filter(
             (flight) => flight?.id === flights_id
           );
           setFlightData(filteredData);
-          console.log("Filtered flight data:", filteredData);
+          console.log("filteredData", filteredData);
         } else {
           console.error("Error: Expected an array but got:", typeof flight);
         }
@@ -329,65 +149,153 @@ const Checkout = () => {
       }
     };
 
+    const passengersArray = Array(params.p)
+      .fill({})
+      .map((_, index) => ({
+        selectedTitle: "",
+        fullName: "",
+        familyName: "",
+        birthdate: "",
+        identity: "",
+        citizenship: "",
+        isDarkMode: false,
+      }));
+    setPassengers(passengersArray);
+
     fetchDataPemesan();
     // fetchTaxData();
     fetchFlightData();
-  }, [flights_id, from, p, sc, page]);
+  }, [flights_id, params.p]);
 
   useEffect(() => {
-    const totalPassengers = adult + child + baby;
-    // Membuat array penumpang
-    const passengersArray = Array(totalPassengers)
-      .fill({})
-      .map((_, index) => {
-        let type = "";
-        if (index < adult) {
-          type = "Adult";
-        } else if (index < adult + child) {
-          type = "Child";
-        } else {
-          type = "Baby";
+    if (!isSubmitted && timeLeft > 0) {
+      const timer = setInterval(() => {
+        setTimeLeft((prevTime) => prevTime - 1);
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [isSubmitted, timeLeft]);
+
+  const formatTime = (time) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}:${String(seconds).padStart(2, "0")}`;
+  };
+
+  const handleSelectedTitle = (e, index, field) => {
+    const value = e.target.value;
+    setPassengers((prevState) => {
+      const updatedPassengers = [...prevState];
+      updatedPassengers[index][field] = value;
+      return updatedPassengers;
+    });
+  };
+
+  const handleInputChange = (e, index, field) => {
+    const value = e.target.value;
+    setPassengers((prevState) => {
+      const updatedPassengers = [...prevState];
+      updatedPassengers[index][field] =
+        field === "birthdate" ? moment(value).format("YYYY-MM-DD") : value;
+      return updatedPassengers;
+    });
+  };
+
+  const handleSubmitIsiDataPenumpang = async (e) => {
+    e.preventDefault();
+    try {
+      const payload = {
+        flight_class_id: flights_id,
+        include_return: false,
+        passengers: passengers.map((passenger) => ({
+          name: passenger.familyName
+            ? `${passenger.selectedTitle} ${passenger.fullName} (${passenger.familyName})`
+            : `${passenger.selectedTitle} ${passenger.fullName}`,
+          birthdate: passenger.birthdate,
+          identity_id: passenger.identity,
+          citizenship: passenger.citizenship,
+          category: "child",
+        })),
+      };
+      const response = await axios.post(
+        `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         }
-        return { id: index, type };
-      });
-    setPassengers(passengersArray);
-  }, [adult, child, baby]);
+      );
+      if (response.status === 201) {
+        setIsSubmitted(true);
+        setPassengers((prevState) =>
+          prevState.map((passenger) => ({
+            ...passenger,
+            isSubmitted: true,
+          }))
+        );
+        const booking_id = response?.data?.data?.booking?.id;
+        setBookingId(booking_id);
+        console.log("response.data", response.data.data);
+      }
+    } catch (error) {
+      if (error.response) {
+        const { status } = error.response;
+        if (status === 500) {
+          toast.error("Silakan isi semua inputan yang diberi bintang.");
+        } else {
+          toast.error("Gagal terhubung ke server. Silakan coba lagi nanti.");
+        }
+      } else {
+        toast.error(`${error.message}`);
+      }
+    }
+  };
 
-  // const handleSubmitIsiDataPenumpang = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post(
-  //       `https://binar-project-backend-staging.vercel.app/api/bookings/`,
-  //       {
-  //         name: name,
-  //         birthdate: birthdate,
-  //         identity_id: identity_id,
-  //         citizenship: citizenship,
-  //         category: category,
-  //       }
-  //     );
-  //     const { bookings_id } = response.data;
-  //     navigate("/payment", { bookings_id });
-  //   } catch (error) {
-  //     console.error("Error fetching bookings_id:", error);
-  //   }
-  // };
+  const handleNavigateToPayment = () => {
+    if (bookingId) {
+      navigate(`/payment/${bookingId}`);
+    } else {
+      console.error("Booking ID is not available.");
+    }
+  };
 
-  // const calculateTax = () => {
-  //   const basePrice = flightData
-  //     ? flightData.flights.flight_classes * categoryData.discount
-  //     : 0;
-  //   const taxAmount = taxData ? (taxData.percent * basePrice) / 100 : 0;
-  //   return taxAmount;
-  // };
+  const adultPrice = () => {
+    const adult = countAdultInUrl();
+    const price = flightData ? flightData[0]?.price : 0;
+    return adult * price;
+  };
 
-  // const calculateTotal = () => {
-  //   // const basePrice = flightData
-  //   //   ? flightData.flights.flight_classes * categoryData.discount
-  //   //   : 0; sek bingung
-  //   const taxAmount = taxData ? (taxData.percent * basePrice) / 100 : 0;
-  //   return basePrice + taxAmount;
-  // };
+  const childPrice = () => {
+    const child = countChildInUrl();
+    const price = (flightData ? flightData[0]?.price : 0) * ((100 - 5) / 100);
+    return child * price;
+  };
+
+  const babyPrice = () => {
+    const baby = countBabyInUrl();
+    const price = 0;
+    return baby * price;
+  };
+
+  const calculateTax = () => {
+    const tax = (adultPrice() + childPrice()) * (5 / 100);
+    return tax;
+  };
+
+  const calculateTotal = () => {
+    const total = adultPrice() + childPrice() + calculateTax();
+    if (params.rt === "true") {
+      total *= 2;
+    }
+    return total;
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -398,7 +306,12 @@ const Checkout = () => {
   }, [navigate]);
 
   const capitalizeWords = (str) => {
-    return str.replace(/\b\w/g, (char) => char.toUpperCase());
+    const stringWithSpaces = str.replace(/_/g, " ");
+    return stringWithSpaces.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const numberWithCommas = (number) => {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
 
   return (
@@ -406,15 +319,21 @@ const Checkout = () => {
       <div className="bg-[#FFFFFF]">
         <Navbar />
         <div className="relative min-h-screen flex justify-between py-8 flex-col items-center p-4">
-          <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-4 flex-wrap">
+          <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-20 flex-wrap">
             <span className="text-black font-bold">Isi Data Diri</span>
             <span className="text-[#8A8A8A] font-bold">›</span>
-            <span className="text-[#8A8A8A] font-bold">Bayar</span>
-            {/* <span className="text-black font-bold">Bayar</span> */}
+            <span
+              className={`${
+                isSubmitted ? "text-black" : "text-[#8A8A8A]"
+              } font-bold`}
+            >
+              Bayar
+            </span>
             <span className="text-[#8A8A8A] font-bold">›</span>
             <span className="text-[#8A8A8A] font-bold">Selesai</span>
           </div>
-          <div className="w-full flex justify-center items-center max-w-4xl bg-[#FF0000] text-white p-3 mt-4 rounded-lg text-center">
+
+          {/* <div className="w-full flex justify-center items-center max-w-4xl bg-[#FF0000] text-white p-3 mt-4 rounded-lg text-center">
             <p className="absolute">Anda harus login terlebih dahulu!</p>
             <button className="relative ml-auto flex">
               <svg
@@ -429,7 +348,7 @@ const Checkout = () => {
                 ></path>
               </svg>
             </button>
-          </div>
+          </div> */}
           {/* <div className="w-full flex justify-center items-center max-w-4xl bg-[#FF0000] text-white p-3 mt-4 rounded-lg text-center">
             <p className="absolute">
               Maaf, waktu pemesanan habis. Silakan ulangi lagi!
@@ -448,12 +367,16 @@ const Checkout = () => {
               </svg>
             </button>
           </div> */}
-          {/* <div className="w-full max-w-4xl bg-[#FF0000] text-white p-3 mt-4 rounded-lg text-center">
-            <p>Selesaikan dalam 00:15:00</p>
-          </div> */}
-          {/* <div className="w-full max-w-4xl bg-[#73CA5C] text-white p-3 mt-4 rounded-lg text-center">
-          <p>Data Anda berhasil tersimpan!</p>
-        </div> */}
+          <div
+            className={`w-full max-w-4xl ${
+              isSubmitted ? "bg-[#73CA5C]" : "bg-[#FF0000]"
+            } text-white p-3 mt-4 rounded-lg text-center`}
+          >
+            {isSubmitted
+              ? "Data Anda berhasil tersimpan!"
+              : `Selesaikan dalam ${formatTime(timeLeft)}`}
+          </div>
+          <ToastContainer />
           <div className="w-full max-w-8xl border-t border-gray-300 mt-4"></div>
           <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 mt-5 w-full max-w-4xl">
             <div className="w-full md:w-2/3 h-full">
@@ -462,64 +385,230 @@ const Checkout = () => {
                 <div>
                   <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
                     <div>Data Diri Pemesan</div>
-                    {/* <div>Centang</div> */}
+                    {isSubmitted && (
+                      <div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width={24}
+                          height={24}
+                          viewBox="0 0 48 48"
+                        >
+                          <g fill="none" strokeLinejoin="round" strokeWidth={4}>
+                            <path
+                              fill="#73CA5C"
+                              stroke="#73CA5C"
+                              d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z"
+                            ></path>
+                            <path
+                              stroke="currentColor"
+                              strokeLinecap="round"
+                              d="M16 24L22 30L34 18"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    )}
                   </div>
                   <div className="font-bold mb-1 text-[#006769]">
                     Nama Lengkap
                   </div>
-                  <input
+                  <div
                     className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
                     name="fullname"
-                    placeholder="Harry"
-                    value={pemesan ? pemesan.name : "Loading..."}
-                  />
-                  {/* <div className="mb-3 flex justify-between">
-                    <div>Punya nama keluarga?</div>
-                    <button>Tombol</button>
+                  >
+                    {pemesan ? pemesan.name : "Loading..."}
                   </div>
-                  <div className="font-bold mb-1 text-[#006769]">
-                    Nama Keluarga
-                  </div>
-                  <input
-                    className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
-                    name="famname"
-                    placeholder="Potter"
-                  /> */}
                   <div className="font-bold mb-1 text-[#006769]">
                     Nomor Telepon
                   </div>
-                  <input
+                  <div
                     className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
                     name="notelp"
-                    placeholder="Potter"
-                    value={pemesan ? `${pemesan.profile.phone}` : "Loading..."}
-                  />
+                  >
+                    {pemesan ? `${pemesan.profile.phone}` : "Loading..."}
+                  </div>
                   <div className="font-bold mb-1 text-[#006769]">Email</div>
-                  <input
+                  <div
                     className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
                     name="email"
-                    placeholder="Contoh: johndee@gmail.com"
-                    value={pemesan ? pemesan.email : "Loading..."}
-                  />
+                  >
+                    {pemesan ? pemesan.email : "Loading..."}
+                  </div>
                 </div>
               </div>
-
-              <div>
+              <form onSubmit={handleSubmitIsiDataPenumpang}>
                 {passengers.map((passenger, index) => (
-                  <PassengerForm
-                    key={index}
-                    passenger={passenger}
-                    index={index}
-                  />
+                  <>
+                    <div
+                      key={index + 1}
+                      className="border-2 border-black p-5 mb-6 rounded-lg"
+                    >
+                      <h3 className="text-2xl font-bold mb-4">
+                        Isi Data Penumpang
+                      </h3>
+                      <div>
+                        <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
+                          <div>
+                            Data Diri Penumpang {index + 1}
+                            {/* {" "}-{" "}{passenger ? passenger.type : "Loading..."} */}
+                          </div>
+                          {isSubmitted && (
+                            <div>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width={24}
+                                height={24}
+                                viewBox="0 0 48 48"
+                              >
+                                <g
+                                  fill="none"
+                                  strokeLinejoin="round"
+                                  strokeWidth={4}
+                                >
+                                  <path
+                                    fill="#73CA5C"
+                                    stroke="#73CA5C"
+                                    d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z"
+                                  ></path>
+                                  <path
+                                    stroke="currentColor"
+                                    strokeLinecap="round"
+                                    d="M16 24L22 30L34 18"
+                                  ></path>
+                                </g>
+                              </svg>
+                            </div>
+                          )}
+                        </div>
+                        <div className="font-bold mb-1 flex">
+                          <p className="text-[#006769]">Title</p>
+                          <p className="ml-1 text-[#FF0000]">*</p>
+                        </div>
+                        <div className="flex relative">
+                          <select
+                            className="border p-2 px-4 mb-3 rounded-md border-[#D0D0D0] w-full"
+                            name={`selectedTitle-${index}`}
+                            defaultValue=""
+                            value={passenger.selectedTitle}
+                            onChange={(e) =>
+                              handleSelectedTitle(e, index, "selectedTitle")
+                            }
+                            disabled={isSubmitted}
+                          >
+                            <option value="" disabled hidden>
+                              Choose Your Title
+                            </option>
+                            <option value="Mr.">Mr.</option>
+                            <option value="Mrs.">Mrs.</option>
+                          </select>
+                        </div>
+                        <div className="font-bold mb-1 flex">
+                          <p className="text-[#006769]">Nama Lengkap</p>
+                          <p className="ml-1 text-[#FF0000]">*</p>
+                        </div>
+                        <input
+                          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+                          name={`fullname-${index}`}
+                          placeholder="Fill Your Full Name"
+                          value={passenger.fullName}
+                          onChange={(e) =>
+                            handleInputChange(e, index, "fullName")
+                          }
+                          readOnly={isSubmitted}
+                        />
+                        <div className="mb-3 flex justify-between">
+                          <div>Punya nama keluarga?</div>
+                          <button
+                            type="button"
+                            className={`slider ${
+                              passenger.isDarkMode
+                                ? "bg-[#006769]"
+                                : " bg-[#8A8A8A]"
+                            } w-12 h-6 rounded-full p-1 transition-transform] duration-300 ease-in-out`}
+                            onClick={() => toggleDarkMode(index)}
+                            disabled={isSubmitted}
+                          >
+                            <div
+                              className={`rounded-full w-4 h-4 bg-white shadow-md transform ${
+                                passenger.isDarkMode ? "translate-x-6" : ""
+                              }`}
+                            ></div>
+                          </button>
+                        </div>
+                        {passenger.isDarkMode && (
+                          <>
+                            <div className="font-bold mb-1 text-[#006769]">
+                              Nama Keluarga
+                            </div>
+                            <input
+                              className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+                              name={`familyName-${index}`}
+                              placeholder="Fill Your Family Name"
+                              value={passenger.familyName}
+                              onChange={(e) =>
+                                handleInputChange(e, index, "familyName")
+                              }
+                              readOnly={isSubmitted}
+                            />
+                          </>
+                        )}
+                        <div className="font-bold mb-1 flex">
+                          <p className="text-[#006769]">Tanggal Lahir</p>
+                          <p className="ml-1 text-[#FF0000]">*</p>
+                        </div>
+                        <input
+                          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+                          name={`birthdate-${index}`}
+                          placeholder="yyyy/mm/dd"
+                          type="date"
+                          value={passenger.birthdate}
+                          onChange={(e) =>
+                            handleInputChange(e, index, "birthdate")
+                          }
+                          readOnly={isSubmitted}
+                        />
+                        <div className="font-bold mb-1 flex">
+                          <p className="text-[#006769]">Kewarganegaraan</p>
+                          <p className="ml-1 text-[#FF0000]">*</p>
+                        </div>
+                        <input
+                          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+                          name={`citizenship-${index}`}
+                          placeholder="Fill Your Nation"
+                          value={passenger.citizenship}
+                          onChange={(e) =>
+                            handleInputChange(e, index, "citizenship")
+                          }
+                          readOnly={isSubmitted}
+                        />
+                        <div className="font-bold mb-1 flex">
+                          <p className="text-[#006769]">NIK</p>
+                          <p className="ml-1 text-[#FF0000]">*</p>
+                        </div>
+                        <input
+                          className="border p-2 px-4 mb-3 text-black rounded-md border-[#D0D0D0] w-full"
+                          name={`identity-${index}`}
+                          placeholder="Fill Your NIK Number"
+                          value={passenger.identity}
+                          onChange={(e) =>
+                            handleInputChange(e, index, "identity")
+                          }
+                          readOnly={isSubmitted}
+                        />
+                      </div>
+                    </div>
+                  </>
                 ))}
-              </div>
-
-              <button className="bg-[#006769] text-white rounded-lg text-xl p-3 w-full">
-                Simpan
-              </button>
-              {/* <button className="bg-[#D0D0D0] text-white rounded-lg text-xl p-3 w-full">
-                Simpan
-              </button> */}
+                <button
+                  type="submit"
+                  className={`${
+                    isSubmitted ? "bg-[#D0D0D0]" : "bg-[#006769]"
+                  }  text-white rounded-lg text-xl p-3 w-full`}
+                  disabled={isSubmitted}
+                >
+                  {isSubmitted ? "Submitted" : "Submit"}
+                </button>
+              </form>
             </div>
 
             <div className="w-full md:w-1/2 h-full p-4 rounded-lg">
@@ -598,8 +687,7 @@ const Checkout = () => {
                           : "Loading..."}
                       </div>
                       <div className="flex">
-                        <img src={info} className="mr-1 mb-11"></img>
-                        <div>
+                        <div className="ml-12">
                           <div className="text-gray-600">Informasi:</div>
                           <ul className="list-disc pl-5 text-gray-600">
                             <li>
@@ -616,15 +704,6 @@ const Checkout = () => {
                                 : "Loading..."}{" "}
                               kg
                             </li>
-                            {/* <li>
-                          In Flight Entertainment (
-                          {flightData
-                            ? flightData.plane.in_flight_entertainment
-                              ? "Available"
-                              : "Not Available"
-                            : "Loading..."}
-                          )
-                        </li> */}
                           </ul>
                         </div>
                       </div>
@@ -634,36 +713,53 @@ const Checkout = () => {
                 ) : (
                   <p>No flight data found.</p>
                 )}
-                {/* <div>
+                <div>
                   <h4 className="font-bold text-lg mb-1">Rincian Harga</h4>
                   <div className="flex justify-between text-gray-600">
-                    <div>2 Adults</div>
-                    <div>IDR 9.550.000</div>
+                    {countAdultInUrl() !== 0 && (
+                      <>
+                        <div>{countAdultInUrl()} Adult</div>
+                        <div>IDR {numberWithCommas(adultPrice())}</div>
+                      </>
+                    )}
                   </div>
                   <div className="flex justify-between text-gray-600">
-                    <div>1 Baby</div>
-                    <div>IDR 0</div>
+                    {countChildInUrl() !== 0 && (
+                      <>
+                        <div>{countChildInUrl()} Child</div>
+                        <div>IDR {numberWithCommas(childPrice())}</div>
+                      </>
+                    )}
+                  </div>
+                  <div className="flex justify-between text-gray-600">
+                    {countBabyInUrl() !== 0 && (
+                      <>
+                        <div>{countBabyInUrl()} Baby</div>
+                        <div>IDR {numberWithCommas(babyPrice())}</div>
+                      </>
+                    )}
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <div>Tax</div>
-                    <div>
-                      IDR {calculateTax() ? calculateTax() : "Loading..."}
-                    </div>
+                    <div>IDR {numberWithCommas(calculateTax())}</div>
                   </div>
                   <div className="w-full max-w-3xl border-t border-gray-600 mt-2"></div>
                   <div className="flex justify-between font-semibold text-lg mt-2">
                     <div className="font-extrabold text-[#151515]">Total</div>
                     <div className="font-extrabold text-[#006769]">
-                      IDR 9.850.000
+                      IDR {numberWithCommas(calculateTotal())}
                     </div>
                   </div>
-                </div> */}
-                {/* <button
-                  onClick={handleSubmitIsiDataPenumpang}
-                  className="bg-[#FF0000] text-white rounded-lg text-xl p-3 w-full"
-                >
-                  Lanjut Bayar
-                </button> */}
+                </div>
+                {isSubmitted && (
+                  <button
+                    type="button"
+                    onClick={handleNavigateToPayment}
+                    className="bg-[#FF0000] text-white rounded-lg text-xl p-3 w-full"
+                  >
+                    Lanjut Bayar
+                  </button>
+                )}
               </div>
             </div>
           </div>
