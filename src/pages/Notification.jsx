@@ -26,7 +26,7 @@ export default function NotificationPage() {
       if (token === null) {
         setTimeout(() => {
           navigate("/login", { state: { fromNotification: true } });
-        }, 3000);
+        }, 2000);
         return;
       }
       const response = await axios.get(`${API_URL}/notification/`, {

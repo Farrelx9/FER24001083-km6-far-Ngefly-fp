@@ -34,7 +34,7 @@ export default function Profile() {
       if (token === null) {
         setTimeout(() => {
           navigate("/login", { state: { fromProfile: true } });
-        }, 3000);
+        }, 2000);
         return;
       }
       try {
