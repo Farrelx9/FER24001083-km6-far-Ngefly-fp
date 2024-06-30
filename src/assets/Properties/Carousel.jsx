@@ -6,7 +6,8 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 
-export default function Carousel({ fromAirportCode }) {
+export default function Carousel({ fromAirportCode, adult, child, baby }) {
+  console.log("Props:", { fromAirportCode, adult, child, baby });
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -56,11 +57,14 @@ export default function Carousel({ fromAirportCode }) {
     const params = {
       from: flight.from.airport_code,
       to: flight.to.airport_code,
-      p: 1,
+      p: adult || 1,
       sc: "ECONOMY",
       page: 1,
       d: new Date(flight.departureAt).toISOString(),
       rt: "false",
+      adult: adult || 1,
+      child: child || 0,
+      baby: baby || 0,
     };
     const queryString = new URLSearchParams(params).toString();
     navigate(`/search?${queryString}`);

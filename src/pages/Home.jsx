@@ -52,6 +52,9 @@ export default function Home() {
   const navigate = useNavigate();
   const images = [bg1, bg2, bg3];
   const API_URL = process.env.API_URL;
+  const [tempAdult, setTempAdult] = useState(adult);
+  const [tempChild, setTempChild] = useState(child);
+  const [tempBaby, setTempBaby] = useState(baby);
 
   const fetchData = async () => {
     try {
@@ -155,9 +158,9 @@ export default function Home() {
       p: totalPassengers,
       sc: selectedClass.toUpperCase().replace(" ", "_"),
       page: 1,
-      adult: adult,
-      child: child,
-      baby: baby,
+      ...(adult && { adult }),
+      ...(child && { child }),
+      ...(baby && { baby }),
     };
 
     const params = {
@@ -181,6 +184,13 @@ export default function Home() {
 
     return () => clearInterval(intervalId);
   }, []);
+
+  const handleSavePassengers = () => {
+    setAdult(tempAdult);
+    setChild(tempChild);
+    setBaby(tempBaby);
+    setShowModal4(false);
+  };
 
   return (
     <Fragment>
@@ -292,7 +302,9 @@ export default function Home() {
                     className=" text-sm font-semibold mb-2"
                     onClick={() => setShowModal4(true)}
                   >
-                    {totalPassengers} Passengers
+                    {totalPassengers > 0
+                      ? `${totalPassengers} Passengers`
+                      : "Passengers"}
                   </div>
                   <div className="lg:w-[140px] md:w-[140px] w-[90px] h-[1px] bg-[#D0D0D0] "></div>
                 </div>
@@ -452,14 +464,14 @@ export default function Home() {
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setAdult, adult)}
+                onClick={() => decrement(setTempAdult, tempAdult)}
               >
                 -
               </button>
-              <span className="px-4">{adult}</span>
+              <span className="px-4">{tempAdult}</span>
               <button
                 className="px-2 py-1 border"
-                onClick={() => increment(setAdult, adult)}
+                onClick={() => increment(setTempAdult, tempAdult)}
               >
                 +
               </button>
@@ -475,14 +487,14 @@ export default function Home() {
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setChild, child)}
+                onClick={() => decrement(setTempChild, tempChild)}
               >
                 -
               </button>
-              <span className="px-4">{child}</span>
+              <span className="px-4">{tempChild}</span>
               <button
                 className="px-2 py-1 border"
-                onClick={() => increment(setChild, child)}
+                onClick={() => increment(setTempChild, tempChild)}
               >
                 +
               </button>
@@ -498,14 +510,14 @@ export default function Home() {
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setBaby, baby)}
+                onClick={() => decrement(setTempBaby, tempBaby)}
               >
                 -
               </button>
-              <span className="px-4">{baby}</span>
+              <span className="px-4">{tempBaby}</span>
               <button
                 className="px-2 py-1 border"
-                onClick={() => increment(setBaby, baby)}
+                onClick={() => increment(setTempBaby, tempBaby)}
               >
                 +
               </button>
@@ -513,9 +525,9 @@ export default function Home() {
           </div>
           <button
             className="bg-[#40A578] w-full py-2 text-white font-semibold rounded"
-            onClick={() => setShowModal4(false)}
+            onClick={handleSavePassengers}
           >
-            Simpan
+            Save
           </button>
         </div>
       </Modal>
@@ -549,7 +561,7 @@ export default function Home() {
             className="bg-[#40A578] w-full py-2 text-white font-semibold rounded"
             onClick={() => setShowModal5(false)}
           >
-            Simpan
+            Save
           </button>
         </div>
       </Modal>
