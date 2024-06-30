@@ -107,7 +107,7 @@ export default function History() {
     const urlParams = createParamsString();
 
     setLoading(true);
-
+    console.log("urlParams", urlParams);
     try {
       const response = await fetch(
         `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/?` +
@@ -127,7 +127,7 @@ export default function History() {
       }
 
       if (response.status === 200 && result.status) {
-        const data = result?.data?.bookings || [];
+        const data = result.data.bookings || [];
 
         // group by month
         let dataMonth = [];
@@ -447,7 +447,7 @@ export default function History() {
                       to={
                         selected.payment?.status === "ISSUED"
                           ? `/print/${selected.id}`
-                          : `/payment/${selected.bookings_id}`
+                          : `/payment/${selected.id}`
                       }
                       className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg w-full h-[48px] flex justify-center items-center"
                     >
