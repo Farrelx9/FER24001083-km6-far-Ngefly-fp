@@ -56,10 +56,10 @@ const SendVerif = () => {
         const { status } = error.response;
 
         if (status === 404) {
-          toast.error("Account not found. Please check your email address.");
+          alert("Account not found. Please check your email address.");
           navigate("/register"); // Redirect to login or any other page
         } else if (status === 409) {
-          toast.error("Account already verified.");
+          alert("Account already verified.");
           navigate("/register"); // Redirect to login or any other page
         } else {
           setNotification({
@@ -104,7 +104,7 @@ const SendVerif = () => {
         alt="Pesawat Atas"
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-xl p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
-        <div className="text-2xl font-bold mb-4">Kirim Verifikasi Email</div>
+        <div className="text-2xl font-bold mb-4">Send Email Verification</div>
         <div className="flex flex-col justify-center items-center text-center mb-4">
           <div className="bg-green-300 text-white p-2 rounded-full inline-block mb-4">
             <img
@@ -114,7 +114,7 @@ const SendVerif = () => {
             />
           </div>
           <p className="text-sm md:text-base text-gray-600 mb-6 sm:text-base">
-            Klik tombol di bawah untuk mengirim email verifikasi ke akun Anda.
+            Click the button below to send a verification email to your account.
           </p>
         </div>
         <button

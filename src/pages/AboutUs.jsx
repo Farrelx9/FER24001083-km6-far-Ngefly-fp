@@ -1,9 +1,11 @@
 import React from "react";
-import Wonwoo from "../assets/logo/Wonwoo.jpg";
 import ngefly from "../assets/logo/ngefly.png";
 import AdiIrawan from "../assets/images/adi irawan.jpeg";
 import Vina from "../assets/images/Vina.png";
 import IKetut from "../assets/images/I Ketut Krisna.png";
+import Farrel from "../assets/images/Farrel.png";
+import Bima from "../assets/images/Bima.jpg";
+import Dewangga from "../assets/images/Dewangga.jpg";
 import Nesvia from "../assets/images/Nesvia Nissa Artanti .jpg";
 import { FaHeadset, FaMoneyBill, FaShieldAlt } from "react-icons/fa";
 
@@ -30,8 +32,8 @@ const AdvantageSection = () => {
             className="text-lg text-gray-700"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
-            Rasakan perbedaan dengan layanan unggulan kami yang didukung oleh
-            komitmen terhadap kualitas dan kepuasan pelanggan.
+            Feel the difference with our superior services supported by
+            commitment to quality and customer satisfaction.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -40,15 +42,15 @@ const AdvantageSection = () => {
             <h3 className="text-[#006769] font-extrabold mb-4 font-serif leading-relaxed">
               <span className="text-2xl block mb-2">
                 <FaHeadset className="inline-block mr-2" />
-                Responsif Pelanggan
+                Customer Responsiveness
               </span>
             </h3>
             <p
-              className="text-base mb-4 font-medium text-gray-800"
+              className="text-base mb-4"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Kami siap membantu Anda dengan cepat dan efisien, baik melalui
-              telepon, email, atau chat online.
+              We are ready to help you quickly and efficiently, either via
+              telephone, email, or online chat.
             </p>
           </div>
           {/* Competitive Prices */}
@@ -56,15 +58,14 @@ const AdvantageSection = () => {
             <h3 className="text-[#006769] font-extrabold mb-4 font-serif leading-relaxed">
               <span className="text-2xl block mb-2">
                 <FaMoneyBill className="inline-block mr-2" />
-                Harga yang Kompetitif
+                Competitive Prices
               </span>
             </h3>
             <p
               className="text-base mb-4"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Dapatkan tiket pesawat dengan harga terbaik tanpa mengorbankan
-              kualitas atau kenyamanan perjalanan.
+              Get the best price plane tickets with quality and travel comfort.
             </p>
           </div>
           {/* Transaction Security */}
@@ -72,15 +73,15 @@ const AdvantageSection = () => {
             <h3 className="text-[#006769] font-extrabold mb-4 font-serif leading-relaxed">
               <span className="text-2xl block mb-2">
                 <FaShieldAlt className="inline-block mr-2" />
-                Keamanan Transaksi
+                Transaction Security
               </span>
             </h3>
             <p
               className="text-base mb-4"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
-              Lindungi data pribadi dan informasi pembayaran Anda dengan
-              teknologi keamanan terkini.
+              Protect your personal data and payment information with the latest
+              security technology.
             </p>
           </div>
         </div>
@@ -94,12 +95,12 @@ const AboutUsAndTeam = () => {
     {
       name: "BIMA MUKTI WIBOWO",
       role: "Front End JS Development",
-      image: Wonwoo,
+      image: Bima,
     },
     {
       name: "FARREL FARHAN",
       role: "Front End JS Development",
-      image: Wonwoo,
+      image: Farrel,
     },
     {
       name: "NESVIA NISSA ARTANTI",
@@ -120,7 +121,7 @@ const AboutUsAndTeam = () => {
     {
       name: "DEWANGGA NANDA ARJUNA",
       role: "Back End JS Development",
-      image: Wonwoo,
+      image: Dewangga,
     },
   ];
 
@@ -146,18 +147,17 @@ const AboutUsAndTeam = () => {
             {" "}
             {/* Tambahkan id di sini */}
             <h2 className="text-4xl font-black text-black mb-4 font-serif">
-              TENTANG KAMI{" "}
+              OUR TEAM{" "}
             </h2>
             <h3 className="text-2xl text-[#006769] mb-6 font-extrabold font-serif">
-              Selamat Datang di NgeFly.com
+              Welcome To NgeFly.com
             </h3>
             <p className="text-lg text-gray-700 font-serif leading-relaxed text-justify">
-              <span className="font-bold">NgeFly.com</span> berkomitmen untuk
-              membantu Anda memesan tiket pesawat dengan mudah dan nyaman. Kami
-              memahami bahwa setiap perjalanan memiliki kebutuhan yang
-              berbeda-beda, dan itulah sebabnya kami hadir untuk menyediakan
-              solusi pemesanan tiket pesawat yang fleksibel dan sesuai dengan
-              preferensi Anda.
+              <span className="font-bold">NgeFly.com</span> committed to helps
+              you book plane tickets easily and comfortably. We understand that
+              every trip has its needs different, and that is why we are here to
+              provide Flexible and suitable flight ticket booking solutions your
+              preferences.
             </p>
           </div>
         </div>

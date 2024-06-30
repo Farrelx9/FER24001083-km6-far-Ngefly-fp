@@ -50,8 +50,32 @@ const Footer = () => {
               style={{ marginBottom: "0.5rem" }}
             >
               NgeFly.com
-            </a>
-
+            </a>{" "}
+            {/* <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ textAlign: "center" }}>
+                <img
+                  src={ngefly}
+                  alt="Icon"
+                  style={{
+                    width: "150px",
+                    height: "150px",
+                    transition: "transform 0.3s",
+                  }}
+                  onMouseOver={(e) =>
+                    (e.currentTarget.style.transform = "scale(1.1)")
+                  }
+                  onMouseOut={(e) =>
+                    (e.currentTarget.style.transform = "scale(1)")
+                  }
+                />
+              </div>
+            </div> */}
             <p className="mt-1 mb-6 text-lg text-center md:text-left text-black sm:text-white">
               {" "}
               {/* Decreased mt-4 to mt-2 */}
@@ -158,11 +182,11 @@ const Footer = () => {
                 <a
                   onClick={(e) => {
                     e.preventDefault(); // Prevent the default anchor tag behavior
-                    window.open("https://wa.me/6281231288119", "_blank");
+                    window.open("https://wa.me/6285150677749", "_blank");
                   }}
                   className="hover:text-primary transition duration-300 cursor-pointer"
                 >
-                  +62284019088
+                  +6285150677749
                 </a>
               </li>
             </ul>
@@ -174,7 +198,7 @@ const Footer = () => {
           {" "}
           <div className="text-sm mt-3">
             {" "}
-            <strong style={{ color: "#006769", fontSize: "1rem" }}>
+            <strong style={{ color: "#D6FFDE", fontSize: "1rem" }}>
               © {new Date().getFullYear()} Ngefly.com | Hak Cipta Dilindungi
             </strong>
           </div>

@@ -1,16 +1,12 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import { FaQrcode } from "react-icons/fa";
-import {
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Navbar from "../assets/Properties/Navbar";
 import Footer from "../assets/Properties/Footer";
-import moment from "moment";
+import { dateFormat } from "../lib/function";
+
 import { ToastContainer, toast } from "react-toastify";
 
 const PaymentMethod = ({
@@ -64,7 +60,7 @@ const PaymentMethod = ({
             onClick={handlePayLater}
             className="w-full bg-[#40A578] text-white py-3 rounded-lg"
           >
-            Bayar Nanti
+            Pay Later
           </button>
         </div>
         // </div>
@@ -77,9 +73,9 @@ const Payment = () => {
   const { booking_id } = useParams();
   const navigate = useNavigate(); // Correct usage inside the functional component
   const [showQRIS, setShowQRIS] = useState(false);
-  const [taxData, setTaxData] = useState(null);
   const [bookingData, setBookingData] = useState(null);
   const [countdown, setCountdown] = useState(0);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (
@@ -146,37 +142,20 @@ const Payment = () => {
           toast.success("Booking data retrieved successfully!");
         } else {
           console.log("Booking data not found."); // Handle other status codes if needed
-          toast.error("Booking data not found.");
+          setError("Booking data not found.");
+          // toast.error("Booking data not found.");
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
           console.log("Booking data not found.");
-          toast.error("Booking data not found.");
+          setError("Booking data not found.");
+          // toast.error("Booking data not found.");
         } else {
           console.error("Error fetching booking data:", error);
-          toast.error("Anda harus login untuk mengakses halaman ini!");
+          toast.error("You've to Login First!");
         }
       }
     };
-
-    const fetchTaxData = async () => {
-      try {
-        const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/tax`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-        console.log("response", response);
-        setTaxData(response.data.data);
-      } catch (error) {
-        console.error("Error fetching tax data:", error);
-      }
-    };
-
-    fetchTaxData();
     fetchBookingData();
   }, [booking_id]);
 
@@ -192,32 +171,25 @@ const Payment = () => {
   const childCount =
     (bookingData?.passengers.filter(
       (passenger) => passenger?.category?.type === "child"
-    ).length || 0) * bookingData?.flight_class.price;
+    ).length || 0) *
+    (bookingData?.flight_class.price * ((100 - 5) / 100));
 
   const babyCount =
     (bookingData?.passengers.filter(
       (passenger) => passenger?.category?.type === "baby"
     ).length || 0) * bookingData?.flight_class.price;
 
-  const tax =
-    ((taxData?.percent || 0) * (bookingData?.flight_class.price || 0)) / 100;
+  const tax = (adultCount + childCount + babyCount || 0) * (5 / 100);
 
-  const total = adultCount + childCount + babyCount + tax;
+  // const total = adultCount + childCount + babyCount + tax;
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     alert("Anda harus login untuk mengakses halaman ini!");
-  //     navigate("/login");
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   if (!localStorage.getItem("token"))
-  //     toast.error("Anda harus login untuk mengakses halaman ini!");
-
-  //   navigate("/login");
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token && navigate) {
+      navigate("/login");
+      toast.error("You've to Login First!");
+    }
+  }, [navigate]);
 
   return (
     <Fragment>
@@ -226,48 +198,54 @@ const Payment = () => {
         <ToastContainer />
         <Navbar />
         <div className="w-full max-w-8xl border-t border-gray-300 mt-20"></div>
-
         {/* Steps */}
-        <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-5">
-          <span className="text-black font-semibold">Isi Data Diri</span>
-          <span className="text-black font-semibold">›</span>
-          <span className="text-black font-semibold">Bayar</span>
-          <span className="text-black font-semibold">›</span>
-          <span className="text-black font-semibold">Selesai</span>
+        <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-5 cursor-pointer">
+          <span className="text-black font-extrabold">
+            Fill in your personal data
+          </span>
+          <span className="text-black font-extrabold">›</span>
+          <span className="text-black font-extrabold">Pay</span>
+          <span className="text-black font-extrabold">›</span>
+          <span className="text-[#8A8A8A] font-extrabold">Finished</span>
         </div>
 
-        {/* Success Message */}
         <div className="w-full max-w-3xl bg-red-600 text-white p-3 mt-4 rounded-lg text-center">
-          {bookingData && bookingData.payment && (
+          {error ? (
+            <h4>{error}</h4>
+          ) : (
             <>
-              {bookingData.payment.status === "CANCELLED" ? (
-                <h4>Pembayaran telah dibatalkan.</h4>
-              ) : (
+              {bookingData && bookingData.payment && (
                 <>
-                  {countdown !== null ? (
-                    <h4>
-                      Selesaikan pembayaran dalam {formatCountdown(countdown)}
-                    </h4>
+                  {bookingData.payment.status === "CANCELLED" ? (
+                    <h4>Payment already expired.</h4>
                   ) : (
-                    <h4>Loading countdown...</h4>
-                  )}
+                    <>
+                      {countdown !== null ? (
+                        <h4>
+                          Complete payment in {formatCountdown(countdown)}
+                        </h4>
+                      ) : (
+                        <h4>Loading countdown...</h4>
+                      )}
 
-                  {bookingData.payment.status !== "ISSUED" &&
-                    bookingData.payment.expiredAt && (
-                      <>
-                        {new Date(bookingData.payment.expiredAt).getTime() <
-                        new Date().getTime() ? (
-                          <div className="mt-2 text-sm text-red-900">
-                            Maaf, waktu untuk pembayaran telah habis.
-                          </div>
-                        ) : (
-                          <div className="mt-2 text-sm font-bold text-gray-900">
-                            Harap selesaikan pembayaran sebelum batas waktu yang
-                            ditentukan.
-                          </div>
+                      {bookingData.payment.status !== "ISSUED" &&
+                        bookingData.payment.expiredAt && (
+                          <>
+                            {new Date(bookingData.payment.expiredAt).getTime() <
+                            new Date().getTime() ? (
+                              <div className="mt-2 text-sm text-red-900">
+                                Sorry, time for payment has expired.
+                              </div>
+                            ) : (
+                              <div className="mt-2 text-sm font-bold text-gray-900">
+                                Please complete payment before the deadline
+                                which is determined.
+                              </div>
+                            )}
+                          </>
                         )}
-                      </>
-                    )}
+                    </>
+                  )}
                 </>
               )}
             </>
@@ -275,12 +253,11 @@ const Payment = () => {
         </div>
 
         <div className="w-full max-w-8xl border-t border-gray-300 mt-4"></div>
-
         <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6 mt-10 w-full max-w-4xl mb-20">
           <div className="w-full md:w-2/3">
             <div className="bg-gray-100 rounded-lg p-6 shadow-md">
               <h3 className="text-3xl font-serif font-extrabold text-gray-700 text-center">
-                PEMBAYARAN
+                PAYMENT
               </h3>
             </div>
 
@@ -294,7 +271,7 @@ const Payment = () => {
                 Icon={FaQrcode}
               >
                 <div className="space-y-2">
-                  <p>Scan QR code berikut untuk membayar:</p>
+                  <p>Scan the following QR code to pay:</p>
                   <div className="flex justify-center">
                     {bookingData ? (
                       <img
@@ -328,18 +305,16 @@ const Payment = () => {
                 <div className="flex items-center justify-between">
                   <div className="font-extrabold text-[#151515] mr-2">
                     {bookingData
-                      ? moment(
+                      ? dateFormat(
                           bookingData?.flight_class?.flight?.departureAt
                         ).format("HH:mm")
                       : "Loading..."}
                   </div>
-                  <div className="font-extrabold text-[#9DDE8B]">
-                    Keberangkatan
-                  </div>
+                  <div className="font-extrabold text-[#9DDE8B]">Departure</div>
                 </div>
                 <div className="text-gray-600">
                   {bookingData
-                    ? moment(
+                    ? dateFormat(
                         bookingData?.flight_class?.flight?.departureAt
                       ).format("DD MMMM YYYY")
                     : "Loading..."}
@@ -357,18 +332,16 @@ const Payment = () => {
                 <div className="flex items-center justify-between">
                   <div className="font-extrabold text-[#151515] mr-2">
                     {bookingData
-                      ? moment(
+                      ? dateFormat(
                           bookingData?.flight_class?.flight?.arriveAt
                         ).format("HH:mm")
                       : "Loading..."}
                   </div>
-                  <div className="font-extrabold text-[#9DDE8B]">
-                    Kedatangan
-                  </div>
+                  <div className="font-extrabold text-[#9DDE8B]">Arrive</div>
                 </div>
                 <div className="text-gray-600">
                   {bookingData
-                    ? moment(
+                    ? dateFormat(
                         bookingData?.flight_class?.flight?.arriveAt
                       ).format("DD MMMM YYYY")
                     : "Loading..."}
@@ -401,14 +374,14 @@ const Payment = () => {
                 <div className="text-gray-600">Informasi:</div>
                 <ul className="list-disc pl-5 text-gray-600">
                   <li>
-                    Bagasi{" "}
+                    Baggage{" "}
                     {bookingData
                       ? bookingData?.flight_class?.flight?.plane?.baggage
                       : "Loading..."}{" "}
                     kg
                   </li>
                   <li>
-                    Bagasi kabin{" "}
+                    Cabin baggage{" "}
                     {bookingData
                       ? bookingData?.flight_class?.flight?.plane?.cabin_baggage
                       : "Loading..."}{" "}
@@ -420,7 +393,7 @@ const Payment = () => {
               {/* Price details */}
               <div className="w-full max-w-3xl border-t border-gray-600 mt-4 pl-4"></div>
               <div>
-                <h4 className="font-extrabold mb-2 pl-4">Rincian Harga</h4>
+                <h4 className="font-extrabold mb-2 pl-4">Price details</h4>
 
                 {adultCount > 0 && (
                   <div className="flex justify-between pl-4 text-gray-600">
@@ -428,7 +401,7 @@ const Payment = () => {
                       {bookingData?.passengers.filter(
                         (passenger) => passenger?.category?.type === "adult"
                       ).length || 0}{" "}
-                      Adult
+                      Adults
                     </span>
                     <span className="text-md text-[#151515]">
                       Rp {adultCount.toLocaleString("id-ID")}
@@ -477,7 +450,7 @@ const Payment = () => {
                 <div className="flex justify-between pl-4 mt-4 text-[#151515]">
                   <span className="text-md font-extrabold">Total</span>
                   <span className="text-md font-extrabold text-[#006769]">
-                    Rp {total.toLocaleString("id-ID")}
+                    Rp {bookingData?.total_price.toLocaleString("id-ID")}
                   </span>
                 </div>
               </div>
