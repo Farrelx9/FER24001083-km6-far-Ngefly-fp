@@ -74,7 +74,7 @@ const PaymentMethod = ({
 };
 
 const Payment = () => {
-  const booking_id = "0b92d263-b46c-43fd-b1e1-c6c7a4e76c3b";
+  const { booking_id } = useParams();
   const navigate = useNavigate(); // Correct usage inside the functional component
   const [showQRIS, setShowQRIS] = useState(false);
   const [taxData, setTaxData] = useState(null);

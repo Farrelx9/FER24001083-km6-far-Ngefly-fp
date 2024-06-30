@@ -34,7 +34,7 @@ export default function App() {
         <Route path="/notif" element={<Notification />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/history" element={<History />} />
-        <Route path="/payment" element={<Payment />} />
+        <Route path="/payment/:booking_id" element={<Payment />} />
         <Route
           path="/ticketconfirm/:payment_id"
           element={<TicketConfirmation />}
