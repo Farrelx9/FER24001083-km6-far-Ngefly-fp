@@ -524,14 +524,20 @@ const Checkout = () => {
                               passenger.isDarkMode
                                 ? "bg-[#006769]"
                                 : " bg-[#8A8A8A]"
-                            } w-12 h-6 rounded-full p-1 transition-transform] duration-300 ease-in-out`}
+                            } w-12 h-6 rounded-full p-1 duration-200`}
                             onClick={() => toggleDarkMode(index)}
                             disabled={isSubmitted}
+                            style={{
+                              transition: "transform 0.3s ease",
+                            }}
                           >
                             <div
-                              className={`rounded-full w-4 h-4 bg-white shadow-md transform ${
+                              className={`rounded-full w-4 h-4 bg-white shadow-md transform transition-transform duration-1 ${
                                 passenger.isDarkMode ? "translate-x-6" : ""
                               }`}
+                              style={{
+                                transition: "transform 0.3s ease-in-out",
+                              }}
                             ></div>
                           </button>
                         </div>
