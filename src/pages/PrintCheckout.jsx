@@ -15,13 +15,14 @@ export default function PrintCheckout() {
   const handlePrint = useReactToPrint({
     content: () => printRef.current,
   });
+  const API_URL = process.env.API_URL;
 
   const fetchData = async () => {
     setLoading(true);
 
     try {
       const response = await fetch(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/${id}`,
+        `${API_URL}/bookings/${id}`,
         {
           method: "GET",
           headers: {
