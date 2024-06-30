@@ -4,12 +4,25 @@ import { useState } from "react";
 import Divider from "../atoms/Divider";
 import { FLIGHT_CLASS } from "../../constant/type";
 import { dateFormat, formatCurrency, getDuration } from "../../lib/function";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 export default function CardFlight({ index, item }) {
+  const [searchParams] = useSearchParams();
   const [accordion, setAccordion] = useState(false);
   const price = item.price || 0;
   const flightClass = item.name || "";
+
+  const urlParams = new URLSearchParams({
+    ...(searchParams.get("adult") && {
+      adult: Number(searchParams.get("adult")),
+    }),
+    ...(searchParams.get("child") && {
+      child: Number(searchParams.get("child")),
+    }),
+    ...(searchParams.get("baby") && {
+      baby: Number(searchParams.get("baby")),
+    }),
+  });
 
   return (
     <div
@@ -70,7 +83,7 @@ export default function CardFlight({ index, item }) {
             {formatCurrency(price)}
           </div>
           <Link
-            to={`/checkout/${item.id}`}
+            to={`/checkout/${item.id}?${urlParams.toString()}`}
             className="bg-[#40A578] font-medium flex w-fit justify-center items-center text-white rounded-[10px] px-8 py-2 cursor-pointer"
           >
             Pilih

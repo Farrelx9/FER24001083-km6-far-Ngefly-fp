@@ -384,7 +384,7 @@ export default function History() {
                     {selected.passengers?.map((passenger, indexPassenger) => (
                       <Fragment key={`passenger-${indexPassenger}`}>
                         <p className="text-[#4B1979]">
-                          Penumpang {indexPassenger + 1}: Mr. {passenger.name}
+                          Penumpang {indexPassenger + 1}: {passenger.name}
                         </p>
                         <p>ID: {passenger.id}</p>
                       </Fragment>
@@ -439,15 +439,22 @@ export default function History() {
                   <p className="font-bold">Total</p>
                   <p>{formatCurrency(selected.total_price || 0)}</p>
                 </div>
-                {selected.payment?.status === "ISSUED" && (
+                {(selected.payment?.status === "ISSUED" ||
+                  selected.payment?.status === "UNPAID") && (
                   <>
                     <Divider className="my-3 mx-auto" />
-                    <button
-                      className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg w-full h-[48px]"
-                      type="button"
+                    <Link
+                      to={
+                        selected.payment?.status === "ISSUED"
+                          ? `/print/${selected.id}`
+                          : `/payment/${selected.bookings_id}`
+                      }
+                      className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg w-full h-[48px] flex justify-center items-center"
                     >
-                      Cetak Tiket
-                    </button>
+                      {selected.payment?.status === "ISSUED"
+                        ? "Cetak Tiket"
+                        : "Bayar"}
+                    </Link>
                   </>
                 )}
               </div>
