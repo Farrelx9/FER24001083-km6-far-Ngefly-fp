@@ -146,7 +146,11 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (location.state?.fromNotification || location.state?.fromProfile) {
+    if (
+      location.state?.fromNotification ||
+      location.state?.fromProfile ||
+      location.state?.fromHistory
+    ) {
       toast.error("You need to log in first!");
     }
   }, [location.state]);
