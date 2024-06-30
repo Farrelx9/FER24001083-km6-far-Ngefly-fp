@@ -149,7 +149,7 @@ const Payment = () => {
         if (error.response && error.response.status === 404) {
           console.log("Booking data not found.");
           setError("Booking data not found.");
-          // toast.error("Booking data not found.");
+          toast.error("Booking data not found.");
         } else {
           console.error("Error fetching booking data:", error);
           toast.error("You've to Login First!");
