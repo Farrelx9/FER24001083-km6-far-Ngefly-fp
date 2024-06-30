@@ -10,18 +10,21 @@ import { FaHeadset, FaMoneyBill, FaShieldAlt } from "react-icons/fa";
 const AdvantageSection = () => {
   return (
     <section
+      id="advantagesection"
       className="py-16 relative mt-40"
       style={{
         backgroundColor: "#D6FFDE",
-        width: "100vw",
-        marginLeft: "calc(50% - 50vw)",
+        position: "relative",
+        left: "50%",
+        transform: "translateX(-50%)",
+        width: "95vw",
         fontFamily: "'Roboto', sans-serif",
       }}
     >
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-12">
+        <div className="max-w-6xl mx-auto text-center mb-12">
           <h2 className="text-4xl font-black text-gray-800 mb-4 font-serif">
-            KEUNTUNGAN
+            ADVANTAGES
           </h2>
           <p
             className="text-lg text-gray-700"
@@ -31,7 +34,7 @@ const AdvantageSection = () => {
             komitmen terhadap kualitas dan kepuasan pelanggan.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Responsive Customer Service */}
           <div className="advantage-card bg-gradient-to-br from-[#FFD571] to-[#F99D5C] rounded-lg shadow-lg p-8 text-white relative overflow-hidden">
             <h3 className="text-[#006769] font-extrabold mb-4 font-serif leading-relaxed">
@@ -53,7 +56,7 @@ const AdvantageSection = () => {
             <h3 className="text-[#006769] font-extrabold mb-4 font-serif leading-relaxed">
               <span className="text-2xl block mb-2">
                 <FaMoneyBill className="inline-block mr-2" />
-                Harga yang Kompetitif{" "}
+                Harga yang Kompetitif
               </span>
             </h3>
             <p
@@ -85,6 +88,7 @@ const AdvantageSection = () => {
     </section>
   );
 };
+
 const AboutUsAndTeam = () => {
   const teamMembers = [
     {
@@ -138,7 +142,9 @@ const AboutUsAndTeam = () => {
             </div>
           </div>
 
-          <div className="md:w-1/2 md:pl-10 mt-10">
+          <div className="md:w-1/2 md:pl-10 mt-10" id="aboutUsSection">
+            {" "}
+            {/* Tambahkan id di sini */}
             <h2 className="text-4xl font-black text-black mb-4 font-serif">
               TENTANG KAMI{" "}
             </h2>
