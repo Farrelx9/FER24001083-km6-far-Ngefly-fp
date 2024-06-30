@@ -8,7 +8,7 @@ import NotFound from "../components/atoms/NotFound";
 import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import Modal from "../components/atoms/Modal";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import CardFlight from "../components/molecules/CardFlight";
 import { FLIGHT_CLASS } from "../constant/type";
 import { dateFormat } from "../lib/function";
@@ -78,6 +78,7 @@ const OPTION_SORT = [
 
 export default function Search() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [modal, setModal] = useState({
     sort: false,
     filter: false,
@@ -88,15 +89,7 @@ export default function Search() {
     page: searchParams.get("page") || 1,
     from: searchParams.get("from") || "", // required from url
     to: searchParams.get("to") || "",
-    p: searchParams.get("p")
-      ? Number(searchParams.get("p"))
-      : !isNaN(Number(searchParams.get("adult"))) ||
-        !isNaN(Number(searchParams.get("child"))) ||
-        !isNaN(Number(searchParams.get("baby")))
-      ? Number(searchParams.get("adult") || 0) +
-        Number(searchParams.get("child") || 0) +
-        Number(searchParams.get("baby") || 0)
-      : 1, // required from url
+    p: searchParams.get("p") ? Number(searchParams.get("p")) : 1, // required from url
     sc: searchParams.get("sc") || "", // required from url
     rt: searchParams.get("rt") || "",
     rd: searchParams.get("rd") || "",
@@ -104,6 +97,19 @@ export default function Search() {
     type: searchParams.get("type") || "",
     order: searchParams.get("order") || "",
   };
+  const paramsPassenger = {
+    ...(searchParams.get("adult") && {
+      adult: Number(searchParams.get("adult")),
+    }),
+    ...(searchParams.get("child") && {
+      child: Number(searchParams.get("child")),
+    }),
+    ...(searchParams.get("baby") && {
+      baby: Number(searchParams.get("baby")),
+    }),
+  };
+
+  console.log(paramsPassenger);
 
   const selectedSort =
     params.order && params.type
@@ -118,12 +124,13 @@ export default function Search() {
   const [loading, setLoading] = useState(true);
   const [list, setList] = useState([]);
 
-  const createParamsString = (newValue) => {
+  const createParamsString = (newValue, redirect) => {
     const urlParams = new URLSearchParams({
       page: newValue?.page || params.page,
       from: newValue?.from || params.from, // required from url
       p: newValue?.p || params.p || 1, // required from url
       sc: newValue?.sc || params.sc, // required from url
+      ...(redirect && paramsPassenger),
     });
 
     if (newValue?.to || params.to)
@@ -142,7 +149,7 @@ export default function Search() {
   };
 
   const redirect = (params) => {
-    const urlParams = createParamsString(params);
+    const urlParams = createParamsString(params, true);
 
     window.location.href = `/search?${urlParams}`;
   };
@@ -232,7 +239,7 @@ export default function Search() {
             </div>
             <div
               className="bg-[#40A578] font-medium flex w-full md:max-w-[220px] justify-center items-center text-white h-[50px] rounded-[10px] px-5 cursor-pointer"
-              onClick={() => handleSubmit()}
+              onClick={() => navigate("/")}
             >
               Ubah Pencarian
             </div>

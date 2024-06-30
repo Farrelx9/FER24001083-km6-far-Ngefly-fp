@@ -17,6 +17,7 @@ import TicketConfirmation from "./pages/TicketConfirmation";
 import AboutUs from "./pages/AboutUs";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import History from "./pages/History";
+import PrintCheckout from "./pages/PrintCheckout";
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
         <Route path="/payment" element={<Payment />} />
         <Route path="/payments/:payment_id" element={<TicketConfirmation />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/print/:id" element={<PrintCheckout />} />
         <Route path="/paymentsuccess" element={<PaymentSuccess />} />
       </Routes>
     </Router>
