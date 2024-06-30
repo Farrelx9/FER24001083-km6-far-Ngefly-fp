@@ -133,7 +133,7 @@ export default function PrintCheckout() {
                 {data?.passengers?.map((passenger, indexPassenger) => (
                   <Fragment key={`passenger-${indexPassenger}`}>
                     <p className="text-[#4B1979]">
-                      Penumpang {indexPassenger + 1}: Mr. {passenger.name}
+                      Penumpang {indexPassenger + 1}: {passenger.name}
                     </p>
                     <p>ID: {passenger.id}</p>
                   </Fragment>

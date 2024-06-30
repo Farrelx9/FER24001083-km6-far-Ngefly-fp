@@ -6,7 +6,7 @@ export const FLIGHT_CLASS = {
 };
 
 export const PAYMENT_STATUS = {
-  upaid: {
+  unpaid: {
     label: "Unpaid",
     color: "#FF0000",
   },
