@@ -7,7 +7,6 @@ import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
 
 export default function Carousel({ fromAirportCode, adult, child, baby }) {
-  console.log("Props:", { fromAirportCode, adult, child, baby });
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();

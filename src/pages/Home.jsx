@@ -107,10 +107,6 @@ export default function Home() {
     setIsReturnActive(!isReturnActive);
   };
 
-  useEffect(() => {
-    setTotalPassengers(adult + child);
-  }, [adult, child]);
-
   const clearInputValue = () => {
     setInputValue("");
     setSearchText("");
@@ -189,6 +185,7 @@ export default function Home() {
     setAdult(tempAdult);
     setChild(tempChild);
     setBaby(tempBaby);
+    setTotalPassengers(tempAdult + tempChild);
     setShowModal4(false);
   };
 
