@@ -14,6 +14,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [responseError, setResponseError] = useState("");
   const [isValidateEmail, setIsValidateEmail] = useState(false);
   const [isValidatePassword, setIsValidatePassword] = useState(false);
   const [isTickEmail, setIsTickEmail] = useState(false);
@@ -27,13 +28,11 @@ export default function Register() {
   const handleEmailChange = (event) => {
     const newEmail = event.target.value;
     if (!newEmail.trim()) {
-      setEmailError("Email harus diisi!");
+      setEmailError("Email must be filled!");
       setIsValidateEmail(false);
       setIsTickEmail(false);
     } else if (!emailRegex.test(newEmail)) {
-      setEmailError(
-        "Mohon isi dengan email sesungguhnya untuk kebutuhan verifikasi."
-      );
+      setEmailError("Fill with your real email for verification!");
       setIsValidateEmail(true);
       setIsTickEmail(false);
     } else {
@@ -46,13 +45,11 @@ export default function Register() {
   const handleEmailBlur = (event) => {
     const newEmail = event.target.value;
     if (!newEmail.trim()) {
-      setEmailError("Email harus diisi!");
+      setEmailError("Email must be filled!");
       setIsValidateEmail(false);
       setIsTickEmail(false);
     } else if (!emailRegex.test(newEmail)) {
-      setEmailError(
-        "Mohon isi dengan email sesungguhnya untuk kebutuhan verifikasi."
-      );
+      setEmailError("Fill with your real email for verification!");
       setIsValidateEmail(true);
       setIsTickEmail(false);
     } else {
@@ -64,11 +61,11 @@ export default function Register() {
   const handlePasswordChange = (event) => {
     const newPassword = event.target.value;
     if (!newPassword.trim()) {
-      setPasswordError("Silakan isi password!");
+      setPasswordError("Please enter password!");
       setIsValidatePassword(false);
       setIsTickPassword(false);
     } else if (!passwordRegex.test(newPassword)) {
-      setPasswordError("Password min 8 karakter.");
+      setPasswordError("Password must be at least 8 characters.");
       setIsValidatePassword(false);
       setIsTickPassword(false);
     } else {
@@ -81,11 +78,11 @@ export default function Register() {
   const handlePasswordBlur = (event) => {
     const newPassword = event.target.value;
     if (!newPassword.trim()) {
-      setPasswordError("Silakan isi password!");
+      setPasswordError("Please enter password!");
       setIsValidatePassword(false);
       setIsTickPassword(false);
     } else if (!passwordRegex.test(newPassword)) {
-      setPasswordError("Password min 8 karakter.");
+      setPasswordError("Password must be at least 8 characters.");
       setIsValidatePassword(false);
       setIsTickPassword(false);
     } else {
@@ -96,6 +93,9 @@ export default function Register() {
 
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
+    setEmailError("");
+    setPasswordError("");
+    setResponseError("");
     const registerData = {
       email: email,
       name: name,
@@ -113,21 +113,23 @@ export default function Register() {
       if (response?.status === 201) {
         navigate(`/sendverif/${email}`);
         alert(
-          `Register Sukses, ${name}. Silakan Verifikasi Email terlebih dahulu agar bisa melakukan login`
+          `Register Success, ${name}. Please verify your email first to be able to login!`
         );
       }
     } catch (error) {
       if (error.response) {
         const { status } = error.response;
         if (status === 400) {
-          toast.error("Silakan isi semua inputan.");
+          setResponseError("Please fill in all inputs.");
         } else if (status === 409) {
-          toast.error("Email sudah pernah digunakan registrasi.");
+          setResponseError("Email already used.");
         } else {
-          toast.error("Gagal terhubung ke server. Silakan coba lagi nanti.");
+          setResponseError(
+            "Failed to connect to server. Please try again later."
+          );
         }
       } else {
-        toast.error(`${error.message}`);
+        setResponseError(`${error.message}`);
       }
     }
   };
@@ -156,15 +158,15 @@ export default function Register() {
       <ToastContainer />
       <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-2xl p-4 w-[509px] h-[425px] absolute top-[388px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
-          <div className="text-2xl font-bold ms-3">Daftar</div>
+          <div className="text-2xl font-bold ms-3">Register</div>
           <form
             className="flex flex-col ms-3 mt-3"
             onSubmit={handleSubmitRegister}
           >
-            <label className="mb-1">Nama</label>
+            <label className="mb-1">Name</label>
             <input
               name="name"
-              placeholder="Nama Lengkap"
+              placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="rounded-xl border px-4 py-5 w-[452px] h-[48px] max-sm:w-[90%]"
@@ -173,7 +175,7 @@ export default function Register() {
             <div className="flex relative">
               <input
                 name="email"
-                placeholder="Contoh: johndee@gmail.com"
+                placeholder="Ex: johndee@gmail.com"
                 value={email}
                 onChange={handleEmailChange}
                 onBlur={handleEmailBlur}
@@ -206,7 +208,7 @@ export default function Register() {
                 value={password}
                 onChange={handlePasswordChange}
                 onBlur={handlePasswordBlur}
-                placeholder="Buat Password"
+                placeholder="Create Password"
                 className={`rounded-xl border px-4 py-5 w-[452px] h-[48px] max-sm:w-[90%] ${
                   passwordError ? "border-red-500" : ""
                 }`}
@@ -276,24 +278,24 @@ export default function Register() {
               className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg mt-5 w-[452px] h-[48px] max-sm:w-[90%]"
               type="submit"
             >
-              Daftar
+              Submit
             </button>
           </form>
           <div className="flex gap-2 justify-center mt-3 px-auto">
-            <div>Sudah punya akun?</div>
+            <div>Already have an account?</div>
             <button
               className="text-[#40A578] font-bold hover:text-[#006769]"
               onClick={() => navigate("/login")}
             >
-              Masuk di sini
+              Login here.
             </button>
           </div>
           {emailError && (
             <div
-              className={`mt-4 mx-auto text-white text-lg text-center p-2 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg ${
+              className={`mt-4 mx-auto w-[400px] h-[45px] text-white text-lg text-center p-2 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg ${
                 isValidateEmail
-                  ? "bg-[#73CA5C] mt-1 w-[400px] h-[70px] rounded-xl flex text-center"
-                  : "bg-[#FF0000] mt-1 w-[273px] h-[45px] rounded-xl flex justify-center"
+                  ? "bg-[#73CA5C] mt-2 rounded-xl flex justify-center"
+                  : "bg-[#FF0000] mt-4 rounded-xl flex justify-center"
               }`}
             >
               {emailError}
@@ -301,13 +303,18 @@ export default function Register() {
           )}
           {passwordError && (
             <div
-              className={`w-[273px] h-[45px] mx-auto text-white text-lg text-center p-2 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg ${
+              className={`w-[400px] h-[45px] mx-auto text-white text-lg text-center p-2 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg ${
                 isValidatePassword
-                  ? ""
+                  ? "mt-2"
                   : "bg-[#FF0000] rounded-xl flex justify-center"
-              } ${isValidateEmail ? "mt-2" : "mt-4"}`}
+              } ${isValidateEmail ? "mt-4" : "mt-4"}`}
             >
               {passwordError}
+            </div>
+          )}
+          {!emailError && !passwordError && responseError && (
+            <div className="mt-4 mx-auto w-[400px] h-[45px] text-white text-lg text-center p-2 rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg bg-[#FF0000]">
+              {responseError}
             </div>
           )}
         </div>
