@@ -140,7 +140,7 @@ export default function CardFlight({ index, item }) {
             </p>
             <p>{item.flight?.from?.name || ""}</p>
           </div>
-          <p className="font-bold text-[#9DDE8B]">Keberangkatan</p>
+          <p className="font-bold text-[#9DDE8B]">Departure</p>
         </div>
         <Divider className="my-3 mx-auto max-w-[700px]" />
         <div className="pl-10">
@@ -166,7 +166,7 @@ export default function CardFlight({ index, item }) {
             </p>
             <p>{item.flight?.to?.name || ""}</p>
           </div>
-          <p className="font-bold text-[#9DDE8B]">Kedatangan</p>
+          <p className="font-bold text-[#9DDE8B]">Arrive</p>
         </div>
       </div>
     </div>
