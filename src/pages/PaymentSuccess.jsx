@@ -13,13 +13,12 @@ export default function PaymentStatus() {
   const [error, setError] = useState(null);
   const { payment_id } = useParams();
   const navigate = useNavigate();
-
-  const url = `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`;
+  const API_URL = process.env.API_URL;
 
   const handleScan = async () => {
     try {
       const response = await axios.put(
-        url,
+        `${API_URL}/payments/${payment_id}`,
         {},
         {
           headers: {

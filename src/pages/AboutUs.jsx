@@ -145,9 +145,8 @@ const AboutUsAndTeam = () => {
 
           <div className="md:w-1/2 md:pl-10 mt-10" id="aboutUsSection">
             {" "}
-            {/* Tambahkan id di sini */}
             <h2 className="text-4xl font-black text-black mb-4 font-serif">
-              OUR TEAM{" "}
+              ABOUT US{" "}
             </h2>
             <h3 className="text-2xl text-[#006769] mb-6 font-extrabold font-serif">
               Welcome To NgeFly.com

@@ -76,6 +76,7 @@ const Payment = () => {
   const [bookingData, setBookingData] = useState(null);
   const [countdown, setCountdown] = useState(0);
   const [error, setError] = useState(null);
+  const API_URL = process.env.API_URL;
 
   useEffect(() => {
     if (
@@ -127,23 +128,19 @@ const Payment = () => {
     const fetchBookingData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/${booking_id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/bookings/${booking_id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         if (response.status === 200) {
           console.log("Successfully retrieved booking data:", response.data);
-          setBookingData(response.data.data); // Set the booking data in state or wherever needed
+          setBookingData(response.data.data);
           toast.success("Booking data retrieved successfully!");
         } else {
-          console.log("Booking data not found."); // Handle other status codes if needed
+          console.log("Booking data not found.");
           setError("Booking data not found.");
-          // toast.error("Booking data not found.");
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
@@ -181,8 +178,6 @@ const Payment = () => {
 
   const tax = (adultCount + childCount + babyCount || 0) * (5 / 100);
 
-  // const total = adultCount + childCount + babyCount + tax;
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token && navigate) {
@@ -190,10 +185,6 @@ const Payment = () => {
       toast.error("You've to Login First!");
     }
   }, [navigate]);
-
-  // const handlePayLater = () => {
-  //   navigate("/");
-  // };
 
   return (
     <Fragment>
