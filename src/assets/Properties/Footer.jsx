@@ -116,7 +116,7 @@ const Footer = () => {
             {" "}
             <h4 className="text-xl font-semibold mb-2 text-center text-black sm:text-white">
               {" "}
-              Informasi{" "}
+              Quick Links{" "}
             </h4>
             <ul className="text-sm flex flex-col items-center gap-1 sm:gap-3 text-black sm:text-white">
               {" "}
@@ -135,7 +135,7 @@ const Footer = () => {
                   onClick={(e) => scrollToSection("aboutUsSection", e, -1800)}
                   className="hover:text-primary transition duration-300"
                 >
-                  Tentang Kami
+                  About Us
                 </a>
               </li>
               <li>
@@ -144,7 +144,7 @@ const Footer = () => {
                   onClick={(e) => scrollToSection("advantagesection", e, -1200)}
                   className="hover:text-primary transition duration-300"
                 >
-                  Keuntungan
+                  Advantages
                 </a>
               </li>
             </ul>
@@ -156,7 +156,7 @@ const Footer = () => {
             <h4 className="text-xl font-semibold mb-2 text-center md:text-right text-black sm:text-white">
               {" "}
               {/* Decreased mb-4 to mb-2 */}
-              Kontak{" "}
+              Contact{" "}
             </h4>
             <ul className="text-sm text-center md:text-right text-black sm:text-white">
               <li className="mb-2">
@@ -194,7 +194,7 @@ const Footer = () => {
           <div className="text-sm mt-3">
             {" "}
             <strong style={{ color: "#006769", fontSize: "1rem" }}>
-              © {new Date().getFullYear()} Ngefly.com | Hak Cipta Dilindungi
+              © {new Date().getFullYear()} Ngefly.com | All Rights Reserved
             </strong>
           </div>
         </div>
