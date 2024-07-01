@@ -111,7 +111,7 @@ export default function NotificationPage() {
       <div className="">
         <Navbar />
         <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-          <div className="lg:w-[1200px] md:w-[790px] w-[390px] px-4 mt-20 font-semibold">
+          <div className="lg:w-[1200px] md:w-[790px] w-[390px] px-4 mt-20 lg:text-lg md:text-lg text-sm font-semibold">
             Notification
           </div>
           <div className="flex items-center gap-4">
