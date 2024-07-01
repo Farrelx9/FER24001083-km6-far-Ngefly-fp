@@ -35,7 +35,6 @@ export default function NotificationPage() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response.data", response.data);
       const notifications = response.data.data;
       if (Array.isArray(notifications)) {
         setNotification(notifications);

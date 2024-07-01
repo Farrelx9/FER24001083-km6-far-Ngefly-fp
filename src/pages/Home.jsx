@@ -63,7 +63,6 @@ export default function Home() {
           accept: "application/json",
         },
       });
-      console.log("response.data", response.data);
       setAirportSuggestions(response.data.data);
     } catch (error) {
       console.error("Error Fetching Data: ", error);
@@ -201,7 +200,7 @@ export default function Home() {
             className=" w-full lg:h-[600px] md:h-[500px] h-[400px] object-cover rounded-b-xl"
           />
         </div>
-        <div className="flex justify-center relative z-30 lg:bottom-[150px] md:bottom-[100px] bottom-[70px] ">
+        <div className="flex justify-center relative z-30 lg:bottom-[120px] md:bottom-[100px] bottom-[70px] ">
           <div className="shadow-2xl lg:rounded-lg md:rounded-xl rounded-2xl bg-[#FFFFFF] lg:w-[968px] md:w-[538px] w-[370px] lg:h-[298px] md:h-[448px] h-[438px] ">
             <div className="flex items-center font-semibold p-2 gap-1 mt-4 mb-6 lg:px-10 md:px-10 px-10">
               <div className="lg:text-2xl md:text-xl text-sm lg:w-[400px] md:w-[330px] w-[230px] ">

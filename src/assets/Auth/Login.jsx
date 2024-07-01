@@ -102,7 +102,6 @@ export default function Login() {
         }
       );
 
-      console.log("ApiResponse", response.data);
       const { status, data } = response.data;
 
       if (!status && data.user && data.user.is_verified === false) {
@@ -266,7 +265,7 @@ export default function Login() {
             </div>
           )}
           {data && (
-            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white text-xl text-center font-semibold p-3 bg-[#40A578] rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg">
+            <div className="mt-7 w-[273px] h-[52px] mx-auto text-white  text-xl text-center font-semibold p-3 bg-[#40A578] rounded-xl max-sm:w-[65%] max-sm:h-[65%] max-sm:text-lg ">
               Welcome {data && data.name}!
             </div>
           )}

@@ -16,10 +16,10 @@ function GoogleLogin({ buttonText }) {
       );
       const { token } = response.data.data;
       localStorage.setItem("token", token);
-      console.log("data", response.data);
+
       navigate("/", { state: { token: token } });
     } catch (error) {
-      console.error("Error registering/login with Google:", error);
+
     }
   };
 
@@ -29,7 +29,7 @@ function GoogleLogin({ buttonText }) {
       registerLoginWithGoogleAction(responseGoogle.access_token);
     },
     onError: (error) => {
-      console.error("Google login error:", error);
+ 
     },
   });
 

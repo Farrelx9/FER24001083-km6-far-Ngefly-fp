@@ -4,10 +4,12 @@ import { CiLogin } from "react-icons/ci";
 import { MdNotificationsNone, MdOutlineList } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import "animate.css";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,11 +26,12 @@ export default function Navbar() {
 
     const handleScroll = () => {
       if (window.scrollY > lastScrollY) {
-        setIsScrolled(false); 
+        setIsHidden(true);
       } else {
-        setIsScrolled(true); 
+        setIsHidden(false);
       }
-      lastScrollY = window.scrollY; 
+      setIsScrolled(window.scrollY > 0);
+      lastScrollY = window.scrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -40,9 +43,13 @@ export default function Navbar() {
 
   return (
     <div
-      className={`fixed w-full z-40 px-3 md:px-10 lg:px-32 flex justify-between gap-3 ${
-        isScrolled ? "bg-white shadow-2xl" : "bg-none"
-      } transition-colors duration-300`}
+      className={`fixed w-full z-40 px-3 md:px-10 lg:px-32 flex justify-between gap-3 transition-colors duration-300 ${
+        isScrolled ? "bg-white shadow-2xl" : "bg-white shadow-2xl"
+      } ${
+        isHidden
+          ? "animate__animated animate__fadeOutUp"
+          : "animate__animated animate__fadeInDown"
+      }`}
     >
       <div className="flex gap-5">
         <img

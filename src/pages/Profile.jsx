@@ -45,7 +45,6 @@ export default function Profile() {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log("Response data:", response.data);
 
         if (response.data && response.data.data) {
           const profileData = response.data.data;
@@ -60,7 +59,6 @@ export default function Profile() {
             isVerified: profileData.is_verified || false,
           });
           setIsReady(true);
-          console.log("Profile data:", profileData);
         } else {
           throw new Error("Profile data is missing");
         }
@@ -129,7 +127,7 @@ export default function Profile() {
       if (response.data && response.data.status) {
         setProfileData(response.data.data || updatedData);
         setShowEditFields(false);
-        console.log("Updated profile data:", response.data.data);
+
         toast.success("Profile updated successfully!");
       } else {
         throw new Error("Failed to update profile data");
@@ -156,7 +154,6 @@ export default function Profile() {
           },
         }
       );
-      // Handle response here
       console.log("Password changed successfully", response.data);
       toast.success("Password changed successfully!");
     } catch (error) {
@@ -184,7 +181,7 @@ export default function Profile() {
   return (
     <div>
       <Navbar />
-      <ToastContainer toastClassName="lg:w-[100%] md:w-[90%] w-[70%] lg:mt-0 md:mt-0 mt-36 lg:mx-0 md:mx-0 mx-auto " />
+      <ToastContainer />
       {isResetConfirmationVisible && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 animate__animated animate__fadeIn">
           <div className="bg-white p-6 rounded shadow-md animate__animated animate__zoomIn px">
