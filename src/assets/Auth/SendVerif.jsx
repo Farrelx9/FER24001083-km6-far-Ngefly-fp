@@ -103,7 +103,7 @@ const SendVerif = () => {
         className="hidden md:block w-32 h-32 md:w-64 md:h-64 absolute top-4 right-4"
         alt="Pesawat Atas"
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-xl p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-xl p-4 w-[509px] h-[453px] absolute mt-6 top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div className="text-2xl font-bold mb-4">Send Email Verification</div>
         <div className="flex flex-col justify-center items-center text-center mb-4">
           <div className="bg-green-300 text-white p-2 rounded-full inline-block mb-4">
@@ -148,7 +148,7 @@ const SendVerif = () => {
             padding: "10px 20px",
             borderRadius: "10px",
             position: "absolute",
-            top: `calc(436px + 453px / 2 + 20px)`,
+            top: `calc(453px + 453px / 2 + 20px)`, // Adjusted value to lower the position
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 1000,

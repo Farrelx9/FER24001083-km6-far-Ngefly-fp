@@ -49,22 +49,22 @@ const PaymentMethod = ({
         } overflow-hidden`}
       >
         <div className="text-lg">{children}</div>
-      </div>
-      {isOpen && (
-        <div className="p-4">
-          {/* Middle Content */}
-          <div className="my-4">{middleContent}</div>
+        {isOpen && (
+          <div className="p-4">
+            {/* Middle Content */}
+            <div className="my-4">{middleContent}</div>
 
-          {/* Pay Later Button */}
-          <button
-            onClick={handlePayLater}
-            className="w-full bg-[#40A578] text-white py-3 rounded-lg"
-          >
-            Pay Later
-          </button>
-        </div>
-        // </div>
-      )}
+            {/* Pay Later Button */}
+            <button
+              onClick={handlePayLater}
+              className="w-full bg-[#40A578] text-white py-3 rounded-lg"
+            >
+              Back To Home{" "}
+            </button>
+          </div>
+          // </div>
+        )}
+      </div>
     </div>
   );
 };
@@ -191,6 +191,10 @@ const Payment = () => {
     }
   }, [navigate]);
 
+  // const handlePayLater = () => {
+  //   navigate("/");
+  // };
+
   return (
     <Fragment>
       <div className="bg-white min-h-screen flex flex-col items-center p-4">
@@ -262,7 +266,7 @@ const Payment = () => {
             </div>
 
             <div className="space-y-4"></div>
-            {/* Payment method section */}
+
             <div className="space-y-4">
               <PaymentMethod
                 title="QRIS"
@@ -273,15 +277,15 @@ const Payment = () => {
                 <div className="space-y-2">
                   <p>Scan the following QR code to pay:</p>
                   <div className="flex justify-center">
-                    {bookingData ? (
+                    {bookingData &&
+                    bookingData.payment &&
+                    bookingData.payment.status !== "CANCELLED" ? (
                       <img
                         src={bookingData.payment.qr_url}
                         alt="QR Code"
                         className="w-60 h-60"
                       />
-                    ) : (
-                      "Loading QR code..."
-                    )}
+                    ) : null}
                   </div>
                 </div>
               </PaymentMethod>

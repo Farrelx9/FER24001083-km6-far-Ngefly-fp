@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import vector from "../assets/logo/vector.png";
+import Sukses from "../assets/images/Sukses.gif";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import Navbar from "../assets/Properties/Navbar";
@@ -130,10 +130,10 @@ function TicketConfirmation() {
       {paymentStatus === "success" && (
         <div className="text-center mt-20">
           <img
-            src={vector}
-            alt="vector"
+            src={Sukses}
+            alt="sukses"
             className="mx-auto mb-4"
-            style={{ width: "200px", height: "auto" }}
+            style={{ width: "300px", height: "auto" }}
           />
           <h2 className="text-xl font-bold text-green-600">Congratulations!</h2>
           <p>Ticket Payment Transaction successful!</p>
@@ -142,14 +142,14 @@ function TicketConfirmation() {
 
       {paymentStatus === "success" && (
         <div className="flex flex-col items-center space-y-4 mt-10">
-          <button
+          {/* <button
             className="bg-[#006769] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-green-600 transition-colors duration-300 ease-in-out"
             onClick={() => navigate("/history")}
           >
             Issue Tickets
-          </button>
+          </button> */}
           <button
-            className="bg-[#9DDE8B] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-[#82BB99] transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-opacity-50"
+            className="bg-[#006769] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-[#82BB99] transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-opacity-50"
             onClick={() => navigate("/")}
           >
             Search for Other Flights
