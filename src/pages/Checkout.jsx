@@ -6,12 +6,11 @@ import { useParams } from "react-router-dom";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { dateFormat } from "../lib/function";
 
 const Checkout = () => {
   const [pemesan, setPemesan] = useState("");
-  const [taxData, setTaxData] = useState(null);
   const [flightData, setFlightData] = useState([]);
-  const [categoryData, setCategoryData] = useState(null);
   const [passengers, setPassengers] = useState([]);
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,17 +24,15 @@ const Checkout = () => {
 
   const params = {
     page: searchParams.get("page") || 1,
-    from: searchParams.get("from") || "SUB",
+    from: searchParams.get("from") || "",
     to: searchParams.get("to") || "",
     p:
       !isNaN(Number(searchParams.get("adult"))) ||
-      !isNaN(Number(searchParams.get("child"))) ||
-      !isNaN(Number(searchParams.get("baby")))
+      !isNaN(Number(searchParams.get("child")))
         ? Number(searchParams.get("adult") || 0) +
-          Number(searchParams.get("child") || 1) +
-          Number(searchParams.get("baby") || 0)
+          Number(searchParams.get("child") || 0)
         : searchParams.get("p") || 1,
-    sc: searchParams.get("sc") || "ECONOMY",
+    sc: searchParams.get("sc") || "",
     rt: searchParams.get("rt") || "",
     rd: searchParams.get("rd") || "",
     d: searchParams.get("d") || "",
@@ -67,10 +64,12 @@ const Checkout = () => {
   };
 
   const toggleDarkMode = (index) => {
-    setPassengers((prevState) => {
-      const updatedPassengers = [...prevState];
-      updatedPassengers[index].isDarkMode =
-        !updatedPassengers[index].isDarkMode;
+    setPassengers((prevPassengers) => {
+      const updatedPassengers = [...prevPassengers];
+      updatedPassengers[index] = {
+        ...updatedPassengers[index],
+        isDarkMode: !updatedPassengers[index].isDarkMode,
+      };
       return updatedPassengers;
     });
   };
@@ -82,7 +81,7 @@ const Checkout = () => {
 
   const countChildInUrl = () => {
     const searchParams = new URLSearchParams(location.search);
-    return searchParams.get("child") || 1;
+    return searchParams.get("child") || 0;
   };
 
   const countBabyInUrl = () => {
@@ -106,18 +105,6 @@ const Checkout = () => {
         console.error("Error fetching data pemesan:", error);
       }
     };
-
-    // const fetchTaxData = async () => {
-    //   try {
-    //     const response = await axios.get(
-    //       `https://binar-project-426902.et.r.appspot.com/api/v1/tax`
-    //     );
-    //     setTaxData(response.data);
-    //     console.log("response tax", response.data);
-    //   } catch (error) {
-    //     console.error("Error fetching tax data:", error);
-    //   }
-    // };
 
     const fetchFlightData = async () => {
       if (!params.from || !params.p || !params.page || !params.sc) {
@@ -151,19 +138,22 @@ const Checkout = () => {
 
     const passengersArray = Array(params.p)
       .fill({})
-      .map((_, index) => ({
-        selectedTitle: "",
-        fullName: "",
-        familyName: "",
-        birthdate: "",
-        identity: "",
-        citizenship: "",
-        isDarkMode: false,
-      }));
+      .map((_, index) => {
+        const type = index < childCount ? "child" : "adult";
+        return {
+          selectedTitle: "",
+          fullName: "",
+          familyName: "",
+          birthdate: "",
+          identity: "",
+          citizenship: "",
+          isDarkMode: false,
+          type: type,
+        };
+      });
     setPassengers(passengersArray);
 
     fetchDataPemesan();
-    // fetchTaxData();
     fetchFlightData();
   }, [flights_id, params.p]);
 
@@ -208,9 +198,10 @@ const Checkout = () => {
   const handleSubmitIsiDataPenumpang = async (e) => {
     e.preventDefault();
     try {
+      const includeReturn = params.rt === "true";
       const payload = {
         flight_class_id: flights_id,
-        include_return: false,
+        include_return: includeReturn,
         passengers: passengers.map((passenger) => ({
           name: passenger.familyName
             ? `${passenger.selectedTitle} ${passenger.fullName} (${passenger.familyName})`
@@ -218,9 +209,10 @@ const Checkout = () => {
           birthdate: passenger.birthdate,
           identity_id: passenger.identity,
           citizenship: passenger.citizenship,
-          category: "child",
+          category: passenger.type,
         })),
       };
+      console.log("payload", payload);
       const response = await axios.post(
         `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/`,
         payload,
@@ -232,8 +224,10 @@ const Checkout = () => {
           body: JSON.stringify(payload),
         }
       );
+      console.log("response.data", response.data);
       if (response.status === 201) {
         setIsSubmitted(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
         setPassengers((prevState) =>
           prevState.map((passenger) => ({
             ...passenger,
@@ -266,6 +260,13 @@ const Checkout = () => {
     }
   };
 
+  // const handleScrollToTop = () => {
+  //   window.scrollTo({
+  //     top: 0,
+  //     behavior: "smooth",
+  //   });
+  // };
+
   const adultPrice = () => {
     const adult = countAdultInUrl();
     const price = flightData ? flightData[0]?.price : 0;
@@ -290,9 +291,9 @@ const Checkout = () => {
   };
 
   const calculateTotal = () => {
-    const total = adultPrice() + childPrice() + calculateTax();
+    let total = adultPrice() + childPrice() + calculateTax();
     if (params.rt === "true") {
-      total *= 2;
+      total = total * 2;
     }
     return total;
   };
@@ -313,6 +314,29 @@ const Checkout = () => {
   const numberWithCommas = (number) => {
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+
+  const childCount = searchParams.get("child");
+  const adultCount = searchParams.get("adult");
+
+  useEffect(() => {
+    const passengersArray = Array(params.p)
+      .fill({})
+      .map((_, index) => {
+        const type = index < childCount ? "child" : "adult";
+        return {
+          selectedTitle: "",
+          fullName: "",
+          familyName: "",
+          birthdate: "",
+          identity: "",
+          citizenship: "",
+          isDarkMode: false,
+          type: type,
+        };
+      });
+
+    setPassengers(passengersArray);
+  }, [childCount, adultCount, params.p]);
 
   return (
     <Fragment>
@@ -449,8 +473,7 @@ const Checkout = () => {
                       <div>
                         <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
                           <div>
-                            Data Diri Penumpang {index + 1}
-                            {/* {" "}-{" "}{passenger ? passenger.type : "Loading..."} */}
+                            Data Diri Penumpang {index + 1} - {passenger.type}
                           </div>
                           {isSubmitted && (
                             <div>
@@ -516,15 +539,14 @@ const Checkout = () => {
                           }
                           readOnly={isSubmitted}
                         />
-                        <div className="mb-3 flex justify-between">
+                        <div className="flex justify-between">
                           <div>Punya nama keluarga?</div>
-                          <button
-                            type="button"
+                          <div
                             className={`slider ${
                               passenger.isDarkMode
                                 ? "bg-[#006769]"
                                 : " bg-[#8A8A8A]"
-                            } w-12 h-6 rounded-full p-1 duration-200`}
+                            } w-12 h-6 rounded-full p-1 duration-200 mb-3`}
                             onClick={() => toggleDarkMode(index)}
                             disabled={isSubmitted}
                             style={{
@@ -532,14 +554,14 @@ const Checkout = () => {
                             }}
                           >
                             <div
-                              className={`rounded-full w-4 h-4 bg-white shadow-md transform transition-transform duration-1 ${
+                              className={`rounded-full w-4 h-4 bg-white shadow-md transform 0.3s ease-in-out transition-transform duration-200 ${
                                 passenger.isDarkMode ? "translate-x-6" : ""
                               }`}
                               style={{
                                 transition: "transform 0.3s ease-in-out",
                               }}
                             ></div>
-                          </button>
+                          </div>
                         </div>
                         {passenger.isDarkMode && (
                           <>
@@ -628,9 +650,9 @@ const Checkout = () => {
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-lg text-[#151515] mr-2">
                           {flightData
-                            ? moment(flightData[0]?.flight?.departureAt).format(
-                                "HH:mm"
-                              )
+                            ? dateFormat(
+                                flightData[0]?.flight?.departureAt
+                              ).format("HH:mm")
                             : "Loading..."}
                         </div>
                         <div className="font-extrabold text-[#73CA5C]">
@@ -639,9 +661,9 @@ const Checkout = () => {
                       </div>
                       <div className="text-gray-600">
                         {flightData
-                          ? moment(flightData[0]?.flight?.departureAt).format(
-                              "DD MMMM YYYY"
-                            )
+                          ? dateFormat(
+                              flightData[0]?.flight?.departureAt
+                            ).format("DD MMMM YYYY")
                           : "Loading..."}
                       </div>
                       <div className="text-[#151515]">
@@ -655,9 +677,9 @@ const Checkout = () => {
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-lg text-[#151515] mr-2">
                           {flightData
-                            ? moment(flightData[0]?.flight?.arriveAt).format(
-                                "HH:mm"
-                              )
+                            ? dateFormat(
+                                flightData[0]?.flight?.arriveAt
+                              ).format("HH:mm")
                             : "Loading..."}
                         </div>
                         <div className="font-extrabold text-[#73CA5C]">
@@ -666,7 +688,7 @@ const Checkout = () => {
                       </div>
                       <div className="text-gray-600">
                         {flightData
-                          ? moment(flightData[0]?.flight?.arriveAt).format(
+                          ? dateFormat(flightData[0]?.flight?.arriveAt).format(
                               "DD MMMM YYYY"
                             )
                           : "Loading..."}
