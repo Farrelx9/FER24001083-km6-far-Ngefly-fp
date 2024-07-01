@@ -132,7 +132,7 @@ export default function NotificationPage() {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center gap-4 justify-center  py-9">
+        <div className="flex flex-col items-center gap-4 justify-center py-9">
           {notification
             .filter(
               (n) =>
@@ -143,7 +143,9 @@ export default function NotificationPage() {
             .map((notification) => (
               <div
                 key={notification.id}
-                className="flex justify-between border-b-2 lg:w-[780px] md:w-[680px] w-full lg:h-[87px] md:h-[87px] h-auto py-3 p-4"
+                className={`flex justify-between border-b-2 lg:w-[880px] md:w-[680px] w-full lg:h-[87px] md:h-[87px] h-auto py-3 p-4 ${
+                  notification.is_read ? " hover:bg-green-100 " : "bg-red-100 "
+                }`}
                 onClick={() => markAsRead(notification.id)}
               >
                 <div className="flex gap-2 px-2">
@@ -155,15 +157,17 @@ export default function NotificationPage() {
                     <div className="lg:text-sm md:text-sm text-xs font-semibold">
                       {notification.title}
                     </div>
-                    <div className="text-sm lg:w-[500px] md:w-[290px] w-[140px]">
+                    <div className="text-sm lg:w-[590px] md:w-[290px] w-[135px]">
                       {notification.message}
                     </div>
                   </div>
                 </div>
-                <div className="text-xs font-semibold flex gap-2 lg:w-[500px] md:w-[170px] w-[75px]">
+                <div className="text-xs font-semibold flex gap-2 lg:w-[500px] md:w-[150px] w-[65px]">
                   {new Date(notification.createdAt).toLocaleDateString(
                     "en-US",
                     {
+                      hour: "2-digit",
+                      minute: "2-digit",
                       weekday: "long",
                       year: "numeric",
                       month: "long",
