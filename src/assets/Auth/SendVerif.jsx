@@ -17,10 +17,11 @@ const SendVerif = () => {
   const intervalRef = useRef();
   const { email } = useParams();
   const navigate = useNavigate();
+  const API_URL = process.env.API_URL;
 
   useEffect(() => {
     if (email) {
-      handleResend(); // Automatically resend email if email param is present
+      handleResend();
     }
     return () => clearInterval(intervalRef.current);
   }, [email]);
@@ -41,10 +42,9 @@ const SendVerif = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(
-        "https://binar-project-426902.et.r.appspot.com/api/v1/auth/verify/send",
-        { email }
-      );
+      const response = await axios.post(`${API_URL}/auth/verify/send`, {
+        email,
+      });
 
       if (response.status === 200) {
         startTimer();
@@ -57,10 +57,10 @@ const SendVerif = () => {
 
         if (status === 404) {
           alert("Account not found. Please check your email address.");
-          navigate("/register"); // Redirect to login or any other page
+          navigate("/register");
         } else if (status === 409) {
           alert("Account already verified.");
-          navigate("/register"); // Redirect to login or any other page
+          navigate("/register");
         } else {
           setNotification({
             message: "An unexpected error occurred. Please try again later.",
@@ -148,7 +148,7 @@ const SendVerif = () => {
             padding: "10px 20px",
             borderRadius: "10px",
             position: "absolute",
-            top: `calc(453px + 453px / 2 + 20px)`, // Adjusted value to lower the position
+            top: `calc(453px + 453px / 2 + 20px)`,
             left: "50%",
             transform: "translateX(-50%)",
             zIndex: 1000,

@@ -10,6 +10,7 @@ function TicketConfirmation() {
   const [paymentStatus, setPaymentStatus] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const { payment_id } = useParams();
+  const API_URL = process.env.API_URL;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,14 +21,10 @@ function TicketConfirmation() {
         alert("You've to Login First!");
         return;
       }
-
-      const url = `https://binar-project-426902.et.r.appspot.com/api/v1/payments/${payment_id}`;
-
       setLoading(true);
-
       try {
         const response = await axios.put(
-          url,
+          `${API_URL}/payments/${payment_id}`,
           {},
           {
             headers: {

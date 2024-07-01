@@ -11,15 +11,13 @@ const Footer = () => {
         behavior: "smooth",
         block: "start",
       });
-
-      // Optional: Adjust scroll position with additional offset
       window.scrollBy(0, scrollOffset);
     }
   };
 
   return (
     <footer
-      className="text-black py-6 sm:text-white" // Decreased py-8 to py-6 for smaller padding
+      className="text-black py-6 sm:text-white"
       style={{
         background: "linear-gradient(#006769, #006769, #9DDE8B, #D6FFDE)",
         color: "#f8f9fa",
@@ -35,7 +33,6 @@ const Footer = () => {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           {" "}
-          {/* Decreased sm:gap-8 to sm:gap-6 for smaller gap */}
           {/* Logo and Description */}
           <div className="flex flex-col items-center md:items-start">
             <a
@@ -45,42 +42,15 @@ const Footer = () => {
             >
               NgeFly.com
             </a>{" "}
-            {/* <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <div style={{ textAlign: "center" }}>
-                <img
-                  src={ngefly}
-                  alt="Icon"
-                  style={{
-                    width: "150px",
-                    height: "150px",
-                    transition: "transform 0.3s",
-                  }}
-                  onMouseOver={(e) =>
-                    (e.currentTarget.style.transform = "scale(1.1)")
-                  }
-                  onMouseOut={(e) =>
-                    (e.currentTarget.style.transform = "scale(1)")
-                  }
-                />
-              </div>
-            </div> */}
             <p className="mt-1 mb-6 text-lg text-center md:text-left text-black sm:text-white">
               {" "}
-              {/* Decreased mt-4 to mt-2 */}
               Dream High, Fly High
             </p>
             <div className="flex justify-center md:justify-start mt-4 sm:mt-5 space-x-4">
               {" "}
-              {/* Decreased mt-6 to mt-4, sm:mt-6 to sm:mt-5 */}
               <a
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent the default anchor tag behavior
+                  e.preventDefault();
                   window.open("https://wa.me/6285150677749", "_blank");
                 }}
                 className="text-black sm:text-white hover:text-green-400 transition duration-300"
@@ -89,9 +59,9 @@ const Footer = () => {
               </a>
               <a
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent the default anchor tag behavior
+                  e.preventDefault();
                   window.open(
-                    "https://github.com/Farrelx9/FER24001083-km6-far-Ngefly-fp" // Ganti dengan URL profil GitHub Anda
+                    "https://github.com/Farrelx9/FER24001083-km6-far-Ngefly-fp"
                   );
                 }}
                 className="text-black sm:text-white hover:text-blue-400 transition duration-300"
@@ -100,7 +70,7 @@ const Footer = () => {
               </a>
               <a
                 onClick={(e) => {
-                  e.preventDefault(); // Prevent the default anchor tag behavior
+                  e.preventDefault();
                   window.open(
                     "https://www.instagram.com/ngefly.com01?igsh=MW01NzFpN3pnM2l6Yg=="
                   );
@@ -152,17 +122,15 @@ const Footer = () => {
           {/* Contact Information */}
           <div className="flex flex-col items-center md:items-end mt-3 md:mt-0">
             {" "}
-            {/* Decreased mt-4 to mt-3 */}
             <h4 className="text-xl font-semibold mb-2 text-center md:text-right text-black sm:text-white">
               {" "}
-              {/* Decreased mb-4 to mb-2 */}
               Contact{" "}
             </h4>
             <ul className="text-sm text-center md:text-right text-black sm:text-white">
               <li className="mb-2">
                 <a
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent the default anchor tag behavior
+                    e.preventDefault();
                     window.open(
                       "https://mail.google.com/mail/?view=cm&fs=1&to=ngefly.com01@gmail.com",
                       "_blank"
@@ -176,8 +144,8 @@ const Footer = () => {
               <li className="mb-2">
                 <a
                   onClick={(e) => {
-                    e.preventDefault(); // Prevent the default anchor tag behavior
-                    window.open("https://wa.me/6285150677749", "_blank");
+                    e.preventDefault();
+                    window.location.href = "https://wa.me/6285150677749";
                   }}
                   className="hover:text-primary transition duration-300 cursor-pointer"
                 >
