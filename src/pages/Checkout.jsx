@@ -21,6 +21,7 @@ const Checkout = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [bookingId, setBookingId] = useState(null);
   const [timeLeft, setTimeLeft] = useState(15 * 60);
+  const API_URL = process.env.API_URL;
 
   const params = {
     page: searchParams.get("page") || 1,
@@ -92,14 +93,11 @@ const Checkout = () => {
   useEffect(() => {
     const fetchDataPemesan = async () => {
       try {
-        const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/profile/`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/profile/`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setPemesan(response.data.data);
       } catch (error) {
         console.error("Error fetching data pemesan:", error);
@@ -113,14 +111,11 @@ const Checkout = () => {
       }
       const urlParams = createParamsString(params);
       try {
-        const response = await axios.get(
-          `https://binar-project-426902.et.r.appspot.com/api/v1/flight?${urlParams}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/flight?${urlParams}`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const flight = response.data.data.flights;
         if (Array.isArray(flight)) {
           const filteredData = flight?.filter(
@@ -213,17 +208,13 @@ const Checkout = () => {
         })),
       };
       console.log("payload", payload);
-      const response = await axios.post(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/bookings/`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const response = await axios.post(`${API_URL}/bookings/`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
       console.log("response.data", response.data);
       if (response.status === 201) {
         setIsSubmitted(true);
