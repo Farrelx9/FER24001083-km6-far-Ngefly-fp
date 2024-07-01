@@ -21,7 +21,7 @@ export default function Carousel({ fromAirportCode, adult, child, baby }) {
       const response = await axios.get(url, {
         headers: { accept: "application/json" },
       });
-      console.log("carousel", response.data);
+
       const flightsData = response.data.data.flights;
       setTimeout(() => {
         setFetchFavoriteFlights(flightsData);
