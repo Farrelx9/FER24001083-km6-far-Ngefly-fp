@@ -1,15 +1,9 @@
 import React from "react";
-import {
-  FaFacebookF,
-  FaTwitter,
-  FaInstagram,
-  FaYoutube,
-  FaRss,
-} from "react-icons/fa";
+import { FaWhatsapp, FaGithub, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   const scrollToSection = (sectionId, event, scrollOffset = 0) => {
-    event.preventDefault(); // Mencegah perilaku default dari tautan <a>
+    event.preventDefault();
 
     const section = document.getElementById(sectionId);
     if (section) {
@@ -85,34 +79,35 @@ const Footer = () => {
               {" "}
               {/* Decreased mt-6 to mt-4, sm:mt-6 to sm:mt-5 */}
               <a
-                href="https://www.instagram.com/ngefly.com01?igsh=MW01NzFpN3pnM2l6Yg=="
-                className="text-black sm:text-white hover:text-blue-600 transition duration-300"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor tag behavior
+                  window.open("https://wa.me/6285150677749", "_blank");
+                }}
+                className="text-black sm:text-white hover:text-green-400 transition duration-300"
               >
-                <FaFacebookF className="text-xl sm:text-2xl" />
+                <FaWhatsapp className="text-xl sm:text-2xl" />
               </a>
               <a
-                href="#"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor tag behavior
+                  window.open(
+                    "https://github.com/Farrelx9/FER24001083-km6-far-Ngefly-fp" // Ganti dengan URL profil GitHub Anda
+                  );
+                }}
                 className="text-black sm:text-white hover:text-blue-400 transition duration-300"
               >
-                <FaTwitter className="text-xl sm:text-2xl" />
+                <FaGithub className="text-xl sm:text-2xl" />
               </a>
               <a
-                href="#"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent the default anchor tag behavior
+                  window.open(
+                    "https://www.instagram.com/ngefly.com01?igsh=MW01NzFpN3pnM2l6Yg=="
+                  );
+                }}
                 className="text-black sm:text-white hover:text-pink-500 transition duration-300"
               >
                 <FaInstagram className="text-xl sm:text-2xl" />
-              </a>
-              <a
-                href="#"
-                className="text-black sm:text-white hover:text-red-500 transition duration-300"
-              >
-                <FaYoutube className="text-xl sm:text-2xl" />
-              </a>
-              <a
-                href="#"
-                className="text-black sm:text-white hover:text-orange-400 transition duration-300"
-              >
-                <FaRss className="text-xl sm:text-2xl" />
               </a>
             </div>
           </div>
