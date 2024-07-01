@@ -5,10 +5,13 @@ import { MdNotificationsNone, MdOutlineList } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
+import "animate.css";
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const navigate = useNavigate();
+  
   useEffect(() => {
     const checkTokenStatus = () => {
       const token = localStorage.getItem("token");
@@ -16,13 +19,19 @@ export default function Navbar() {
     };
 
     checkTokenStatus();
+  }, []);
 
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+    
     const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setIsScrolled(true);
+      if (window.scrollY > lastScrollY) {
+        setIsHidden(true);
       } else {
-        setIsScrolled(false);
+        setIsHidden(false);
       }
+      setIsScrolled(window.scrollY > 0);
+      lastScrollY = window.scrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -34,10 +43,15 @@ export default function Navbar() {
 
   return (
     <div
-      className={twMerge(
-        "fixed top-0 left-0 w-screen duration-300",
-        isScrolled ? "bg-white shadow-2xl" : "bg-none"
-      )}
+    className={`
+      fixed top-0 left-0 w-screen duration-300,
+      ${
+        isScrolled ? "bg-white shadow-2xl" : "bg-white shadow-2xl"
+      } ${
+        isHidden
+          ? "animate__animated animate__fadeOutUp"
+          : "animate__animated animate__fadeInDown"
+      }`}
     >
       <div className="flex justify-between gap-3 px-3 md:px-10 lg:px-32">
         <div className="flex gap-5">

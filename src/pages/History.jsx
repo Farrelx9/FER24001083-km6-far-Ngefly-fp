@@ -302,7 +302,7 @@ export default function History() {
                         <Divider className="my-4" />
                         <div className="flex justify-between">
                           <div>
-                            <p className="font-bold">Bookin Code:</p>
+                            <p className="font-bold">Booking Code:</p>
                             <p>{subItem.id}</p>
                           </div>
                           <div>
