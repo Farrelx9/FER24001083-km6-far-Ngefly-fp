@@ -116,7 +116,7 @@ export default function PrintCheckout() {
                 </p>
                 <p>{data?.flight_class?.flight?.from?.name || ""}</p>
               </div>
-              <p className="font-bold text-[#9DDE8B] text-xs">Keberangkatan</p>
+              <p className="font-bold text-[#9DDE8B] text-xs">Departure</p>
             </div>
             <Divider className="my-3 mx-auto" />
             <div className="pl-10">
@@ -156,7 +156,7 @@ export default function PrintCheckout() {
                 </p>
                 <p>{data?.flight_class?.flight?.to?.name || ""}</p>
               </div>
-              <p className="font-bold text-[#9DDE8B] text-xs">Kedatangan</p>
+              <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
             </div>
             <Divider className="my-3 mx-auto" />
             <p className="font-bold">Rincian harga</p>
