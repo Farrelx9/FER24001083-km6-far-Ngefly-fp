@@ -22,6 +22,36 @@ export default function CardFlight({ index, item }) {
     ...(searchParams.get("baby") && {
       baby: Number(searchParams.get("baby")),
     }),
+    ...(searchParams.get("page") && {
+      page: Number(searchParams.get("page")),
+    }),
+    ...(searchParams.get("rt") && {
+      rt: searchParams.get("rt") === "true" ? true : "",
+    }),
+    ...(searchParams.get("p") && {
+      p: Number(searchParams.get("p")),
+    }),
+    ...(searchParams.get("from") && {
+      from: searchParams.get("from"),
+    }),
+    ...(searchParams.get("sc") && {
+      sc: searchParams.get("sc"),
+    }),
+    ...(searchParams.get("to") && {
+      to: searchParams.get("to"),
+    }),
+    ...(searchParams.get("rd") && {
+      rd: searchParams.get("rd"),
+    }),
+    ...(searchParams.get("d") && {
+      d: searchParams.get("d"),
+    }),
+    ...(searchParams.get("type") && {
+      type: searchParams.get("type"),
+    }),
+    ...(searchParams.get("order") && {
+      order: searchParams.get("order"),
+    }),
   });
 
   return (
