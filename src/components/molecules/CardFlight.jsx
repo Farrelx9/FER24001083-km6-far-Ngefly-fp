@@ -129,7 +129,7 @@ export default function CardFlight({ index, item }) {
         )}
       >
         <Divider className="my-5" />
-        <p className="font-bold text-[#4B1979] mb-3">Detail Penerbangan</p>
+        <p className="font-bold text-[#4B1979] mb-3">Flight Detail</p>
         <div className="flex justify-between gap-5">
           <div>
             <p className="font-bold">
@@ -150,7 +150,7 @@ export default function CardFlight({ index, item }) {
           </p>
           <p className="font-bold">{item.flight?.plane_code}</p>
           <div className="text-sm mt-4">
-            <p className="font-bold">Informasi:</p>
+            <p className="font-bold">Information:</p>
             <p>Baggage {item.flight?.plane?.baggage} kg</p>
             <p>Cabin Baggage {item.flight?.plane?.cabin_baggage} kg</p>
           </div>
