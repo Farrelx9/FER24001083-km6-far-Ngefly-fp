@@ -427,10 +427,10 @@ const Payment = () => {
                   </div>
                 )}
 
-                {babyCount > 0 && (
+                {babyCount === 0 && (
                   <div className="flex justify-between pl-4 text-gray-600">
                     <span className="text-md text-[#151515]">
-                      Rp{" "}
+                      {" "}
                       {bookingData?.passengers.filter(
                         (passenger) => passenger?.category?.type === "baby"
                       ).length || 0}{" "}
