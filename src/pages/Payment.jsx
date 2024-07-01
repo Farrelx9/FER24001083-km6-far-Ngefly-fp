@@ -204,9 +204,7 @@ const Payment = () => {
         <div className="w-full max-w-8xl border-t border-gray-300 mt-20"></div>
         {/* Steps */}
         <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-5 cursor-pointer">
-          <span className="text-black font-extrabold">
-            Fill in your personal data
-          </span>
+          <span className="text-black font-extrabold">Data</span>
           <span className="text-black font-extrabold">›</span>
           <span className="text-black font-extrabold">Pay</span>
           <span className="text-black font-extrabold">›</span>
@@ -427,10 +425,10 @@ const Payment = () => {
                   </div>
                 )}
 
-                {babyCount === 0 && (
+                {babyCount > 0 && (
                   <div className="flex justify-between pl-4 text-gray-600">
                     <span className="text-md text-[#151515]">
-                      {" "}
+                      Rp{" "}
                       {bookingData?.passengers.filter(
                         (passenger) => passenger?.category?.type === "baby"
                       ).length || 0}{" "}

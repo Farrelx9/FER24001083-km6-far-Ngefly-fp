@@ -98,9 +98,7 @@ function TicketConfirmation() {
       <div className="w-full max-w-8xl border-t border-gray-300 mt-20"></div>
 
       <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-4">
-        <span className="text-black font-extrabold">
-          Fill in your personal data
-        </span>
+        <span className="text-black font-extrabold">Data</span>
         <span className="text-black font-extrabold">›</span>
         <span className="text-black font-extrabold">Pay</span>
         <span className="text-black font-extrabold">›</span>
