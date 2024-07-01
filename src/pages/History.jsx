@@ -381,7 +381,7 @@ export default function History() {
                     <p>{selected.flight_class?.flight?.from?.name || ""}</p>
                   </div>
                   <p className="font-bold text-[#9DDE8B] text-xs">
-                    Keberangkatan
+                  Departure 
                   </p>
                 </div>
                 <Divider className="my-3 mx-auto" />
@@ -422,10 +422,10 @@ export default function History() {
                     </p>
                     <p>{selected.flight_class?.flight?.to?.name || ""}</p>
                   </div>
-                  <p className="font-bold text-[#9DDE8B] text-xs">Kedatangan</p>
+                  <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
                 </div>
                 <Divider className="my-3 mx-auto" />
-                <p className="font-bold">Rincian harga</p>
+                <p className="font-bold">Price details</p>
                 {amount.category.adult > 0 && (
                   <div className="flex justify-between items-center">
                     <p>{amount.category.adult} Adults</p>
