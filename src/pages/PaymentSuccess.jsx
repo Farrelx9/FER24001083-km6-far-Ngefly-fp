@@ -25,7 +25,6 @@ export default function PaymentStatus() {
           },
         }
       );
-      console.log("response", response);
       if (response.status === 200) {
         setSuccess(true);
         setError(null);
@@ -38,13 +37,12 @@ export default function PaymentStatus() {
       setError(error.message);
       if (error.response) {
         const { status, data } = error.response;
-        console.log("Error response:", status, data);
 
         if (status === 400) {
           if (data.message === "Payment already issued") {
             setError("Payment already issued. Please make a new payment.");
           } else {
-            setError("Bad request. Please check your data and try again.");
+            setError("Payment alread expired. Please make a new payment.");
           }
         } else if (status === 404) {
           if (data.message === "Payment data not found") {

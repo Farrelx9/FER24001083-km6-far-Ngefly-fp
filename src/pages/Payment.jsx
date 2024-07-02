@@ -130,20 +130,16 @@ const Payment = () => {
         });
 
         if (response.status === 200) {
-          console.log("Successfully retrieved booking data:", response.data);
           setBookingData(response.data.data);
           toast.success("Booking data retrieved successfully!");
         } else {
-          console.log("Booking data not found.");
           setError("Booking data not found.");
         }
       } catch (error) {
         if (error.response && error.response.status === 404) {
-          console.log("Booking data not found.");
           setError("Booking data not found.");
           toast.error("Booking data not found.");
         } else {
-          console.error("Error fetching booking data:", error);
           toast.error("You've to Login First!");
         }
       } finally {
@@ -261,7 +257,7 @@ const Payment = () => {
           <Navbar />
           <div className="w-full max-w-8xl border-t border-gray-300 mt-20"></div>
           {/* Steps */}
-          <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-5 cursor-pointer">
+          <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-5">
             <span className="text-black font-extrabold">Data</span>
             <span className="text-black font-extrabold">›</span>
             <span className="text-black font-extrabold">Pay</span>
@@ -498,7 +494,7 @@ const Payment = () => {
               {/* Price details */}
               <div className="w-full max-w-3xl border-t border-gray-600 pl-4"></div>
               <div>
-                <h4 className="font-extrabold mb-1 pl-4">Price details</h4>
+                <h4 className="font-extrabold mb-1 mt-2 pl-4">Price details</h4>
 
                 {adultCount > 0 && (
                   <div className="flex justify-between pl-4 text-gray-600">
