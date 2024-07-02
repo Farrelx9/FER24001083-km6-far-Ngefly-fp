@@ -170,7 +170,8 @@ export default function Login() {
       />
       <img
         src={ngefly}
-        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer"
+        onClick={() => navigate("/")}
       />
       <img
         src={pesawatatas}

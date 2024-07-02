@@ -23,7 +23,6 @@ export default function Carousel({ fromAirportCode, adult, child, baby }) {
       });
 
       const flightsData = response.data.data.flights;
-      console.log("Fetched Flights Data:", flightsData);
       setTimeout(() => {
         setFetchFavoriteFlights(flightsData);
         setIsLoading(false);
