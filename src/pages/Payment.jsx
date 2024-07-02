@@ -8,6 +8,7 @@ import { dateFormat } from "../lib/function";
 import Sukses from "../assets/images/Sukses.gif";
 
 import { ToastContainer, toast } from "react-toastify";
+import Footer from "../assets/Properties/Footer";
 
 const PaymentMethod = ({
   title,
@@ -512,6 +513,7 @@ const Payment = () => {
           </div>
         </div>
       )}
+      <Footer />
     </Fragment>
   );
 };
