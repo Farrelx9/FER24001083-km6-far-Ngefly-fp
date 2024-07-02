@@ -253,51 +253,114 @@ export default function History() {
                             ]?.label
                           }
                         </div>
-                        <div className="flex justify-between items-center gap-5 mt-5">
-                          <div className="flex gap-3 min-w-[100px]">
-                            <div className="min-w-[12px]">
-                              <Icon icon="fa:map-marker" width={12} />
+                        <div className="flex flex-col items-center mt-5 gap-5">
+                          <div className="w-full flex justify-between items-center gap-5 ">
+                            <div className="flex gap-3 min-w-[100px]">
+                              <div className="min-w-[12px]">
+                                <Icon icon="fa:map-marker" width={12} />
+                              </div>
+                              <div>
+                                <p className="font-bold">
+                                  {subItem.flight_class?.flight?.from?.city ||
+                                    ""}
+                                </p>
+                                <p className="text-xs whitespace-nowrap">
+                                  {dateFormat(
+                                    subItem.flight_class?.flight?.departureAt ||
+                                      ""
+                                  ).format("D MMMM YYYY")}
+                                </p>
+                                <p className="text-xs whitespace-nowrap">
+                                  {dateFormat(
+                                    subItem.flight_class?.flight?.departureAt ||
+                                      ""
+                                  ).format("HH:mm")}
+                                </p>
+                              </div>
                             </div>
-                            <div>
-                              <p className="font-bold">
-                                {subItem.flight_class?.flight?.from?.city || ""}
-                              </p>
-                              <p className="text-xs whitespace-nowrap">
-                                {dateFormat(
-                                  subItem.flight_class?.flight?.departureAt ||
-                                    ""
-                                ).format("D MMMM YYYY")}
-                              </p>
-                              <p className="text-xs whitespace-nowrap">
-                                {dateFormat(
-                                  subItem.flight_class?.flight?.departureAt ||
-                                    ""
-                                ).format("HH:mm")}
-                              </p>
-                            </div>
-                          </div>
-                          <div className="w-full h-[2px] bg-gray-300" />
+                            <div className="w-full h-[2px] bg-gray-300" />
 
-                          <div className="flex gap-3 min-w-[100px]">
-                            <div className="min-w-[12px]">
-                              <Icon icon="fa:map-marker" width={12} />
-                            </div>
-                            <div>
-                              <p className="font-bold">
-                                {subItem.flight_class?.flight?.to?.city || ""}
-                              </p>
-                              <p className="text-xs whitespace-nowrap">
-                                {dateFormat(
-                                  subItem.flight_class?.flight?.arriveAt || ""
-                                ).format("D MMMM YYYY")}
-                              </p>
-                              <p className="text-xs whitespace-nowrap">
-                                {dateFormat(
-                                  subItem.flight_class?.flight?.arriveAt || ""
-                                ).format("HH:mm")}
-                              </p>
+                            <div className="flex gap-3 min-w-[100px]">
+                              <div className="min-w-[12px]">
+                                <Icon icon="fa:map-marker" width={12} />
+                              </div>
+                              <div>
+                                <p className="font-bold">
+                                  {subItem.flight_class?.flight?.to?.city || ""}
+                                </p>
+                                <p className="text-xs whitespace-nowrap">
+                                  {dateFormat(
+                                    subItem.flight_class?.flight?.arriveAt || ""
+                                  ).format("D MMMM YYYY")}
+                                </p>
+                                <p className="text-xs whitespace-nowrap">
+                                  {dateFormat(
+                                    subItem.flight_class?.flight?.arriveAt || ""
+                                  ).format("HH:mm")}
+                                </p>
+                              </div>
                             </div>
                           </div>
+                          {subItem.flight_class?.flight?.is_return && (
+                            <>
+                              <Icon
+                                className="self-center"
+                                icon="humbleicons:exchange-horizontal"
+                                width={25}
+                                color="#8c8c8c"
+                              />
+                              <div className="w-full flex justify-between items-center gap-5">
+                                <div className="flex gap-3 min-w-[100px]">
+                                  <div className="min-w-[12px]">
+                                    <Icon icon="fa:map-marker" width={12} />
+                                  </div>
+                                  <div>
+                                    <p className="font-bold">
+                                      {subItem.flight_class?.flight?.to?.city ||
+                                        ""}
+                                    </p>
+                                    <p className="text-xs whitespace-nowrap">
+                                      {dateFormat(
+                                        subItem.flight_class?.flight
+                                          ?.return_departureAt || ""
+                                      ).format("D MMMM YYYY")}
+                                    </p>
+                                    <p className="text-xs whitespace-nowrap">
+                                      {dateFormat(
+                                        subItem.flight_class?.flight
+                                          ?.return_departureAt || ""
+                                      ).format("HH:mm")}
+                                    </p>
+                                  </div>
+                                </div>
+                                <div className="w-full h-[2px] bg-gray-300" />
+
+                                <div className="flex gap-3 min-w-[100px]">
+                                  <div className="min-w-[12px]">
+                                    <Icon icon="fa:map-marker" width={12} />
+                                  </div>
+                                  <div>
+                                    <p className="font-bold">
+                                      {subItem.flight_class?.flight?.from
+                                        ?.city || ""}
+                                    </p>
+                                    <p className="text-xs whitespace-nowrap">
+                                      {dateFormat(
+                                        subItem.flight_class?.flight
+                                          ?.return_arriveAt || ""
+                                      ).format("D MMMM YYYY")}
+                                    </p>
+                                    <p className="text-xs whitespace-nowrap">
+                                      {dateFormat(
+                                        subItem.flight_class?.flight
+                                          ?.return_arriveAt || ""
+                                      ).format("HH:mm")}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </>
+                          )}
                         </div>
                         <Divider className="my-4" />
                         <div className="flex justify-between">
@@ -318,7 +381,11 @@ export default function History() {
                             </p>
                           </div>
                           <p className="font-bold mb-2 text-[#006769]">
-                            {formatCurrency(subItem.total_price)}
+                            {formatCurrency(
+                              subItem.flight_class?.flight?.is_return
+                                ? subItem.total_price * 2
+                                : subItem.total_price
+                            )}
                           </p>
                         </div>
                       </div>
@@ -366,6 +433,9 @@ export default function History() {
                     {selected.id}
                   </span>
                 </div>
+                {selected.flight_class?.flight?.is_return && (
+                  <h4 className="mb-2 text-lg font-bold">Flight Away</h4>
+                )}
                 <div className="flex justify-between gap-5">
                   <div>
                     <p className="font-bold">
@@ -380,10 +450,76 @@ export default function History() {
                     </p>
                     <p>{selected.flight_class?.flight?.from?.name || ""}</p>
                   </div>
-                  <p className="font-bold text-[#9DDE8B] text-xs">
-                  Departure 
-                  </p>
+                  <p className="font-bold text-[#9DDE8B] text-xs">Departure</p>
                 </div>
+
+                <Divider className="my-3 mx-auto" />
+                <div className="flex justify-between gap-5">
+                  <div>
+                    <p className="font-bold">
+                      {dateFormat(
+                        selected.flight_class?.flight?.arriveAt || ""
+                      ).format("HH:mm")}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-1">
+                      {dateFormat(
+                        selected.flight_class?.flight?.arriveAt || ""
+                      ).format("DD MMMM YYYY")}
+                    </p>
+                    <p>{selected.flight_class?.flight?.to?.name || ""}</p>
+                  </div>
+                  <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
+                </div>
+                {selected.flight_class?.flight?.is_return && (
+                  <>
+                    <div className="flex justify-center w-full !my-5">
+                      <Icon
+                        icon="humbleicons:exchange-horizontal"
+                        width={25}
+                        color="#8c8c8c"
+                      />
+                    </div>
+                    <h4 className="mb-2 text-lg font-bold">Flight Return</h4>
+                    <div className="flex justify-between gap-5">
+                      <div>
+                        <p className="font-bold">
+                          {dateFormat(
+                            selected.flight_class?.flight?.return_departureAt ||
+                              ""
+                          ).format("HH:mm")}
+                        </p>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {dateFormat(
+                            selected.flight_class?.flight?.return_departureAt ||
+                              ""
+                          ).format("DD MMMM YYYY")}
+                        </p>
+                        <p>{selected.flight_class?.flight?.to?.name || ""}</p>
+                      </div>
+                      <p className="font-bold text-[#9DDE8B] text-xs">
+                        Departure
+                      </p>
+                    </div>
+
+                    <Divider className="my-3 mx-auto" />
+                    <div className="flex justify-between gap-5">
+                      <div>
+                        <p className="font-bold">
+                          {dateFormat(
+                            selected.flight_class?.flight?.return_arriveAt || ""
+                          ).format("HH:mm")}
+                        </p>
+                        <p className="text-sm text-gray-500 mb-1">
+                          {dateFormat(
+                            selected.flight_class?.flight?.return_arriveAt || ""
+                          ).format("DD MMMM YYYY")}
+                        </p>
+                        <p>{selected.flight_class?.flight?.from?.name || ""}</p>
+                      </div>
+                      <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
+                    </div>
+                  </>
+                )}
                 <Divider className="my-3 mx-auto" />
                 <div className="pl-10">
                   <p className="font-bold">
@@ -406,23 +542,6 @@ export default function History() {
                       </Fragment>
                     ))}
                   </div>
-                </div>
-                <Divider className="my-3 mx-auto" />
-                <div className="flex justify-between gap-5">
-                  <div>
-                    <p className="font-bold">
-                      {dateFormat(
-                        selected.flight_class?.flight?.arriveAt || ""
-                      ).format("HH:mm")}
-                    </p>
-                    <p className="text-sm text-gray-500 mb-1">
-                      {dateFormat(
-                        selected.flight_class?.flight?.arriveAt || ""
-                      ).format("DD MMMM YYYY")}
-                    </p>
-                    <p>{selected.flight_class?.flight?.to?.name || ""}</p>
-                  </div>
-                  <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
                 </div>
                 <Divider className="my-3 mx-auto" />
                 <p className="font-bold">Price details</p>
@@ -453,7 +572,13 @@ export default function History() {
                 <Divider className="my-3 mx-auto" />
                 <div className="flex justify-between gap-5">
                   <p className="font-bold">Total</p>
-                  <p>{formatCurrency(selected.total_price || 0)}</p>
+                  <p>
+                    {formatCurrency(
+                      selected.flight_class?.flight?.is_return
+                        ? selected.total_price * 2
+                        : selected.total_price || 0
+                    )}
+                  </p>
                 </div>
                 {(selected.payment?.status === "ISSUED" ||
                   selected.payment?.status === "UNPAID") && (
