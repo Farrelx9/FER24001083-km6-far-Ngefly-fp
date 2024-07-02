@@ -73,12 +73,16 @@ export default function Home() {
     fetchData();
   }, []);
   const handleSelectSuggestion = (suggestion) => {
-    setInputValue(`${suggestion.airport_code} - ${suggestion.name}`);
+    setInputValue(
+      `${suggestion.airport_code} - ${suggestion.city}(${suggestion.name})`
+    );
     setShowModal(false);
   };
 
   const handleSelectSuggestion2 = (suggestion) => {
-    setInputValue2(`${suggestion.airport_code} - ${suggestion.name}`);
+    setInputValue2(
+      `${suggestion.airport_code} - ${suggestion.city}(${suggestion.name})`
+    );
     setShowModal2(false);
   };
 
@@ -221,8 +225,8 @@ export default function Home() {
                 <div className="gap-2">
                   <input
                     type="text"
-                    className="lg:w-[300px] md:w-[300px] w-[200px] h-[34px] text-sm font-semibold px-1"
-                    placeholder=" JOG - Adisucipto International Airport"
+                    className="lg:w-[300px] md:w-[300px] w-[200px] h-[34px] text-sm font-semibold px-1 text-ellipsis"
+                    placeholder="HND - Tokyo(Haneda Airport)"
                     value={inputValue}
                     onClick={() => setShowModal(true)}
                     onChange={(e) => {
@@ -246,8 +250,8 @@ export default function Home() {
                 <div className="gap-2">
                   <input
                     type="text"
-                    placeholder="JOG - Adisucipto International Airport"
-                    className="lg:w-[300px] md:w-[300px] w-[200px] lg:ms-0 md:ms-0 ms-1 h-[34px] text-sm font-semibold px-3"
+                    placeholder="HND - Tokyo(Haneda Airport)"
+                    className="lg:w-[300px] md:w-[300px] w-[200px] lg:ms-0 md:ms-0 ms-1 h-[34px] text-sm font-semibold px-3 text-ellipsis"
                     value={inputValue2}
                     onClick={() => setShowModal2(true)}
                     onChange={(e) => {
@@ -338,7 +342,7 @@ export default function Home() {
             />
             <input
               type="text"
-              placeholder="Masukkan Kota atau Negara"
+              placeholder="Search City or Airport Code"
               className="lg:w-[630px] md:w-[630px] w-[350px] h-[40px] border-2 border-gray-300 pl-8 p-2"
               value={inputValue}
               onChange={(e) => {
@@ -359,12 +363,15 @@ export default function Home() {
               {airportSuggestions
                 .filter(
                   (airport) =>
-                    airport.name
+                    airport.city
                       .toLowerCase()
                       .includes(searchText.toLowerCase()) ||
                     airport.airport_code
                       .toLowerCase()
-                      .includes(searchText.toLowerCase())
+                      .includes(searchText.toLowerCase()) ||
+                    airport.airport.name
+                      .toLowerCase()
+                      .includes(searchText2.toLowerCase())
                 )
                 .map((airport, index) => (
                   <li
@@ -372,9 +379,12 @@ export default function Home() {
                     className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer text-sm font-semibold"
                     onClick={() => handleSelectSuggestion(airport)}
                   >
-                    <span>
-                      {airport.airport_code} - {airport.name}
-                    </span>
+                    <div className="flex gap-1">
+                      <span>{airport.airport_code}</span>
+                      <span>-</span>
+                      <span>{airport.city}</span>
+                      <span>({airport.name})</span>
+                    </div>
                   </li>
                 ))}
             </ul>
@@ -390,7 +400,7 @@ export default function Home() {
             />
             <input
               type="text"
-              placeholder="Masukkan Kota atau Negara"
+              placeholder="Search City or Airport Code"
               className="lg:w-[630px] md:w-[630px] w-[350px] h-[40px] border-2 border-gray-300 pl-8 p-2"
               value={inputValue2}
               onChange={(e) => {
@@ -411,10 +421,13 @@ export default function Home() {
               {airportSuggestions
                 .filter(
                   (airport) =>
-                    airport.name
+                    airport.city
                       .toLowerCase()
                       .includes(searchText2.toLowerCase()) ||
                     airport.airport_code
+                      .toLowerCase()
+                      .includes(searchText2.toLowerCase()) ||
+                    airport.airport.name
                       .toLowerCase()
                       .includes(searchText2.toLowerCase())
                 )
@@ -424,9 +437,12 @@ export default function Home() {
                     className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer text-sm font-semibold "
                     onClick={() => handleSelectSuggestion2(airport)}
                   >
-                    <span>
-                      {airport.airport_code} - {airport.name}
-                    </span>
+                    <div className="flex gap-1">
+                      <span>{airport.airport_code}</span>
+                      <span>-</span>
+                      <span>{airport.city}</span>
+                      <span>({airport.name})</span>
+                    </div>
                   </li>
                 ))}
             </ul>
@@ -449,6 +465,7 @@ export default function Home() {
             inline
             monthsShown={2}
             calendarClassName="tailwind-datepicker w-full"
+            minDate={new Date()}
           />
         </div>
       </Modal>

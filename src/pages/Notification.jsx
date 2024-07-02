@@ -12,6 +12,8 @@ import Modal from "../assets/Properties/Modal";
 import { PacmanLoader } from "react-spinners";
 import "react-toastify/dist/ReactToastify.css";
 import Footer from "../assets/Properties/Footer";
+import NotFound from "../components/atoms/NotFound";
+import { GoRead } from "react-icons/go";
 
 export default function NotificationPage() {
   const [notification, setNotification] = useState([]);
@@ -19,9 +21,12 @@ export default function NotificationPage() {
   const [filter, setFilter] = useState("all");
   const [tempFilter, setTempFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const navigate = useNavigate();
   const API_URL = process.env.API_URL;
-  const fetchData = async () => {
+
+  const fetchData = async (page = 1) => {
     try {
       const token = localStorage.getItem("token");
       if (token === null) {
@@ -30,15 +35,20 @@ export default function NotificationPage() {
         }, 2000);
         return;
       }
-      const response = await axios.get(`${API_URL}/notification/`, {
-        headers: {
-          accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const notifications = response.data.data;
+      const response = await axios.get(
+        `${API_URL}/notification/?page=${page}`,
+        {
+          headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const { data: notifications, totalPages } = response.data;
+      console.log(notifications);
       if (Array.isArray(notifications)) {
         setNotification(notifications);
+        setTotalPages(totalPages);
         setIsReady(true);
       } else {
         console.error(
@@ -56,17 +66,15 @@ export default function NotificationPage() {
     setShowModal(false);
   };
 
-  const markAsRead = async (notificationId) => {
+  const markAllAsRead = async () => {
     try {
       const token = localStorage.getItem("token");
-      const notificationToMark = notification.find(
-        (n) => n.id === notificationId && !n.is_read
-      );
+      const unreadNotifications = notification.filter((n) => !n.is_read);
 
-      if (notificationToMark) {
+      if (unreadNotifications.length > 0) {
         const response = await axios.put(
           `${API_URL}/notification/read`,
-          { id: notificationId },
+          {},
           {
             headers: {
               accept: "application/json",
@@ -77,28 +85,23 @@ export default function NotificationPage() {
 
         if (response.data.status) {
           setNotification((notifications) =>
-            notifications.map((n) => {
-              if (n.id === notificationId) {
-                return { ...n, is_read: true };
-              }
-              return n;
-            })
+            notifications.map((n) => ({ ...n, is_read: true }))
           );
         } else {
           console.error(
-            "Failed to mark notification as read: ",
+            "Failed to mark all notifications as read: ",
             response.data.message
           );
         }
       }
     } catch (error) {
-      console.error("Error marking notification as read: ", error);
+      console.error("Error marking all notifications as read: ", error);
     }
   };
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(currentPage);
+  }, [currentPage]);
 
   if (isReady === false) {
     return (
@@ -107,16 +110,33 @@ export default function NotificationPage() {
       </div>
     );
   }
+
+  if (notification.length === 0) {
+    return <NotFound />;
+  }
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   return (
     <Fragment>
       <div className="">
         <Navbar />
         <div className="w-full h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-          <div className="lg:w-[1100px] md:w-[690px] w-[340px] px-4 mt-20 lg:text-3xl md:text-2xl text-xl font-bold lg:py-6  md:py-6 py-6">
+          <div className="lg:w-[1120px] md:w-[760px] w-[390px] px-4 mt-20 lg:text-3xl md:text-2xl text-xl font-bold lg:py-6  md:py-6 py-6">
             Notification
           </div>
           <div className="flex items-center gap-4">
-            <div className="lg:w-[968px] md:w-[568px] w-[220px] h-[50px] rounded-[10px] bg-[#9DDE8B] flex items-center px-4 gap-2 mb-2">
+            <div className="lg:w-[868px] md:w-[508px] w-[180px] h-[50px] rounded-[10px] bg-[#9DDE8B] flex items-center px-4 gap-2 mb-2">
               <IoMdArrowRoundBack
                 onClick={() => navigate("/")}
                 size={20}
@@ -125,11 +145,18 @@ export default function NotificationPage() {
               <div className="text-white text-sm font-semibold">Home</div>
             </div>
             <div
-              className="border rounded-full h-[50px] flex p-2 gap-2 mb-2 items-center hover:cursor-pointer "
+              className="border rounded-full h-[50px] flex p-2 gap-2 mb-2 items-center lg:text-base md:text-base text-xs  hover:cursor-pointer "
               onClick={() => setShowModal(true)}
             >
               <IoFilterCircleOutline size={20} className="text-black " />
               <span>Filter</span>
+            </div>
+            <div
+              className="border rounded-full h-[50px] flex p-2 gap-2 mb-2 items-center lg:text-base md:text-base text-xs  hover:cursor-pointer"
+              onClick={markAllAsRead}
+            >
+              <GoRead size={20} classname="text-black" />
+              <div>Read All</div>
             </div>
           </div>
         </div>
@@ -147,7 +174,6 @@ export default function NotificationPage() {
                 className={`flex justify-between border-b-2 lg:w-[880px] md:w-[680px] w-full lg:h-[87px] md:h-[87px] h-auto py-3 p-4 ${
                   notification.is_read ? " hover:bg-green-100 " : "bg-red-100 "
                 }`}
-                onClick={() => markAsRead(notification.id)}
               >
                 <div className="flex gap-2 px-2">
                   <IoNotificationsCircleSharp
@@ -186,6 +212,23 @@ export default function NotificationPage() {
                 </div>
               </div>
             ))}
+        </div>
+        <div className="flex items-center justify-center gap-2">
+          <button
+            onClick={handlePreviousPage}
+            className="bg-[#40A578] text-white font-semibold rounded-full p-2 lg:text-xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769]"
+          >
+            Previous
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            className="bg-[#40A578] text-white font-semibold rounded-full p-2 lg:text-xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769]"
+          >
+            Next
+          </button>
         </div>
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
