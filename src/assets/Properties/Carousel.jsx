@@ -23,6 +23,7 @@ export default function Carousel({ fromAirportCode, adult, child, baby }) {
       });
 
       const flightsData = response.data.data.flights;
+      console.log("Fetched Flights Data:", flightsData);
       setTimeout(() => {
         setFetchFavoriteFlights(flightsData);
         setIsLoading(false);
@@ -118,38 +119,46 @@ export default function Carousel({ fromAirportCode, adult, child, baby }) {
         </div>
       ) : (
         <Slider {...settings}>
-          {fetchFavoriteFlights.map((flight) => (
-            <div
-              key={flight.id}
-              className="lg:px-12 md:px-3 px-10 py-8 lg:pb-4 md:pb-4 pb-12  "
-            >
-              <div className="lg:w-[230px] md:w-[200px] w-[180px] lg:h-[300px] md:h-[300px] h-[240px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
-                <div className="relative">
-                  <img
-                    className="object-cover w-full lg:h-[150px] md:h-[150px] h-[110px]"
-                    src={flight.to.image_url}
-                    alt={flight.title}
-                    onClick={() => handleCarouselClick(flight)}
-                  />
-                </div>
-                <div className="p-4">
-                  <div className="lg:text-lg md:text-lg text-xs font-semibold truncate">
-                    {flight.from.city} -&gt; {flight.to.city}
+          {fetchFavoriteFlights
+            .filter(
+              (flight) =>
+                flight.flight_classes &&
+                flight.flight_classes.some(
+                  (cls) => cls.name === "ECONOMY" && cls.available_seats > 0
+                )
+            )
+            .map((flight) => (
+              <div
+                key={flight.id}
+                className="lg:px-12 md:px-3 px-10 py-8 lg:pb-4 md:pb-4 pb-12  "
+              >
+                <div className="lg:w-[230px] md:w-[200px] w-[180px] lg:h-[300px] md:h-[300px] h-[240px] bg-white shadow-lg rounded-lg overflow-hidden hover:scale-105 hover:cursor-pointer ">
+                  <div className="relative">
+                    <img
+                      className="object-cover w-full lg:h-[150px] md:h-[150px] h-[110px]"
+                      src={flight.to.image_url}
+                      alt={flight.title}
+                      onClick={() => handleCarouselClick(flight)}
+                    />
                   </div>
-                  <div className="text-xs font-semibold text-[#9DDE8B]">
-                    {flight.plane.airline}
+                  <div className="p-4">
+                    <div className="lg:text-lg md:text-lg text-xs font-semibold truncate">
+                      {flight.from.city} -&gt; {flight.to.city}
+                    </div>
+                    <div className="text-xs font-semibold text-[#9DDE8B]">
+                      {flight.plane.airline}
+                    </div>
+                    <p className="lg:text-sm md:text-sm text-xs text-gray-600 mb-2">
+                      {flight.airline}
+                    </p>
+                    <p className="lg:text-sm md:text-sm text-xs text-gray-600 mb-2">
+                      {formatDate(flight.departureAt)} -{" "}
+                      {formatDate(flight.arriveAt)}
+                    </p>
                   </div>
-                  <p className="lg:text-sm md:text-sm text-xs text-gray-600 mb-2">
-                    {flight.airline}
-                  </p>
-                  <p className="lg:text-sm md:text-sm text-xs text-gray-600 mb-2">
-                    {formatDate(flight.departureAt)} -{" "}
-                    {formatDate(flight.arriveAt)}
-                  </p>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </Slider>
       )}
     </div>

@@ -225,12 +225,12 @@ export default function Profile() {
         </div>
       )}
 
-      <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-        <div className="lg:w-[1100px] md:w-[750px] w-[360px] px-4 mt-20 lg:text-lg md:text-lg text-sm font-semibold">
+      <div className="w-full h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
+        <div className="lg:w-[1100px] md:w-[690px] w-[320px] px-4 mt-20 lg:text-3xl md:text-2xl text-xl font-bold lg:py-6  md:py-6 py-6">
           Profile
         </div>
         <div className="flex items-center gap-4">
-          <div className="lg:w-[968px] md:w-[668px] w-[290px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
+          <div className="lg:w-[1068px] md:w-[668px] w-[290px] h-[50px] rounded-[10px] bg-[#9DDE8B] flex items-center px-4 gap-2 mb-2">
             <IoMdArrowRoundBack
               size={20}
               className="text-white cursor-pointer hover:scale-110 transition-transform duration-200"
