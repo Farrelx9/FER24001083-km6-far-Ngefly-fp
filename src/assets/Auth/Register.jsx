@@ -21,6 +21,7 @@ export default function Register() {
   const [isTickPassword, setIsTickPassword] = useState(false);
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const API_URL = process.env.API_URL;
 
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const passwordRegex = /^.{8,}$/;
@@ -103,7 +104,7 @@ export default function Register() {
     };
     try {
       const response = await axios.post(
-        `https://binar-project-426902.et.r.appspot.com/api/v1/auth/register`,
+        `${API_URL}/auth/register`,
         registerData,
         {
           headers: { "Content-Type": "application/json" },
