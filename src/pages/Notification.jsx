@@ -11,6 +11,7 @@ import { RiCircleFill } from "react-icons/ri";
 import Modal from "../assets/Properties/Modal";
 import { PacmanLoader } from "react-spinners";
 import "react-toastify/dist/ReactToastify.css";
+import Footer from "../assets/Properties/Footer";
 
 export default function NotificationPage() {
   const [notification, setNotification] = useState([]);
@@ -110,24 +111,24 @@ export default function NotificationPage() {
     <Fragment>
       <div className="">
         <Navbar />
-        <div className="w-full h-[230px] shadow-2xl flex flex-col gap-2 items-center justify-center">
-          <div className="lg:w-[1200px] md:w-[790px] w-[390px] px-4 mt-20 lg:text-lg md:text-lg text-sm font-semibold">
+        <div className="w-full h-[260px] shadow-2xl flex flex-col gap-2 items-center justify-center">
+          <div className="lg:w-[1100px] md:w-[690px] w-[340px] px-4 mt-20 lg:text-3xl md:text-2xl text-xl font-bold lg:py-6  md:py-6 py-6">
             Notification
           </div>
           <div className="flex items-center gap-4">
-            <div className="lg:w-[968px] md:w-[568px] w-[220px] h-[33px] bg-[#9DDE8B] flex items-center px-4 gap-2">
+            <div className="lg:w-[968px] md:w-[568px] w-[220px] h-[50px] rounded-[10px] bg-[#9DDE8B] flex items-center px-4 gap-2 mb-2">
               <IoMdArrowRoundBack
                 onClick={() => navigate("/")}
                 size={20}
-                className="text-white cursor-pointer hover:scale-110 transition-transform duration-200"
+                className="text-white cursor-pointer hover:scale-110 transition-transform duration-200 "
               />
               <div className="text-white text-sm font-semibold">Home</div>
             </div>
             <div
-              className="border rounded-full flex p-2 gap-2 items-center hover:cursor-pointer "
+              className="border rounded-full h-[50px] flex p-2 gap-2 mb-2 items-center hover:cursor-pointer "
               onClick={() => setShowModal(true)}
             >
-              <IoFilterCircleOutline size={20} className="text-black" />
+              <IoFilterCircleOutline size={20} className="text-black " />
               <span>Filter</span>
             </div>
           </div>
@@ -224,6 +225,7 @@ export default function NotificationPage() {
           </button>
         </div>
       </Modal>
+      <Footer />
     </Fragment>
   );
 }

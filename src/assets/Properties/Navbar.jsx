@@ -54,7 +54,7 @@ export default function Navbar() {
       <div className="flex gap-5">
         <img
           src={ngefly}
-          className="w-[98px] h-[93px] "
+          className="w-[98px] h-[93px] hover:cursor-pointer"
           alt="Ngefly Logo"
           onClick={() => navigate("/")}
         />

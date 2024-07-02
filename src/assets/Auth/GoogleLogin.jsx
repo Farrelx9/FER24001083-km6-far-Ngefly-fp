@@ -19,7 +19,7 @@ function GoogleLogin({ buttonText }) {
 
       navigate("/", { state: { token: token } });
     } catch (error) {
-
+      console.error("Google login error:", error);
     }
   };
 
@@ -29,7 +29,7 @@ function GoogleLogin({ buttonText }) {
       registerLoginWithGoogleAction(responseGoogle.access_token);
     },
     onError: (error) => {
- 
+      console.error("Google login error:", error);
     },
   });
 

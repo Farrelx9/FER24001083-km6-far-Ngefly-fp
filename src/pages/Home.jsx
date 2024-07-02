@@ -39,7 +39,7 @@ export default function Home() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [isReturnActive, setIsReturnActive] = useState(false);
-  const [adult, setAdult] = useState(0);
+  const [adult, setAdult] = useState(1);
   const [child, setChild] = useState(0);
   const [baby, setBaby] = useState(0);
   const [totalPassengers, setTotalPassengers] = useState(adult + child);
@@ -86,8 +86,8 @@ export default function Home() {
     setter(value + 1);
   };
 
-  const decrement = (setter, value) => {
-    if (value > 0) {
+  const decrement = (setter, value, min = 0) => {
+    if (value > min) {
       setter(value - 1);
     }
   };
@@ -141,10 +141,14 @@ export default function Home() {
   }, [inputValue]);
 
   const handleSearch = () => {
-    if (!inputValue || !totalPassengers === 0 || !selectedClass) {
-      toast.error(
-        "Please fill in all required fields: Input From, Passengers, and Seat Class."
-      );
+    if (
+      !inputValue ||
+      !inputValue2 ||
+      !totalPassengers === 0 ||
+      !selectedClass ||
+      !startDate
+    ) {
+      toast.error("Please fill in all required fields ");
       return;
     }
     const setParams = {
@@ -460,7 +464,7 @@ export default function Home() {
             <div className="flex items-center">
               <button
                 className="px-2 py-1 border"
-                onClick={() => decrement(setTempAdult, tempAdult)}
+                onClick={() => decrement(setTempAdult, tempAdult, 1)}
               >
                 -
               </button>
