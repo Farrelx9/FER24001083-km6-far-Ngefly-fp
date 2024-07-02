@@ -19,6 +19,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../assets/styles/datepicker.css";
 import { PacmanLoader } from "react-spinners";
+import Footer from '../assets/Properties/Footer'
 
 const OPTION_FILTER = [
   {
@@ -382,9 +383,7 @@ export default function History() {
                           </div>
                           <p className="font-bold mb-2 text-[#006769]">
                             {formatCurrency(
-                              subItem.flight_class?.flight?.is_return
-                                ? subItem.total_price * 2
-                                : subItem.total_price
+                              subItem?.total_price
                             )}
                           </p>
                         </div>
@@ -574,9 +573,7 @@ export default function History() {
                   <p className="font-bold">Total</p>
                   <p>
                     {formatCurrency(
-                      selected.flight_class?.flight?.is_return
-                        ? selected.total_price * 2
-                        : selected.total_price || 0
+                      selected?.total_price
                     )}
                   </p>
                 </div>
@@ -602,6 +599,7 @@ export default function History() {
             )}
           </div>
         </Container>
+        <Footer/>
       </Layout>
       <Modal open={modalFilter} onClose={() => setModalFilter(false)}>
         <div className="flex justify-end p-3">

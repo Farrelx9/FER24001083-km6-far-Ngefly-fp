@@ -12,6 +12,7 @@ import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import CardFlight from "../components/molecules/CardFlight";
 import { FLIGHT_CLASS } from "../constant/type";
 import { dateFormat } from "../lib/function";
+import Footer from "../assets/Properties/Footer";
 
 const OPTION_SORT = [
   {
@@ -299,7 +300,9 @@ export default function Search() {
               </Empty> */}
             </div>
           </div>
+          
         </Container>
+        <Footer/>
       </Layout>
 
       <Modal
