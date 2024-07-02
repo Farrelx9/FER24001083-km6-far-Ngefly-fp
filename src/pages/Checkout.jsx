@@ -231,7 +231,7 @@ const Checkout = () => {
         })),
       };
       console.log("payload", payload);
-      const response = await axios.post(`${API_URL}/v1/bookings/`, payload, {
+      const response = await axios.post(`${API_URL}/bookings/`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
