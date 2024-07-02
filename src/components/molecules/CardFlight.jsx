@@ -120,7 +120,7 @@ export default function CardFlight({ index, item }) {
               className="self-end"
               icon="icon-park-outline:baggage-delay"
               width={25}
-              color="#4B1979"
+              color="#006769"
             />
           </div>
           {item.flight?.is_return && (
@@ -174,7 +174,7 @@ export default function CardFlight({ index, item }) {
                   className="self-end"
                   icon="icon-park-outline:baggage-delay"
                   width={25}
-                  color="#4B1979"
+                  color="#006769"
                 />
               </div>
             </>
@@ -183,7 +183,7 @@ export default function CardFlight({ index, item }) {
 
         <div className="flex items-end flex-col">
           <div className="font-bold mb-2 text-[#006769]">
-            {formatCurrency(item.flight?.is_return ? price * 2 : price)}
+            {formatCurrency(item.price)}
           </div>
           <Link
             to={`/checkout/${item.id}?${urlParams.toString()}`}
@@ -202,7 +202,7 @@ export default function CardFlight({ index, item }) {
         )}
       >
         <Divider className="my-5" />
-        <p className="font-bold text-[#4B1979] mb-3">
+        <p className="font-bold text-[#006769] mb-3">
           Flight {item.flight?.is_return && "Away"} Detail
         </p>
         <div className="flex justify-between gap-5">
@@ -246,7 +246,7 @@ export default function CardFlight({ index, item }) {
         {item.flight?.is_return && (
           <>
             <Divider className="my-5" />
-            <p className="font-bold text-[#4B1979] mb-3">Flight Return Detail</p>
+            <p className="font-bold text-[#006769] mb-3">Flight Return Detail</p>
             <div className="flex justify-between gap-5">
               <div>
                 <p className="font-bold">
