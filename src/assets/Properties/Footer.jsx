@@ -19,7 +19,7 @@ const Footer = () => {
     <footer
       className="text-black py-6 sm:text-white"
       style={{
-        background: "linear-gradient(#006769, #006769, #9DDE8B, #D6FFDE)",
+        background: "#006769",
         color: "#f8f9fa",
         fontFamily: "'Montserrat', sans-serif",
         width: "100%",
@@ -161,7 +161,7 @@ const Footer = () => {
           {" "}
           <div className="text-sm mt-3">
             {" "}
-            <strong style={{ color: "#006769", fontSize: "1rem" }}>
+            <strong style={{ color: "#D6FFDE", fontSize: "1rem" }}>
               © {new Date().getFullYear()} Ngefly.com | All Rights Reserved
             </strong>
           </div>
