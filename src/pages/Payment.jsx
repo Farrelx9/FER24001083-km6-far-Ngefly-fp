@@ -71,12 +71,13 @@ const PaymentMethod = ({
 
 const Payment = () => {
   const { booking_id } = useParams();
-  const navigate = useNavigate(); // Correct usage inside the functional component
+  const navigate = useNavigate();
   const [showQRIS, setShowQRIS] = useState(false);
   const [bookingData, setBookingData] = useState(null);
   const [countdown, setCountdown] = useState(0);
   const [error, setError] = useState(null);
   const API_URL = process.env.API_URL;
+  const [include_return, setIncludeReturn] = useState(false);
 
   useEffect(() => {
     if (
@@ -171,12 +172,18 @@ const Payment = () => {
     ).length || 0) *
     (bookingData?.flight_class.price * ((100 - 5) / 100));
 
-  const babyCount =
-    (bookingData?.passengers.filter(
-      (passenger) => passenger?.category?.type === "baby"
-    ).length || 0) * bookingData?.flight_class.price;
+  const countBabyInUrl = () => {
+    const searchParams = new URLSearchParams(location.search);
+    return searchParams.get("baby") || 0;
+  };
 
-  const tax = (adultCount + childCount + babyCount || 0) * (5 / 100);
+  const babyPrice = () => {
+    const baby = countBabyInUrl();
+    const price = 0;
+    return baby * price;
+  };
+
+  const tax = (adultCount + childCount || 0) * (5 / 100);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -185,6 +192,12 @@ const Payment = () => {
       toast.error("You've to Login First!");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    if (bookingData) {
+      setIncludeReturn(bookingData.include_return === true);
+    }
+  }, [bookingData]);
 
   return (
     <Fragment>
@@ -282,7 +295,7 @@ const Payment = () => {
           </div>
 
           {/* Summary section */}
-          <div className="w-full md:w-1/2 bg-white shadow-md rounded-lg p-6">
+          <div className="w-full md:w-1/2 bg-white rounded-lg p-6">
             {/* Booking code */}
             <div className="flex items-center mb-4">
               <h3 className="text-xl font-extrabold text-[#151515] mr-2">
@@ -348,7 +361,7 @@ const Payment = () => {
 
               {/* Additional flight details */}
               <div className="max-w-3xl border-t border-gray-600 mt-4 pl-8 py-4">
-                <div className="text-[#151515] font-extrabold">
+                <div className="text-[#006769] font-extrabold">
                   {bookingData
                     ? bookingData?.flight_class?.flight?.plane?.airline
                     : "Loading..."}
@@ -359,12 +372,12 @@ const Payment = () => {
                       )
                     : "Loading..."}
                 </div>
-                <div className="text-[#151515] font-extrabold mb-4">
+                <div className="text-[#006769] font-extrabold mb-4">
                   {bookingData
                     ? bookingData?.flight_class?.flight?.plane?.plane_code
                     : "Loading..."}
                 </div>
-                <div className="text-gray-600">Informasi:</div>
+                <div className="text-gray-600">Information:</div>
                 <ul className="list-disc pl-5 text-gray-600">
                   <li>
                     Baggage{" "}
@@ -416,20 +429,18 @@ const Payment = () => {
                   </div>
                 )}
 
-                {babyCount > 0 && (
-                  <div className="flex justify-between pl-4 text-gray-600">
-                    <span className="text-md text-[#151515]">
-                      Rp{" "}
-                      {bookingData?.passengers.filter(
-                        (passenger) => passenger?.category?.type === "baby"
-                      ).length || 0}{" "}
-                      Baby
-                    </span>
-                    <span className="text-md text-[#151515]">
-                      Rp {babyCount.toLocaleString("id-ID")}
-                    </span>
-                  </div>
-                )}
+                <div className="flex justify-between pl-4 text-gray-600">
+                  {countBabyInUrl() !== 0 && (
+                    <>
+                      <span className="text-md text-[#151515]">
+                        {countBabyInUrl()} Baby
+                      </span>
+                      <span className="text-md text-[#151515]">
+                        Rp {babyPrice().toLocaleString("id-ID")}
+                      </span>
+                    </>
+                  )}
+                </div>
 
                 <div className="flex justify-between pl-4 text-gray-600">
                   <span className="text-md text-[#151515]">Tax</span>
@@ -446,6 +457,12 @@ const Payment = () => {
                     Rp {bookingData?.total_price.toLocaleString("id-ID")}
                   </span>
                 </div>
+                {include_return && (
+                  <div className="mb-2 mt-4 pl-4 text-justify text-red-500">
+                    Note: Include return selected. The price will be
+                    automatically doubled.
+                  </div>
+                )}
               </div>
             </div>
           </div>

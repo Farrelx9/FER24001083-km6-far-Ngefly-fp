@@ -35,7 +35,7 @@ function TicketConfirmation() {
         console.log("response", response);
         if (response.status === 200) {
           setPaymentStatus("success");
-          toast.success("Payment status updated successfully.");
+          toast.success("Payment successfully.");
         }
       } catch (error) {
         if (error.response) {
@@ -137,12 +137,6 @@ function TicketConfirmation() {
 
       {paymentStatus === "success" && (
         <div className="flex flex-col items-center space-y-4 mt-10">
-          {/* <button
-            className="bg-[#006769] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-green-600 transition-colors duration-300 ease-in-out"
-            onClick={() => navigate("/history")}
-          >
-            Issue Tickets
-          </button> */}
           <button
             className="bg-[#006769] text-white py-3 px-6 rounded-lg w-80 h-15 shadow-md hover:bg-[#82BB99] transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-[#4CAF50] focus:ring-opacity-50"
             onClick={() => navigate("/")}
