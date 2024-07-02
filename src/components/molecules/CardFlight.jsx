@@ -79,38 +79,111 @@ export default function CardFlight({ index, item }) {
         </button>
       </div>
       <div className="flex justify-between gap-4">
-        <div className="flex-1 max-w-[650px] flex gap-5">
+        <div className="flex-1 max-w-[650px] flex flex-col gap-10">
           <div className="flex-1 flex items-center justify-between gap-[12px]">
-            <div>
-              <p className="font-bold text-sm">
-                {dateFormat(item.flight?.departureAt).format("HH:mm")}
-              </p>
-              <p className="text-xs">{item.flight?.from_code}</p>
+            <div className="flex-1 flex items-center justify-between gap-[12px]">
+              <div>
+                {item.flight?.is_return && (
+                  <p className="text-sm">
+                    {dateFormat(item.flight?.departureAt).format(
+                      "DD MMMM YYYY"
+                    )}
+                  </p>
+                )}
+                <p className="font-bold text-sm">
+                  {dateFormat(item.flight?.departureAt).format("HH:mm")}
+                </p>
+                <p className="text-xs">{item.flight?.from_code}</p>
+              </div>
+              <div className="flex-1 flex items-center flex-col gap-1">
+                <span className="text-sm text-[#8A8A8A] font-medium">
+                  {getDuration(item.flight?.departureAt, item.flight?.arriveAt)}
+                </span>
+                <div className="w-full h-[2px] bg-gray-300" />
+                <span className="text-sm text-[#8A8A8A] font-medium">
+                  Direct
+                </span>
+              </div>
+              <div>
+                {item.flight?.is_return && (
+                  <p className="text-sm">
+                    {dateFormat(item.flight?.arriveAt).format("DD MMMM YYYY")}
+                  </p>
+                )}
+                <p className="font-bold text-sm">
+                  {dateFormat(item.flight?.arriveAt).format("HH:mm")}
+                </p>
+                <p className="text-xs">{item.flight?.to_code}</p>
+              </div>
             </div>
-            <div className="flex-1 flex items-center flex-col gap-1">
-              <span className="text-sm text-[#8A8A8A] font-medium">
-                {getDuration(item.flight?.departureAt, item.flight?.arriveAt)}
-              </span>
-              <div className="w-full h-[2px] bg-gray-300" />
-              <span className="text-sm text-[#8A8A8A] font-medium">Direct</span>
-            </div>
-            <div>
-              <p className="font-bold text-sm">
-                {dateFormat(item.flight?.arriveAt).format("HH:mm")}
-              </p>
-              <p className="text-xs">{item.flight?.to_code}</p>
-            </div>
+            <Icon
+              className="self-end"
+              icon="icon-park-outline:baggage-delay"
+              width={25}
+              color="#4B1979"
+            />
           </div>
-          <Icon
-            className="self-end"
-            icon="icon-park-outline:baggage-delay"
-            width={25}
-            color="#4B1979"
-          />
+          {item.flight?.is_return && (
+            <>
+              <Icon
+                className="self-center"
+                icon="humbleicons:exchange-horizontal"
+                width={25}
+                color="#8c8c8c"
+              />
+              <div className="flex-1 flex items-center justify-between gap-[12px]">
+                <div className="flex-1 flex items-center justify-between gap-[12px]">
+                  <div>
+                    <p className="text-sm">
+                      {dateFormat(item.flight?.return_departureAt).format(
+                        "DD MMMM YYYY"
+                      )}
+                    </p>
+                    <p className="font-bold text-sm">
+                      {dateFormat(item.flight?.return_departureAt).format(
+                        "HH:mm"
+                      )}
+                    </p>
+                    <p className="text-xs">{item.flight?.to_code}</p>
+                  </div>
+                  <div className="flex-1 flex items-center flex-col gap-1">
+                    <span className="text-sm text-[#8A8A8A] font-medium">
+                      {getDuration(
+                        item.flight?.return_departureAt,
+                        item.flight?.return_arriveAt
+                      )}
+                    </span>
+                    <div className="w-full h-[2px] bg-gray-300" />
+                    <span className="text-sm text-[#8A8A8A] font-medium">
+                      Direct
+                    </span>
+                  </div>
+                  <div>
+                    <p className="text-sm">
+                      {dateFormat(item.flight?.return_arriveAt).format(
+                        "DD MMMM YYYY"
+                      )}
+                    </p>
+                    <p className="font-bold text-sm">
+                      {dateFormat(item.flight?.return_arriveAt).format("HH:mm")}
+                    </p>
+                    <p className="text-xs">{item.flight?.from_code}</p>
+                  </div>
+                </div>
+                <Icon
+                  className="self-end"
+                  icon="icon-park-outline:baggage-delay"
+                  width={25}
+                  color="#4B1979"
+                />
+              </div>
+            </>
+          )}
         </div>
+
         <div className="flex items-end flex-col">
           <div className="font-bold mb-2 text-[#006769]">
-            {formatCurrency(price)}
+            {formatCurrency(item.flight?.is_return ? price * 2 : price)}
           </div>
           <Link
             to={`/checkout/${item.id}?${urlParams.toString()}`}
@@ -129,7 +202,9 @@ export default function CardFlight({ index, item }) {
         )}
       >
         <Divider className="my-5" />
-        <p className="font-bold text-[#4B1979] mb-3">Flight Detail</p>
+        <p className="font-bold text-[#4B1979] mb-3">
+          Flight {item.flight?.is_return && "Away"} Detail
+        </p>
         <div className="flex justify-between gap-5">
           <div>
             <p className="font-bold">
@@ -168,6 +243,54 @@ export default function CardFlight({ index, item }) {
           </div>
           <p className="font-bold text-[#9DDE8B]">Arrive</p>
         </div>
+        {item.flight?.is_return && (
+          <>
+            <Divider className="my-5" />
+            <p className="font-bold text-[#4B1979] mb-3">Flight Return Detail</p>
+            <div className="flex justify-between gap-5">
+              <div>
+                <p className="font-bold">
+                  {dateFormat(item.flight?.return_departureAt).format("HH:mm")}
+                </p>
+                <p className="text-sm text-gray-500 mb-1">
+                  {dateFormat(item.flight?.return_departureAt).format(
+                    "DD MMMM YYYY"
+                  )}
+                </p>
+                <p>{item.flight?.to?.name || ""}</p>
+              </div>
+              <p className="font-bold text-[#9DDE8B]">Departure</p>
+            </div>
+            <Divider className="my-3 mx-auto max-w-[700px]" />
+            <div className="pl-10">
+              <p className="font-bold">
+                {item.flight?.plane?.airline} -{" "}
+                {FLIGHT_CLASS[flightClass.toString().toLowerCase()] || ""}
+              </p>
+              <p className="font-bold">{item.flight?.plane_code}</p>
+              <div className="text-sm mt-4">
+                <p className="font-bold">Information:</p>
+                <p>Baggage {item.flight?.plane?.baggage} kg</p>
+                <p>Cabin Baggage {item.flight?.plane?.cabin_baggage} kg</p>
+              </div>
+            </div>
+            <Divider className="my-3 mx-auto max-w-[700px]" />
+            <div className="flex justify-between gap-5">
+              <div>
+                <p className="font-bold">
+                  {dateFormat(item.flight?.return_arriveAt).format("HH:mm")}
+                </p>
+                <p className="text-sm text-gray-500 mb-1">
+                  {dateFormat(item.flight?.return_arriveAt).format(
+                    "DD MMMM YYYY"
+                  )}
+                </p>
+                <p>{item.flight?.from?.name || ""}</p>
+              </div>
+              <p className="font-bold text-[#9DDE8B]">Arrive</p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

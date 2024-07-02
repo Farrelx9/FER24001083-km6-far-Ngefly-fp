@@ -5,6 +5,7 @@ import { FLIGHT_CLASS, PAYMENT_STATUS } from "../constant/type";
 import { useParams } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
 import Container from "../components/atoms/Container";
+import { Icon } from "@iconify/react/dist/iconify.js";
 
 export default function PrintCheckout() {
   const { id } = useParams();
@@ -21,16 +22,13 @@ export default function PrintCheckout() {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/bookings/${id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(`${API_URL}/bookings/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const result = await response.json();
       setLoading(false);
       if (response.status === 404) {
@@ -102,6 +100,9 @@ export default function PrintCheckout() {
               Booking Code:{" "}
               <span className="text-[#006769] font-bold">{data?.id}</span>
             </div>
+            {data?.flight_class?.flight?.is_return && (
+              <h4 className="mb-2 text-lg font-bold">Flight Away</h4>
+            )}
             <div className="flex justify-between gap-5">
               <div>
                 <p className="font-bold">
@@ -118,6 +119,69 @@ export default function PrintCheckout() {
               </div>
               <p className="font-bold text-[#9DDE8B] text-xs">Departure</p>
             </div>
+            <Divider className="my-3 mx-auto" />
+            <div className="flex justify-between gap-5">
+              <div>
+                <p className="font-bold">
+                  {dateFormat(
+                    data?.flight_class?.flight?.arriveAt || ""
+                  ).format("HH:mm")}
+                </p>
+                <p className="text-sm text-gray-500 mb-1">
+                  {dateFormat(
+                    data?.flight_class?.flight?.arriveAt || ""
+                  ).format("DD MMMM YYYY")}
+                </p>
+                <p>{data?.flight_class?.flight?.to?.name || ""}</p>
+              </div>
+              <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
+            </div>
+            {data?.flight_class?.flight?.is_return && (
+              <>
+                <div className="flex justify-center w-full !my-5">
+                  <Icon
+                    icon="humbleicons:exchange-horizontal"
+                    width={25}
+                    color="#8c8c8c"
+                  />
+                </div>
+                <h4 className="mb-2 text-lg font-bold">Flight Return</h4>
+                <div className="flex justify-between gap-5">
+                  <div>
+                    <p className="font-bold">
+                      {dateFormat(
+                        data?.flight_class?.flight?.return_departureAt || ""
+                      ).format("HH:mm")}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-1">
+                      {dateFormat(
+                        data?.flight_class?.flight?.return_departureAt || ""
+                      ).format("DD MMMM YYYY")}
+                    </p>
+                    <p>{data?.flight_class?.flight?.to?.name || ""}</p>
+                  </div>
+                  <p className="font-bold text-[#9DDE8B] text-xs">Departure</p>
+                </div>
+
+                <Divider className="my-3 mx-auto" />
+                <div className="flex justify-between gap-5">
+                  <div>
+                    <p className="font-bold">
+                      {dateFormat(
+                        data?.flight_class?.flight?.return_arriveAt || ""
+                      ).format("HH:mm")}
+                    </p>
+                    <p className="text-sm text-gray-500 mb-1">
+                      {dateFormat(
+                        data?.flight_class?.flight?.return_arriveAt || ""
+                      ).format("DD MMMM YYYY")}
+                    </p>
+                    <p>{data?.flight_class?.flight?.from?.name || ""}</p>
+                  </div>
+                  <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
+                </div>
+              </>
+            )}
             <Divider className="my-3 mx-auto" />
             <div className="pl-10">
               <p className="font-bold">
@@ -140,23 +204,6 @@ export default function PrintCheckout() {
                   </Fragment>
                 ))}
               </div>
-            </div>
-            <Divider className="my-3 mx-auto" />
-            <div className="flex justify-between gap-5">
-              <div>
-                <p className="font-bold">
-                  {dateFormat(
-                    data?.flight_class?.flight?.arriveAt || ""
-                  ).format("HH:mm")}
-                </p>
-                <p className="text-sm text-gray-500 mb-1">
-                  {dateFormat(
-                    data?.flight_class?.flight?.arriveAt || ""
-                  ).format("DD MMMM YYYY")}
-                </p>
-                <p>{data?.flight_class?.flight?.to?.name || ""}</p>
-              </div>
-              <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
             </div>
             <Divider className="my-3 mx-auto" />
             <p className="font-bold">Rincian harga</p>
@@ -187,7 +234,13 @@ export default function PrintCheckout() {
             <Divider className="my-3 mx-auto" />
             <div className="flex justify-between gap-5">
               <p className="font-bold">Total</p>
-              <p>{formatCurrency(data?.total_price || 0)}</p>
+              <p>
+                {formatCurrency(
+                  data?.flight_class?.flight?.is_return
+                    ? data?.total_price * 2
+                    : data?.total_price || 0
+                )}
+              </p>
             </div>
           </div>
         </div>

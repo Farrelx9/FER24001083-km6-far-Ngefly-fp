@@ -110,8 +110,6 @@ export default function Search() {
     }),
   };
 
-  console.log(paramsPassenger);
-
   const selectedSort =
     params.order && params.type
       ? OPTION_SORT.find(
