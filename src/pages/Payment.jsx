@@ -6,7 +6,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import Navbar from "../assets/Properties/Navbar";
 import { dateFormat } from "../lib/function";
 import Sukses from "../assets/images/Sukses.gif";
-
+import { Icon } from "@iconify/react/dist/iconify.js";
 import { ToastContainer, toast } from "react-toastify";
 import Footer from "../assets/Properties/Footer";
 
@@ -334,7 +334,7 @@ const Payment = () => {
             </div>
 
             {/* Summary section */}
-            <div className="w-full md:w-1/2 bg-white rounded-lg p-6">
+            <div className="w-full md:w-1/2 bg-white rounded-lg p-4">
               {/* Booking code */}
               <div className="flex items-center mb-4">
                 <h3 className="text-xl font-extrabold text-[#151515] mr-2">
@@ -344,16 +344,74 @@ const Payment = () => {
                   {booking_id}
                 </h3>
               </div>
+              <h4 className="mb-2 text-lg font-bold">Flight Away</h4>
 
               {/* Flight details */}
-              <div className="space-y-4">
-                {/* Departure details */}
-                <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="font-extrabold text-[#151515] mr-2">
+                  {bookingData
+                    ? dateFormat(
+                        bookingData?.flight_class?.flight?.departureAt
+                      ).format("HH:mm")
+                    : "Loading..."}
+                </div>
+                <div className="font-extrabold text-[#9DDE8B]">Departure</div>
+              </div>
+              <div className="text-gray-600">
+                {bookingData
+                  ? dateFormat(
+                      bookingData?.flight_class?.flight?.departureAt
+                    ).format("DD MMMM YYYY")
+                  : "Loading..."}
+              </div>
+              <div className="text-[#151515]">
+                {bookingData
+                  ? bookingData?.flight_class?.flight?.from?.name
+                  : "Loading..."}
+              </div>
+              <div className="w-full max-w-3xl border-t border-gray-600 mt-2 mb-2"></div>
+
+              {/* Arrival details */}
+
+              <div className="flex items-center justify-between">
+                <div className="font-extrabold text-[#151515] mr-2">
+                  {bookingData
+                    ? dateFormat(
+                        bookingData?.flight_class?.flight?.arriveAt
+                      ).format("HH:mm")
+                    : "Loading..."}
+                </div>
+                <div className="font-extrabold text-[#9DDE8B]">Arrive</div>
+              </div>
+              <div className="text-gray-600">
+                {bookingData
+                  ? dateFormat(
+                      bookingData?.flight_class?.flight?.arriveAt
+                    ).format("DD MMMM YYYY")
+                  : "Loading..."}
+              </div>
+              <div className="text-[#151515]">
+                {bookingData
+                  ? bookingData?.flight_class?.flight?.to?.name
+                  : "Loading..."}
+              </div>
+
+              {include_return && (
+                <>
+                  <div className="flex justify-center w-full !my-3">
+                    <Icon
+                      icon="humbleicons:exchange-horizontal"
+                      width={25}
+                      color="#8c8c8c"
+                    />
+                  </div>
+                  <h4 className="mb-2 text-lg font-bold">Flight Return</h4>
                   <div className="flex items-center justify-between">
                     <div className="font-extrabold text-[#151515] mr-2">
                       {bookingData
                         ? dateFormat(
-                            bookingData?.flight_class?.flight?.departureAt
+                            bookingData?.flight_class?.flight
+                              ?.return_departureAt
                           ).format("HH:mm")
                         : "Loading..."}
                     </div>
@@ -364,34 +422,7 @@ const Payment = () => {
                   <div className="text-gray-600">
                     {bookingData
                       ? dateFormat(
-                          bookingData?.flight_class?.flight?.departureAt
-                        ).format("DD MMMM YYYY")
-                      : "Loading..."}
-                  </div>
-                  <div className="text-[#151515]">
-                    {bookingData
-                      ? bookingData?.flight_class?.flight?.from?.name
-                      : "Loading..."}
-                  </div>
-                </div>
-                <div className="w-full max-w-3xl border-t border-gray-600 mt-4"></div>
-
-                {/* Arrival details */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="font-extrabold text-[#151515] mr-2">
-                      {bookingData
-                        ? dateFormat(
-                            bookingData?.flight_class?.flight?.arriveAt
-                          ).format("HH:mm")
-                        : "Loading..."}
-                    </div>
-                    <div className="font-extrabold text-[#9DDE8B]">Arrive</div>
-                  </div>
-                  <div className="text-gray-600">
-                    {bookingData
-                      ? dateFormat(
-                          bookingData?.flight_class?.flight?.arriveAt
+                          bookingData?.flight_class?.flight?.return_departureAt
                         ).format("DD MMMM YYYY")
                       : "Loading..."}
                   </div>
@@ -400,114 +431,137 @@ const Payment = () => {
                       ? bookingData?.flight_class?.flight?.to?.name
                       : "Loading..."}
                   </div>
-                </div>
 
-                {/* Additional flight details */}
-                <div className="max-w-3xl border-t border-gray-600 mt-4 pl-8 py-4">
-                  <div className="text-[#006769] font-extrabold">
-                    {bookingData
-                      ? bookingData?.flight_class?.flight?.plane?.airline
-                      : "Loading..."}
-                    -{" "}
-                    {bookingData?.flight_class?.name
-                      ? capitalizeWords(
-                          bookingData?.flight_class.name.toLowerCase()
-                        )
-                      : "Loading..."}
-                  </div>
-                  <div className="text-[#006769] font-extrabold mb-4">
-                    {bookingData
-                      ? bookingData?.flight_class?.flight?.plane?.plane_code
-                      : "Loading..."}
-                  </div>
-                  <div className="text-gray-600">Information:</div>
-                  <ul className="list-disc pl-5 text-gray-600">
-                    <li>
-                      Baggage{" "}
+                  <div className="w-full max-w-3xl border-t border-gray-600 mt-2 mb-2"></div>
+                  <div className="flex items-center justify-between">
+                    <div className="font-extrabold text-[#151515] mr-2">
                       {bookingData
-                        ? bookingData?.flight_class?.flight?.plane?.baggage
-                        : "Loading..."}{" "}
-                      kg
-                    </li>
-                    <li>
-                      Cabin baggage{" "}
-                      {bookingData
-                        ? bookingData?.flight_class?.flight?.plane
-                            ?.cabin_baggage
-                        : "Loading..."}{" "}
-                      kg
-                    </li>
-                  </ul>
-                </div>
-
-                {/* Price details */}
-                <div className="w-full max-w-3xl border-t border-gray-600 mt-4 pl-4"></div>
-                <div>
-                  <h4 className="font-extrabold mb-2 pl-4">Price details</h4>
-
-                  {adultCount > 0 && (
-                    <div className="flex justify-between pl-4 text-gray-600">
-                      <span className="text-md text-[#151515]">
-                        {bookingData?.passengers.filter(
-                          (passenger) => passenger?.category?.type === "adult"
-                        ).length || 0}{" "}
-                        Adults
-                      </span>
-                      <span className="text-md text-[#151515]">
-                        Rp {adultCount.toLocaleString("id-ID")}
-                      </span>
+                        ? dateFormat(
+                            bookingData?.flight_class?.flight?.return_arriveAt
+                          ).format("HH:mm")
+                        : "Loading..."}
                     </div>
-                  )}
-
-                  {childCount > 0 && (
-                    <div className="flex justify-between pl-4 text-gray-600">
-                      <span className="text-md text-[#151515]">
-                        {bookingData?.passengers.filter(
-                          (passenger) => passenger?.category?.type === "child"
-                        ).length || 0}{" "}
-                        Child
-                      </span>
-                      <span className="text-md text-[#151515]">
-                        Rp {childCount.toLocaleString("id-ID")}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex justify-between pl-4 text-gray-600">
-                    {countBabyInUrl() !== 0 && (
-                      <>
-                        <span className="text-md text-[#151515]">
-                          {countBabyInUrl()} Baby
-                        </span>
-                        <span className="text-md text-[#151515]">
-                          Rp {babyPrice().toLocaleString("id-ID")}
-                        </span>
-                      </>
-                    )}
+                    <div className="font-extrabold text-[#9DDE8B]">Arrive</div>
                   </div>
+                  <div className="text-gray-600">
+                    {bookingData
+                      ? dateFormat(
+                          bookingData?.flight_class?.flight?.return_arriveAt
+                        ).format("DD MMMM YYYY")
+                      : "Loading..."}
+                  </div>
+                  <div className="text-[#151515]">
+                    {bookingData
+                      ? bookingData?.flight_class?.flight?.from?.name
+                      : "Loading..."}
+                  </div>
+                </>
+              )}
 
+              {/* Additional flight details */}
+              <div className="max-w-3xl border-t border-gray-600 mt-2 mb-2 pl-8 py-2">
+                <div className="text-[#006769] font-extrabold">
+                  {bookingData
+                    ? bookingData?.flight_class?.flight?.plane?.airline
+                    : "Loading..."}
+                  -{" "}
+                  {bookingData?.flight_class?.name
+                    ? capitalizeWords(
+                        bookingData?.flight_class.name.toLowerCase()
+                      )
+                    : "Loading..."}
+                </div>
+                <div className="text-[#006769] font-extrabold">
+                  {bookingData
+                    ? bookingData?.flight_class?.flight?.plane?.plane_code
+                    : "Loading..."}
+                </div>
+                <div className="text-gray-600">Information:</div>
+                <ul className="list-disc pl-5 text-gray-600">
+                  <li>
+                    Baggage{" "}
+                    {bookingData
+                      ? bookingData?.flight_class?.flight?.plane?.baggage
+                      : "Loading..."}{" "}
+                    kg
+                  </li>
+                  <li>
+                    Cabin baggage{" "}
+                    {bookingData
+                      ? bookingData?.flight_class?.flight?.plane?.cabin_baggage
+                      : "Loading..."}{" "}
+                    kg
+                  </li>
+                </ul>
+              </div>
+
+              {/* Price details */}
+              <div className="w-full max-w-3xl border-t border-gray-600 pl-4"></div>
+              <div>
+                <h4 className="font-extrabold mb-1 pl-4">Price details</h4>
+
+                {adultCount > 0 && (
                   <div className="flex justify-between pl-4 text-gray-600">
-                    <span className="text-md text-[#151515]">Tax</span>
                     <span className="text-md text-[#151515]">
-                      Rp {tax.toLocaleString("id-ID")}
+                      {bookingData?.passengers.filter(
+                        (passenger) => passenger?.category?.type === "adult"
+                      ).length || 0}{" "}
+                      Adults
+                    </span>
+                    <span className="text-md text-[#151515]">
+                      Rp {adultCount.toLocaleString("id-ID")}
                     </span>
                   </div>
+                )}
 
-                  <div className="w-full max-w-3xl border-t border-gray-600 mt-4"></div>
-
-                  <div className="flex justify-between pl-4 mt-4 text-[#151515]">
-                    <span className="text-md font-extrabold">Total</span>
-                    <span className="text-md font-extrabold text-[#006769]">
-                      Rp {bookingData?.total_price.toLocaleString("id-ID")}
+                {childCount > 0 && (
+                  <div className="flex justify-between pl-4 text-gray-600">
+                    <span className="text-md text-[#151515]">
+                      {bookingData?.passengers.filter(
+                        (passenger) => passenger?.category?.type === "child"
+                      ).length || 0}{" "}
+                      Child
+                    </span>
+                    <span className="text-md text-[#151515]">
+                      Rp {childCount.toLocaleString("id-ID")}
                     </span>
                   </div>
-                  {include_return && (
-                    <div className="mb-2 mt-4 pl-4 text-justify text-red-500">
-                      Note: Include return selected. The price will be
-                      automatically doubled.
-                    </div>
+                )}
+
+                <div className="flex justify-between pl-4 text-gray-600">
+                  {countBabyInUrl() !== 0 && (
+                    <>
+                      <span className="text-md text-[#151515]">
+                        {countBabyInUrl()} Baby
+                      </span>
+                      <span className="text-md text-[#151515]">
+                        Rp {babyPrice().toLocaleString("id-ID")}
+                      </span>
+                    </>
                   )}
                 </div>
+
+                <div className="flex justify-between pl-4 text-gray-600">
+                  <span className="text-md text-[#151515]">Tax</span>
+                  <span className="text-md text-[#151515]">
+                    Rp {tax.toLocaleString("id-ID")}
+                  </span>
+                </div>
+
+                <div className="w-full max-w-3xl border-t border-gray-600 mt-2"></div>
+
+                <div className="flex justify-between pl-4 mt-2 text-[#151515]">
+                  <span className="text-md font-extrabold">Total</span>
+                  <span className="text-md font-extrabold text-[#006769]">
+                    Rp {bookingData?.total_price.toLocaleString("id-ID")}
+                  </span>
+                </div>
+                {include_return && (
+                  <div className="mb-2 pl-4 text-justify text-red-500">
+                    Note: Include return selected. The price will be
+                    automatically doubled.
+                  </div>
+                )}
               </div>
             </div>
           </div>
