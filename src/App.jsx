@@ -13,7 +13,6 @@ import Search from "./pages/Search";
 import Notification from "./pages/Notification";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
-import TicketConfirmation from "./pages/TicketConfirmation";
 import AboutUs from "./pages/AboutUs";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import History from "./pages/History";
@@ -36,13 +35,8 @@ export default function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/history" element={<History />} />
         <Route path="/payment/:booking_id" element={<Payment />} />
-        <Route
-          path="/ticketconfirm/:payment_id"
-          element={<TicketConfirmation />}
-        />
         <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/print/:id" element={<PrintCheckout />} />
-        <Route path="/paymentsuccess" element={<PaymentSuccess />} />
         <Route path="/payments/:payment_id" element={<PaymentSuccess />} />
       </Routes>
     </Router>

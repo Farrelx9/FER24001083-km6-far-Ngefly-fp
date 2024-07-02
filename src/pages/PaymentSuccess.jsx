@@ -5,14 +5,13 @@ import cover from "../assets/logo/cover.png";
 import pesawatatas from "../assets/logo/pesawatatas.png";
 import pesawatbawah from "../assets/logo/pesawatbawah.png";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 export default function PaymentStatus() {
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
   const { payment_id } = useParams();
-  const navigate = useNavigate();
   const API_URL = process.env.API_URL;
 
   const handleScan = async () => {
@@ -40,27 +39,22 @@ export default function PaymentStatus() {
       if (error.response) {
         const { status, data } = error.response;
         console.log("Error response:", status, data);
-        if (status === 404) {
-          setError("Payment not found. Please check your payment ID.");
-        } else if (status === 400) {
-          if (data.message === "Payment already expired") {
-            setError("Payment already expired. Please make a new payment.");
-          } else if (data.message === "Payment data not found") {
+
+        if (status === 400) {
+          if (data.message === "Payment already issued") {
+            setError("Payment already issued. Please make a new payment.");
+          } else {
+            setError("Bad request. Please check your data and try again.");
+          }
+        } else if (status === 404) {
+          if (data.message === "Payment data not found") {
             setError(
               "Payment data not found. Please check your payment details."
             );
-          } else if (data.message === "Payment already updated") {
-            setError("Payment already updated.");
-          } else if (data.message === "Payment already cancelled") {
-            setError("Payment already cancelled. No further action is needed.");
           } else {
-            setError(
-              "An unexpected conflict occurred. Please try again later."
-            );
+            setError("Network error. Please check your internet connection.");
           }
         }
-      } else {
-        setError("Failed to connect to the server. Please try again later.");
       }
     } finally {
       setLoading(false);
@@ -116,8 +110,7 @@ export default function PaymentStatus() {
             <div>
               <p className="font-bold text-3xl mb-2">Payment Failed!</p>
               <p className="text-base md:text-lg text-gray-600 mb-6">
-                There was an issue with your payment. Please try again or
-                contact support for assistance.
+                There was an issue with your payment. Please try again.
               </p>
             </div>
           </div>
