@@ -72,14 +72,6 @@ export default function PaymentStatus() {
     handleScan();
   }, []); // Dependency array kosong, artinya hanya dipanggil sekali saat komponen dimuat
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token && navigate) {
-      navigate("/login");
-      alert("You've to Login First!");
-    }
-  }, [navigate]);
-
   return (
     <div
       className="bg-white relative h-screen"
