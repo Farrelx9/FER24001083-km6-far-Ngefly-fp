@@ -28,7 +28,7 @@ export default function NotificationPage() {
   const navigate = useNavigate();
   const API_URL = process.env.API_URL;
 
-  const fetchData = async (page = 1) => {
+  const fetchData = async (page = 1, status = "") => {
     try {
       const token = localStorage.getItem("token");
       if (token === null) {
@@ -38,7 +38,7 @@ export default function NotificationPage() {
         return;
       }
       const response = await axios.get(
-        `${API_URL}/notification/?page=${page}`,
+        `${API_URL}/notification/?page=${page}&status=${status}`,
         {
           headers: {
             accept: "application/json",
@@ -47,7 +47,6 @@ export default function NotificationPage() {
         }
       );
       const { data: notifications, total_pages, total_items } = response.data;
-      console.log(notifications);
       if (Array.isArray(notifications)) {
         setNotification(notifications);
         setTotalPages(total_pages);
@@ -67,6 +66,7 @@ export default function NotificationPage() {
   const applyFilter = () => {
     setFilter(tempFilter);
     setShowModal(false);
+    fetchData(currentPage, tempFilter === "all" ? "" : tempFilter);
   };
 
   const markAllAsRead = async () => {
@@ -103,8 +103,8 @@ export default function NotificationPage() {
   };
 
   useEffect(() => {
-    fetchData(currentPage);
-  }, [currentPage]);
+    fetchData(currentPage, filter === "all" ? "" : filter);
+  }, [currentPage, filter]);
 
   if (isReady === false) {
     return (
@@ -116,6 +116,7 @@ export default function NotificationPage() {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+    fetchData(page, filter === "all" ? "" : filter);
   };
 
   return (
