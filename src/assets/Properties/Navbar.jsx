@@ -4,13 +4,16 @@ import { CiLogin } from "react-icons/ci";
 import { MdNotificationsNone, MdOutlineList } from "react-icons/md";
 import { FiUser } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "animate.css";
 
-export default function Navbar() {
+export default function Navbar({ unreadCount }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [localUnreadCount, setLocalUnreadCount] = useState(0);
   const navigate = useNavigate();
+  const API_URL = process.env.API_URL;
 
   useEffect(() => {
     const checkTokenStatus = () => {
@@ -39,6 +42,28 @@ export default function Navbar() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (token) {
+          const response = await axios.get(`${API_URL}/notification`, {
+            headers: {
+              accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          const { data: notifications } = response.data;
+          setLocalUnreadCount(notifications.filter((n) => !n.is_read).length);
+        }
+      } catch (error) {
+        console.error("Error fetching notifications: ", error);
+      }
+    };
+
+    fetchNotifications();
   }, []);
 
   return (
@@ -72,17 +97,24 @@ export default function Navbar() {
       ) : (
         <div className="flex gap-4 mr-2 items-center">
           <MdOutlineList
-            size={20}
+            size={25}
             className="hover:cursor-pointer"
             onClick={() => navigate("/history")}
           />
-          <MdNotificationsNone
-            size={20}
-            className="hover:cursor-pointer"
-            onClick={() => navigate("/notif")}
-          />
+          <div className="relative">
+            <MdNotificationsNone
+              size={25}
+              className="hover:cursor-pointer"
+              onClick={() => navigate("/notif")}
+            />
+            {localUnreadCount > 0 && (
+              <span className="absolute left-3 bottom-2 bg-red-500 text-white rounded-full text-xs border border-white shadow-md w-4 h-4 flex items-center justify-center">
+                {localUnreadCount}
+              </span>
+            )}
+          </div>
           <FiUser
-            size={20}
+            size={25}
             className="hover:cursor-pointer"
             onClick={() => navigate("/profile")}
           />

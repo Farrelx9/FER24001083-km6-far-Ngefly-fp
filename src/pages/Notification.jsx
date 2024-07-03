@@ -14,6 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Footer from "../assets/Properties/Footer";
 import NotFound from "../components/atoms/NotFound";
 import { GoRead } from "react-icons/go";
+import Pagination from "../assets/Properties/Pagination";
 
 export default function NotificationPage() {
   const [notification, setNotification] = useState([]);
@@ -23,6 +24,7 @@ export default function NotificationPage() {
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
   const navigate = useNavigate();
   const API_URL = process.env.API_URL;
 
@@ -44,11 +46,12 @@ export default function NotificationPage() {
           },
         }
       );
-      const { data: notifications, totalPages } = response.data;
+      const { data: notifications, total_pages, total_items } = response.data;
       console.log(notifications);
       if (Array.isArray(notifications)) {
         setNotification(notifications);
-        setTotalPages(totalPages);
+        setTotalPages(total_pages);
+        setTotalItems(total_items);
         setIsReady(true);
       } else {
         console.error(
@@ -111,16 +114,8 @@ export default function NotificationPage() {
     );
   }
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
@@ -151,7 +146,7 @@ export default function NotificationPage() {
               className="border rounded-full h-[50px] flex p-2 gap-2 mb-2 items-center lg:text-base md:text-base text-xs  hover:cursor-pointer"
               onClick={markAllAsRead}
             >
-              <GoRead size={20} classname="text-black" />
+              <GoRead size={20} className="text-black" />
               <div>Read All</div>
             </div>
           </div>
@@ -220,21 +215,12 @@ export default function NotificationPage() {
           )}
         </div>
         <div className="flex items-center justify-center gap-2">
-          <button
-            onClick={handlePreviousPage}
-            className="bg-[#40A578] text-white font-semibold rounded-full p-2 lg:text-xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769]"
-          >
-            Previous
-          </button>
-          <span>
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={handleNextPage}
-            className="bg-[#40A578] text-white font-semibold rounded-full p-2 lg:text-xl focus:outline-none focus:ring transition-colors duration-300 hover:bg-[#006769] active:bg-[#006769]"
-          >
-            Next
-          </button>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
       <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
