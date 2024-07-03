@@ -45,7 +45,7 @@ export function formatCurrency(amount, currency = "IDR") {
 
 export function countDetailAmount(data) {
   // get price
-  const price = data?.flight_class?.flight?.is_return
+  const price = data?.include_return
     ? data?.flight_class?.price * 2
     : data?.flight_class?.price || 0;
 

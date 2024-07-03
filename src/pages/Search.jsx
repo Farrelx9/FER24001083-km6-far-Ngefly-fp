@@ -22,10 +22,10 @@ const OPTION_SORT = [
     },
     label: (
       <>
-        <span className="font-medium">Harga</span> - Termurah
+        <span className="font-medium">Price</span> - Cheapest
       </>
     ),
-    label_short: "Termurah",
+    label_short: "Cheapest",
   },
   {
     value: {
@@ -34,10 +34,10 @@ const OPTION_SORT = [
     },
     label: (
       <>
-        <span className="font-medium">Keberangkatan</span> - Paling Awal
+        <span className="font-medium">Departure</span> - First
       </>
     ),
-    label_short: "Keberangkatan Paling Awal",
+    label_short: "Earliest Departure",
   },
   {
     value: {
@@ -46,10 +46,10 @@ const OPTION_SORT = [
     },
     label: (
       <>
-        <span className="font-medium">Keberangkatan</span> - Paling Akhir
+        <span className="font-medium">Departure</span> - Last
       </>
     ),
-    label_short: "Keberangkatan Paling Akhir",
+    label_short: "Latest Departure",
   },
   {
     value: {
@@ -58,10 +58,10 @@ const OPTION_SORT = [
     },
     label: (
       <>
-        <span className="font-medium">Kedatangan</span> - Paling Awal
+        <span className="font-medium">Arrive</span> - First
       </>
     ),
-    label_short: "Kedatangan Paling Awal",
+    label_short: "Earliest Arrival",
   },
   {
     value: {
@@ -70,10 +70,10 @@ const OPTION_SORT = [
     },
     label: (
       <>
-        <span className="font-medium">Kedatangan</span> - Paling Akhir
+        <span className="font-medium">Arrive</span> - Last
       </>
     ),
-    label_short: "Kedatangan Paling Akhir",
+    label_short: "Latest Arrival",
   },
 ];
 
@@ -212,7 +212,7 @@ export default function Search() {
     <>
       <Layout>
         <Container className="pt-[60px]">
-          <h1 className="text-3xl mb-10">Pilih Penerbangan</h1>
+          <h1 className="text-3xl mb-10">Search Flight</h1>
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="w-full bg-[#9DDE8B] flex items-center text-white h-[50px] rounded-[10px] px-5 gap-4">
               <Link to="/">
@@ -231,7 +231,7 @@ export default function Search() {
                     : totalPassenger.adult +
                       totalPassenger.child +
                       totalPassenger.baby}{" "}
-                  Penumpang
+                  Passengers
                 </span>{" "}
                 - <span>{FLIGHT_CLASS[params.sc.toLowerCase()] || ""}</span>
               </div>
@@ -240,7 +240,7 @@ export default function Search() {
               className="bg-[#40A578] font-medium flex w-full md:max-w-[220px] justify-center items-center text-white h-[50px] rounded-[10px] px-5 cursor-pointer"
               onClick={() => navigate("/")}
             >
-              Ubah Pencarian
+              Change Search
             </div>
           </div>
           <WeekPicker
@@ -283,10 +283,10 @@ export default function Search() {
               ) : (
                 <NotFound>
                   <p className="font-medium mt-5">
-                    Maaf, pencarian Anda tidak ditemukan
+                   Sorry, Flight Not Found
                   </p>
                   <p className="font-medium text-[#40A578]">
-                    Coba cari perjalanan lainnya!
+                    Please, Try Looking for Another Trip
                   </p>
                 </NotFound>
               )}
@@ -326,7 +326,7 @@ export default function Search() {
           <div className="flex items-center justify-between cursor-pointer">
             <div className="flex items-center gap-2 cursor-pointer py-3">
               <Icon icon="tabler:heart" width={25} />
-              <span>Fasilitas</span>
+              <span>Facility</span>
             </div>
             <Icon icon="octicon:chevron-right-24" width={25} />
           </div>
@@ -334,7 +334,7 @@ export default function Search() {
           <div className="flex items-center justify-between cursor-pointer ">
             <div className="flex items-center gap-2 cursor-pointer py-3">
               <Icon icon="mynaui:dollar" width={25} />
-              <span>Harga</span>
+              <span>Price</span>
             </div>
             <Icon icon="octicon:chevron-right-24" width={25} />
           </div>
@@ -347,7 +347,7 @@ export default function Search() {
               setModal({ ...modal, sort: false });
             }}
           >
-            Pilih
+            Choose
           </button>
         </div>
       </Modal>
@@ -372,7 +372,7 @@ export default function Search() {
           <div className="flex items-center justify-between cursor-pointer">
             <div className="flex items-center gap-2 cursor-pointer py-3">
               <Icon icon="tabler:heart" width={25} />
-              <span>Fasilitas</span>
+              <span>Facility</span>
             </div>
             <Icon icon="octicon:chevron-right-24" width={25} />
           </div>
@@ -380,7 +380,7 @@ export default function Search() {
           <div className="flex items-center justify-between cursor-pointer ">
             <div className="flex items-center gap-2 cursor-pointer py-3">
               <Icon icon="mynaui:dollar" width={25} />
-              <span>Harga</span>
+              <span>Price</span>
             </div>
             <Icon icon="octicon:chevron-right-24" width={25} />
           </div>
@@ -393,7 +393,7 @@ export default function Search() {
               setModal({ ...modal, sort: false });
             }}
           >
-            Pilih
+            Choose
           </button>
         </div>
       </Modal>
@@ -451,7 +451,7 @@ export default function Search() {
               redirect({ ...sort.value });
             }}
           >
-            Pilih
+            Choose
           </button>
         </div>
       </Modal>

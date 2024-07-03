@@ -187,13 +187,13 @@ export default function History() {
     <>
       <Layout>
         <Container className="pt-[60px]">
-          <h1 className="text-3xl font-bold mb-10">Riwayat Pesanan</h1>
+          <h1 className="text-3xl font-bold mb-10">History</h1>
           <div className="flex gap-4 flex-col md:flex-row">
             <div className="w-full bg-[#9DDE8B] flex items-center text-white h-[50px] rounded-[10px] px-5 gap-4">
               <Link to="/">
                 <Icon icon="ion:arrow-back-outline" width={24} />
               </Link>
-              <div className="font-medium">Beranda</div>
+              <div className="font-medium">Home</div>
             </div>
             <button
               className="flex items-center gap-3 px-4 py-3 rounded-full border border-[#40A578] text-[#40A578]"
@@ -393,7 +393,7 @@ export default function History() {
                 ))
               ) : (
                 <NotFound>
-                  <p className="font-medium mt-5">Belum ada data</p>
+                  <p className="font-medium mt-5">Data Not Found</p>
                 </NotFound>
               )}
             </div>
@@ -408,7 +408,7 @@ export default function History() {
                 </div>
                 <Divider className="my-3 block xl:hidden" />
                 <div className="flex items-center justify-between gap-5 mb-5">
-                  <p className="text-xl font-bold">Detail Pesanan</p>
+                  <p className="text-xl font-bold">Order Details</p>
                   <div
                     className="px-3 py-1 rounded-full text-white inline-block"
                     style={{
@@ -531,7 +531,7 @@ export default function History() {
                     {selected?.flight_class?.flight?.plane?.plane_code || ""}
                   </p>
                   <div className="text-sm mt-4">
-                    <p className="font-bold">Informasi:</p>
+                    <p className="font-bold">Information:</p>
                     {selected.passengers?.map((passenger, indexPassenger) => (
                       <Fragment key={`passenger-${indexPassenger}`}>
                         <p className="text-[#4B1979]">
@@ -590,8 +590,8 @@ export default function History() {
                       className="bg-[#006769] hover:bg-[#40A578] text-white rounded-lg w-full h-[48px] flex justify-center items-center"
                     >
                       {selected.payment?.status === "ISSUED"
-                        ? "Cetak Tiket"
-                        : "Bayar"}
+                        ? "Print Ticket"
+                        : "Pay"}
                     </Link>
                   </>
                 )}
@@ -638,7 +638,7 @@ export default function History() {
               redirect({ status: filter.value });
             }}
           >
-            Simpan
+            Save
           </button>
         </div>
       </Modal>
@@ -688,7 +688,7 @@ export default function History() {
               redirect({ status: filter.value });
             }}
           >
-            Pilih
+            Choose
           </button>
         </div>
       </Modal>

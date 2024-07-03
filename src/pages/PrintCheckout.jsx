@@ -79,7 +79,7 @@ export default function PrintCheckout() {
         >
           <div className="w-full max-w-[500px] border-2 p-5">
             <div className="flex items-center justify-between gap-5 mb-5">
-              <p className="text-xl font-bold">Detail Pesanan</p>
+              <p className="text-xl font-bold">Order Details</p>
               <div
                 className="px-3 py-1 rounded-full text-white inline-block"
                 style={{
@@ -194,7 +194,7 @@ export default function PrintCheckout() {
                 {data?.flight_class?.flight?.plane?.plane_code || ""}
               </p>
               <div className="text-sm mt-4">
-                <p className="font-bold">Informasi:</p>
+                <p className="font-bold">Information:</p>
                 {data?.passengers?.map((passenger, indexPassenger) => (
                   <Fragment key={`passenger-${indexPassenger}`}>
                     <p className="text-[#4B1979]">
@@ -206,7 +206,7 @@ export default function PrintCheckout() {
               </div>
             </div>
             <Divider className="my-3 mx-auto" />
-            <p className="font-bold">Rincian harga</p>
+            <p className="font-bold">Price details</p>
             {amount.category.adult > 0 && (
               <div className="flex justify-between items-center">
                 <p>{amount.category.adult} Adults</p>
@@ -236,9 +236,7 @@ export default function PrintCheckout() {
               <p className="font-bold">Total</p>
               <p>
                 {formatCurrency(
-                  data?.include_return
-                    ? data?.total_price * 2
-                    : data?.total_price || 0
+                  data?.total_price
                 )}
               </p>
             </div>
