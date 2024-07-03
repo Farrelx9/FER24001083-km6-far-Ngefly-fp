@@ -171,7 +171,6 @@ export default function Profile() {
           },
         }
       );
-      console.log("Password changed successfully", response.data);
       toast.success("Password changed successfully!");
     } catch (error) {
       console.error("Failed to change password", error);
