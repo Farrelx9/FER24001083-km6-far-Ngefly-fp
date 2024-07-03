@@ -83,7 +83,7 @@ export default function CardFlight({ index, item }) {
           <div className="flex-1 flex items-center justify-between gap-[12px]">
             <div className="flex-1 flex items-center justify-between gap-[12px]">
               <div>
-                {item.flight?.is_return && (
+                {searchParams.get("rt") && (
                   <p className="text-sm">
                     {dateFormat(item.flight?.departureAt).format(
                       "DD MMMM YYYY"
@@ -105,7 +105,7 @@ export default function CardFlight({ index, item }) {
                 </span>
               </div>
               <div>
-                {item.flight?.is_return && (
+                {searchParams.get("rt") && (
                   <p className="text-sm">
                     {dateFormat(item.flight?.arriveAt).format("DD MMMM YYYY")}
                   </p>
@@ -123,7 +123,7 @@ export default function CardFlight({ index, item }) {
               color="#006769"
             />
           </div>
-          {item.flight?.is_return && (
+          {searchParams.get("rt") && (
             <>
               <Icon
                 className="self-center"
@@ -203,7 +203,7 @@ export default function CardFlight({ index, item }) {
       >
         <Divider className="my-5" />
         <p className="font-bold text-[#006769] mb-3">
-          Flight {item.flight?.is_return && "Away"} Detail
+          Flight {searchParams.get("rt") && "Away"} Detail
         </p>
         <div className="flex justify-between gap-5">
           <div>
@@ -243,7 +243,7 @@ export default function CardFlight({ index, item }) {
           </div>
           <p className="font-bold text-[#9DDE8B]">Arrive</p>
         </div>
-        {item.flight?.is_return && (
+        {searchParams.get("rt") && (
           <>
             <Divider className="my-5" />
             <p className="font-bold text-[#006769] mb-3">Flight Return Detail</p>
