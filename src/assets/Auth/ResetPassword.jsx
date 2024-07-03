@@ -107,7 +107,7 @@ export default function ResetPassword() {
                   handleSubmit();
                 }}
               >
-                <label className="mt-4">Fill in New Password</label>
+                <label className="mt-4">New Password</label>
                 <div className="relative">
                   <input
                     className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
@@ -120,12 +120,12 @@ export default function ResetPassword() {
                     required
                   />
                   <Icon
-                    icon={showPassword1 ? "mdi:eye-off" : "mdi:eye"}
+                    icon={showPassword1 ? "mdi:eye" : "mdi:eye-off"}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                     onClick={() => setShowPassword1(!showPassword1)}
                   />
                 </div>
-                <label className="mt-4">Fill in New Password Again</label>
+                <label className="mt-4">New Password Confirmation</label>
                 <div className="relative">
                   <input
                     className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
@@ -138,7 +138,7 @@ export default function ResetPassword() {
                     required
                   />
                   <Icon
-                    icon={showPassword2 ? "mdi:eye-off" : "mdi:eye"}
+                    icon={showPassword2 ? "mdi:eye" : "mdi:eye-off"}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
                     onClick={() => setShowPassword2(!showPassword2)}
                   />
