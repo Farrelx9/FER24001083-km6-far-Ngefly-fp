@@ -12,7 +12,7 @@ export default function Modal({ isVisible, onClose, children }) {
       id="wrapper"
       onClick={handleClose}
     >
-      <div className="lg:w-[702px] md:w-[702px] w-[350px] flex flex-col">
+      <div className="lg:w-[702px] md:w-[702px] w-[380px] flex flex-col">
         <button
           className="text-black place-self-end mb-1"
           onClick={() => onClose()}

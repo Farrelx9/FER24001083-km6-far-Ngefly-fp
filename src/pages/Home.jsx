@@ -369,17 +369,17 @@ export default function Home() {
                     airport.airport_code
                       .toLowerCase()
                       .includes(searchText.toLowerCase()) ||
-                    airport.airport.name
+                    airport.name
                       .toLowerCase()
-                      .includes(searchText2.toLowerCase())
+                      .includes(searchText.toLowerCase())
                 )
                 .map((airport, index) => (
                   <li
                     key={index}
-                    className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer text-sm font-semibold"
+                    className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer lg:text-sm md:text-sm text-xs font-semibold"
                     onClick={() => handleSelectSuggestion(airport)}
                   >
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 ">
                       <span>{airport.airport_code}</span>
                       <span>-</span>
                       <span>{airport.city}</span>
@@ -427,14 +427,14 @@ export default function Home() {
                     airport.airport_code
                       .toLowerCase()
                       .includes(searchText2.toLowerCase()) ||
-                    airport.airport.name
+                    airport.name
                       .toLowerCase()
                       .includes(searchText2.toLowerCase())
                 )
                 .map((airport, index) => (
                   <li
                     key={index}
-                    className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer text-sm font-semibold "
+                    className="flex justify-between items-center px-2 py-2 border-b border-gray-300 cursor-pointer lg:text-sm md:text-sm text-xs font-semibold "
                     onClick={() => handleSelectSuggestion2(airport)}
                   >
                     <div className="flex gap-1">
