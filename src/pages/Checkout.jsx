@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { dateFormat } from "../lib/function";
 import { Icon } from "@iconify/react";
+import Footer from "../assets/Properties/Footer";
 
 const Checkout = () => {
   const [pemesan, setPemesan] = useState("");
@@ -109,13 +110,13 @@ const Checkout = () => {
         });
         setPemesan(response.data.data);
       } catch (error) {
-        console.error("Error fetching data pemesan:", error);
+        toast.error("Error fetching data pemesan:", error);
       }
     };
 
     const fetchFlightData = async () => {
       if (!params.from || !params.p || !params.page || !params.sc) {
-        console.error("Missing required parameters");
+        toast.error("There is missing required search");
         return;
       }
       const urlParams = createParamsString(params);
@@ -131,12 +132,11 @@ const Checkout = () => {
             (flight) => flight?.id === flights_id
           );
           setFlightData(filteredData);
-          console.log("filteredData", filteredData);
         } else {
-          console.error("Error: Expected an array but got:", typeof flight);
+          toast.error("Error: Expected an array but got:", typeof flight);
         }
       } catch (error) {
-        console.error("Error fetching flight data:", error);
+        toast.error("Error fetching flight data:", error);
       }
     };
 
@@ -190,7 +190,7 @@ const Checkout = () => {
       }))
     );
     setIsSubmitted(false);
-    setTimeLeft(15 * 60); // Reset timer
+    setTimeLeft(15 * 60);
   };
 
   const handleSelectedTitle = (e, index, field) => {
@@ -230,7 +230,6 @@ const Checkout = () => {
           category: passenger.type,
         })),
       };
-      console.log("payload", payload);
       const response = await axios.post(`${API_URL}/bookings/`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -238,7 +237,6 @@ const Checkout = () => {
         },
         body: JSON.stringify(payload),
       });
-      console.log("response.data", response.data);
       if (response.status === 201) {
         setIsSubmitted(true);
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -250,7 +248,6 @@ const Checkout = () => {
         );
         const booking_id = response?.data?.data?.booking?.id;
         setBookingId(booking_id);
-        console.log("response.data", response.data.data);
       }
     } catch (error) {
       if (error.response) {
@@ -272,20 +269,13 @@ const Checkout = () => {
     if (bookingId) {
       navigate(`/payment/${bookingId}?${paramsUrl}`);
     } else {
-      console.error("Booking ID is not available.");
+      toast.error("Booking ID is not available.");
     }
   };
 
   useEffect(() => {
     setIsIncludeReturn(params.rt === "true");
   }, [params.rt]);
-
-  // const handleScrollToTop = () => {
-  //   window.scrollTo({
-  //     top: 0,
-  //     behavior: "smooth",
-  //   });
-  // };
 
   const adultPrice = () => {
     const adult = countAdultInUrl();
@@ -358,59 +348,59 @@ const Checkout = () => {
     setPassengers(passengersArray);
   }, [childCount, adultCount, params.p]);
 
+  const dataClick = () => {
+    if (!isSubmitted) {
+      toast.error("Please fill in passenger data.");
+    } else {
+      toast.error("Cannot fill in passenger data again after submission.");
+    }
+  };
+
+  const payClick = () => {
+    if (!isSubmitted) {
+      toast.error("Fill in passenger data and pay first!");
+    } else {
+      toast.error("It's time to pay, please press the pay button!");
+    }
+  };
+
+  const finishedClick = () => {
+    if (!isSubmitted) {
+      toast.error("Fill in passenger data and pay first!");
+    } else if (isSubmitted) {
+      toast.error("Press the pay button first!");
+    }
+  };
+
   return (
     <Fragment>
       <div className="bg-[#FFFFFF]">
         <Navbar />
         <div className="relative min-h-screen flex justify-between py-8 flex-col items-center p-4">
           <div className="w-full max-w-4xl flex justify-start items-center space-x-2 mt-20 flex-wrap">
-            <span className="text-black font-bold">Personal Data</span>
+            <span
+              className="text-black font-bold cursor-pointer"
+              onClick={dataClick}
+            >
+              Data
+            </span>
             <span className="text-[#8A8A8A] font-bold">›</span>
             <span
               className={`${
                 isSubmitted ? "text-black" : "text-[#8A8A8A]"
-              } font-bold`}
+              } font-bold cursor-pointer`}
+              onClick={payClick}
             >
               Pay
             </span>
             <span className="text-[#8A8A8A] font-bold">›</span>
-            <span className="text-[#8A8A8A] font-bold">Finished</span>
+            <span
+              className="text-[#8A8A8A] font-bold cursor-pointer"
+              onClick={finishedClick}
+            >
+              Finished
+            </span>
           </div>
-
-          {/* <div className="w-full flex justify-center items-center max-w-4xl bg-[#FF0000] text-white p-3 mt-4 rounded-lg text-center">
-            <p className="absolute">Anda harus login terlebih dahulu!</p>
-            <button className="relative ml-auto flex">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                viewBox="0 0 256 256"
-              >
-                <path
-                  fill="white"
-                  d="M165.66 101.66L139.31 128l26.35 26.34a8 8 0 0 1-11.32 11.32L128 139.31l-26.34 26.35a8 8 0 0 1-11.32-11.32L116.69 128l-26.35-26.34a8 8 0 0 1 11.32-11.32L128 116.69l26.34-26.35a8 8 0 0 1 11.32 11.32M232 128A104 104 0 1 1 128 24a104.11 104.11 0 0 1 104 104m-16 0a88 88 0 1 0-88 88a88.1 88.1 0 0 0 88-88"
-                ></path>
-              </svg>
-            </button>
-          </div> */}
-          {/* <div className="w-full flex justify-center items-center max-w-4xl bg-[#FF0000] text-white p-3 mt-4 rounded-lg text-center">
-            <p className="absolute">
-              Maaf, waktu pemesanan habis. Silakan ulangi lagi!
-            </p>
-            <button className="relative ml-auto flex">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                viewBox="0 0 256 256"
-              >
-                <path
-                  fill="white"
-                  d="M165.66 101.66L139.31 128l26.35 26.34a8 8 0 0 1-11.32 11.32L128 139.31l-26.34 26.35a8 8 0 0 1-11.32-11.32L116.69 128l-26.35-26.34a8 8 0 0 1 11.32-11.32L128 116.69l26.34-26.35a8 8 0 0 1 11.32 11.32M232 128A104 104 0 1 1 128 24a104.11 104.11 0 0 1 104 104m-16 0a88 88 0 1 0-88 88a88.1 88.1 0 0 0 88-88"
-                ></path>
-              </svg>
-            </button>
-          </div> */}
           <div
             className={`w-full max-w-4xl ${
               isSubmitted ? "bg-[#73CA5C]" : "bg-[#FF0000]"
@@ -428,7 +418,7 @@ const Checkout = () => {
                 <h3 className="text-2xl font-bold mb-4">Fill Order Data</h3>
                 <div>
                   <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
-                    <div>Orderer Personal Data</div>
+                    <div>Orderer Data</div>
                     {isSubmitted && (
                       <div>
                         <svg
@@ -491,8 +481,7 @@ const Checkout = () => {
                       <div>
                         <div className="bg-black mb-4 flex justify-between text-white px-4 p-2 rounded-xl rounded-b-none">
                           <div>
-                            Passenger Personal Data {index + 1} -{" "}
-                            {passenger.type}
+                            Passenger Data {index + 1} - {passenger.type}
                           </div>
                           {isSubmitted && (
                             <div>
@@ -600,7 +589,7 @@ const Checkout = () => {
                           </>
                         )}
                         <div className="font-bold mb-1 flex">
-                          <p className="text-[#006769]">Birthdate</p>
+                          <p className="text-[#006769]">Date Birth</p>
                           <p className="ml-1 text-[#FF0000]">*</p>
                         </div>
                         <input
@@ -667,7 +656,6 @@ const Checkout = () => {
                 </button>
               </form>
             </div>
-
             <div className="w-full md:w-1/2 h-full p-4 rounded-lg">
               <h3 className="mb-3 text-xl font-bold text-[#151515] mr-2">
                 Flight Details
@@ -675,6 +663,9 @@ const Checkout = () => {
               <div className="space-y-2">
                 {flightData.length > 0 ? (
                   <>
+                    {isIncludeReturn && (
+                      <h4 className="mb-2 text-lg font-bold">Flight Away</h4>
+                    )}
                     <div className="space-y-0">
                       <div className="flex items-center justify-between">
                         <div className="font-bold text-lg text-[#151515] mr-2">
@@ -728,6 +719,73 @@ const Checkout = () => {
                           : "Loading..."}
                       </div>
                     </div>
+                    {isIncludeReturn && (
+                      <>
+                        <div className="flex justify-center w-full !my-5">
+                          <Icon
+                            icon="humbleicons:exchange-horizontal"
+                            width={25}
+                            color="#8c8c8c"
+                          />
+                        </div>
+                        <h4 className="mb-2 text-lg font-bold">
+                          Flight Return
+                        </h4>
+                        <div className="space-y-0">
+                          <div className="flex items-center justify-between">
+                            <div className="font-bold text-lg text-[#151515] mr-2">
+                              {flightData
+                                ? dateFormat(
+                                    flightData[0]?.flight?.return_departureAt
+                                  ).format("HH:mm")
+                                : "Loading..."}
+                            </div>
+                            <div className="font-extrabold text-[#73CA5C]">
+                              Departure
+                            </div>
+                          </div>
+                          <div className="text-gray-600">
+                            {flightData
+                              ? dateFormat(
+                                  flightData[0]?.flight?.return_departureAt
+                                ).format("DD MMMM YYYY")
+                              : "Loading..."}
+                          </div>
+                          <div className="text-[#151515]">
+                            {flightData
+                              ? flightData[0]?.flight?.to?.name
+                              : "Loading..."}
+                          </div>
+                        </div>
+                        <div className="w-full max-w-3xl border-t border-gray-600 mt-4"></div>
+                        <div className="space-y-0">
+                          <div className="flex items-center justify-between">
+                            <div className="font-bold text-lg text-[#151515] mr-2">
+                              {flightData
+                                ? dateFormat(
+                                    flightData[0]?.flight?.return_arriveAt
+                                  ).format("HH:mm")
+                                : "Loading..."}
+                            </div>
+                            <div className="font-extrabold text-[#73CA5C]">
+                              Arrive
+                            </div>
+                          </div>
+                          <div className="text-gray-600">
+                            {flightData
+                              ? dateFormat(
+                                  flightData[0]?.flight?.return_arriveAt
+                                ).format("DD MMMM YYYY")
+                              : "Loading..."}
+                          </div>
+                          <div className="text-[#151515]">
+                            {flightData
+                              ? flightData[0]?.flight?.from?.name
+                              : "Loading..."}
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="max-w-3xl border-t border-gray-600 py-1">
                       <div className="text-[#006769] pl-12 text-lg font-extrabold">
                         {flightData
@@ -827,6 +885,7 @@ const Checkout = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </Fragment>
   );
