@@ -62,7 +62,7 @@ export default function Login() {
   };
 
   const validatePassword = (password) => {
-    const minLength = 7;
+    const minLength = 8;
     return password.length >= minLength;
   };
 
@@ -170,18 +170,18 @@ export default function Login() {
       />
       <img
         src={ngefly}
-        className="w-[249px] h-[249px] absolute top-[114px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer"
+        className="w-[249px] h-[249px] absolute top-[90px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 hover:cursor-pointer"
         onClick={() => navigate("/")}
       />
       <img
         src={pesawatatas}
         className="w-[249px] h-[194px] md:hidden lg:flex hidden absolute top-[194px] left-[calc(50%+470px)] transform -translate-x-1/2 -translate-y-1/2 max-sm:hidden"
       />
-      <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-xl p-4 w-[509px] h-[453px] absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
+      <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-2xl p-4 w-[509px] h-[453px] absolute top-[403px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
           <div className="text-2xl font-bold ms-4">Login</div>
-          <form className="flex flex-col ms-3 mt-4" onSubmit={handleSubmit}>
-            <label className="mt-4 mb-2">Email</label>
+          <form className="flex flex-col ms-3" onSubmit={handleSubmit}>
+            <label className="mt-3 mb-2">Email</label>
             <input
               className={`rounded-xl border border-black border-opacity-10 px-2 py-5 w-[452px] h-[48px] max-sm:w-[90%] ${
                 emailError
@@ -236,7 +236,7 @@ export default function Login() {
             </button>
           </form>
           <GoogleLogin buttonText="Login with Google" />
-          <div className="flex gap-4 justify-center mt-3 px-auto">
+          <div className="flex gap-4 justify-center mt-6 px-auto">
             <div>Don't have an account?</div>
             <button
               className="text-[#40A578] font-bold hover:text-[#006769]"
