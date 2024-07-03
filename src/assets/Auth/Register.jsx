@@ -112,7 +112,7 @@ export default function Register() {
           headers: { "Content-Type": "application/json" },
         }
       );
-      console.log("response", response);
+ 
       if (response?.status === 201) {
         navigate(`/sendverif/${email}`);
         alert(
