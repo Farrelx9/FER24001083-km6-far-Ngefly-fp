@@ -179,7 +179,7 @@ export default function Login() {
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border border-black border-opacity-10 shadow-sm rounded-2xl p-4 w-[509px] h-[453px] absolute top-[403px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
-          <div className="text-2xl font-bold ms-4">Login</div>
+          <div className="text-2xl font-bold ms-3">Login</div>
           <form className="flex flex-col ms-3" onSubmit={handleSubmit}>
             <label className="mt-3 mb-2">Email</label>
             <input
@@ -222,9 +222,9 @@ export default function Login() {
                 onClick={toggleShowPassword}
               >
                 {showPassword ? (
-                  <FaEyeSlash className="text-black" size={20} />
-                ) : (
                   <IoEyeSharp className="text-black" size={20} />
+                ) : (
+                  <FaEyeSlash className="text-black" size={20} />
                 )}
               </button>
             </div>

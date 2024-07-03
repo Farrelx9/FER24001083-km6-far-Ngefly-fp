@@ -6,6 +6,7 @@ import { CiLogout } from "react-icons/ci";
 import { FiEdit3 } from "react-icons/fi";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdSettings } from "react-icons/md";
+import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../assets/Properties/Navbar";
 import "animate.css";
@@ -25,6 +26,7 @@ export default function Profile() {
     confirm: "",
   });
   const [isReady, setIsReady] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const API_URL = process.env.API_URL;
 
@@ -137,8 +139,23 @@ export default function Profile() {
       toast.error("Failed to update profile!");
     }
   };
+  const validateNewPassword = (password) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+
+    return (
+      password.length >= minLength && hasUpperCase && hasLowerCase && hasNumber
+    );
+  };
 
   const handleChangePassword = async (password, confirm) => {
+    if (!validateNewPassword(password)) {
+      toast.error("Password does not meet the criteria!");
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
@@ -347,7 +364,7 @@ export default function Profile() {
                     <label htmlFor="address">Address:</label>
                     <input
                       id="address"
-                      className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
+                      className="border-black border rounded-md lg:w-[454px]  md:w-[454px] w-[230px] h-[40px] px-2"
                       defaultValue={profileData?.address}
                     />
                   </div>
@@ -414,21 +431,45 @@ export default function Profile() {
                 onSubmit={handleSubmit}
               >
                 <div>New Password</div>
-                <input
-                  className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
-                  placeholder="********"
-                  type="password"
-                  name="newPassword"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
+                    placeholder="********"
+                    type={showPassword ? "text" : "password"}
+                    name="newPassword"
+                    required
+                  />
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <IoEyeSharp className="text-black" size={20} />
+                    ) : (
+                      <IoEyeOffSharp className="text-black" size={20} />
+                    )}
+                  </span>
+                </div>
                 <div>Confirm Password</div>
-                <input
-                  className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
-                  placeholder="********"
-                  type="password"
-                  name="confirmPassword"
-                  required
-                />
+                <div className="relative">
+                  <input
+                    className="border-black border rounded-md lg:w-[454px] md:w-[454px] w-[230px] h-[40px] px-2"
+                    placeholder="********"
+                    type={showPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    required
+                  />
+                  <span
+                    className="absolute right-3 top-3 cursor-pointer"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? (
+                      <IoEyeSharp className="text-black" size={20} />
+                    ) : (
+                      <IoEyeOffSharp className="text-black" size={20} />
+                    )}
+                  </span>
+                </div>
                 <button
                   type="submit"
                   className="bg-green-500 text-white rounded-md px-4 py-2 w-[150px] h-[48px] mx-auto mt-2 shadow-lg transform transition-transform duration-300 hover:scale-105 hover:bg-green-600"

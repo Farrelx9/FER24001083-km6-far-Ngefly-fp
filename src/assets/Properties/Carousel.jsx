@@ -5,10 +5,18 @@ import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import { Icon } from "@iconify/react";
 import { useNavigate } from "react-router-dom";
+import Modal from "../Properties/Modal";
+import { BsPersonRaisedHand } from "react-icons/bs";
+import { FaChild, FaBaby } from "react-icons/fa";
 
 export default function Carousel({ fromAirportCode, adult, child, baby }) {
   const [fetchFavoriteFlights, setFetchFavoriteFlights] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedFlight, setSelectedFlight] = useState(null);
+  const [tempAdult, setTempAdult] = useState(adult || 1);
+  const [tempChild, setTempChild] = useState(child || 0);
+  const [tempBaby, setTempBaby] = useState(baby || 0);
   const navigate = useNavigate();
   const API_URL = process.env.API_URL;
 
@@ -53,20 +61,25 @@ export default function Carousel({ fromAirportCode, adult, child, baby }) {
   };
 
   const handleCarouselClick = (flight) => {
+    setSelectedFlight(flight);
+    setShowModal(true);
+  };
+
+  const handleSavePassengers = () => {
     const params = {
-      from: flight.from.airport_code,
-      to: flight.to.airport_code,
-      p: adult || 1,
+      from: selectedFlight.from.airport_code,
+      to: selectedFlight.to.airport_code,
+      p: tempAdult || 1,
       sc: "ECONOMY",
       page: 1,
-      d: new Date(flight.departureAt).toISOString(),
-      rt: "false",
-      adult: adult || 1,
-      child: child || 0,
-      baby: baby || 0,
+      d: new Date(selectedFlight.departureAt).toISOString(),
+      adult: tempAdult || 1,
+      child: tempChild || 0,
+      baby: tempBaby || 0,
     };
     const queryString = new URLSearchParams(params).toString();
     navigate(`/search?${queryString}`);
+    setShowModal(false);
   };
 
   const settings = {
@@ -159,6 +172,87 @@ export default function Carousel({ fromAirportCode, adult, child, baby }) {
               </div>
             ))}
         </Slider>
+      )}
+      {showModal && (
+        <Modal isVisible={showModal} onClose={() => setShowModal(false)}>
+          <div className="p-4">
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-2">
+                <BsPersonRaisedHand size={20} />
+                <span className="font-semibold lg:text-base md:text-base text-sm">
+                  Adult (12 years old above)
+                </span>
+              </div>
+              <div className="flex items-center">
+                <button
+                  className="px-2 py-1 border"
+                  onClick={() => setTempAdult(Math.max(1, tempAdult - 1))}
+                >
+                  -
+                </button>
+                <span className="px-4">{tempAdult}</span>
+                <button
+                  className="px-2 py-1 border"
+                  onClick={() => setTempAdult(tempAdult + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-2">
+                <FaChild size={20} />
+                <span className="font-semibold lg:text-base md:text-base text-sm">
+                  Child (2 - 11 years old)
+                </span>
+              </div>
+              <div className="flex items-center">
+                <button
+                  className="px-2 py-1 border"
+                  onClick={() => setTempChild(Math.max(0, tempChild - 1))}
+                >
+                  -
+                </button>
+                <span className="px-4">{tempChild}</span>
+                <button
+                  className="px-2 py-1 border"
+                  onClick={() => setTempChild(tempChild + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="flex justify-between items-center mb-4">
+              <div className="flex items-center gap-2">
+                <FaBaby size={20} />
+                <span className="font-semibold lg:text-base md:text-base text-sm">
+                  Baby (Under 2 years old)
+                </span>
+              </div>
+              <div className="flex items-center">
+                <button
+                  className="px-2 py-1 border"
+                  onClick={() => setTempBaby(Math.max(0, tempBaby - 1))}
+                >
+                  -
+                </button>
+                <span className="px-4">{tempBaby}</span>
+                <button
+                  className="px-2 py-1 border"
+                  onClick={() => setTempBaby(tempBaby + 1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <button
+              className="bg-[#40A578] w-full py-2 text-white font-semibold rounded"
+              onClick={handleSavePassengers}
+            >
+              Choose
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   );
