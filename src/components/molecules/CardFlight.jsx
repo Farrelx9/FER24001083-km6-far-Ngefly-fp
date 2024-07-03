@@ -189,7 +189,7 @@ export default function CardFlight({ index, item }) {
             to={`/checkout/${item.id}?${urlParams.toString()}`}
             className="bg-[#40A578] font-medium flex w-fit justify-center items-center text-white rounded-[10px] px-8 py-2 cursor-pointer"
           >
-            Pilih
+            Choose
           </Link>
         </div>
       </div>

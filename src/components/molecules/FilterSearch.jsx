@@ -17,7 +17,7 @@ export default function FilterSearch() {
         <div className="flex items-center justify-between cursor-pointer">
           <div className="flex items-center gap-2 cursor-pointer py-3">
             <Icon icon="tabler:heart" width={25} />
-            <span>Fasilitas</span>
+            <span>Fascility</span>
           </div>
           <Icon icon="octicon:chevron-right-24" width={25} />
         </div>
@@ -25,7 +25,7 @@ export default function FilterSearch() {
         <div className="flex items-center justify-between cursor-pointer ">
           <div className="flex items-center gap-2 cursor-pointer py-3">
             <Icon icon="mynaui:dollar" width={25} />
-            <span>Harga</span>
+            <span>Price</span>
           </div>
           <Icon icon="octicon:chevron-right-24" width={25} />
         </div>

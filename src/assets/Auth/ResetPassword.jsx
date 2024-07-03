@@ -107,7 +107,7 @@ export default function ResetPassword() {
                   handleSubmit();
                 }}
               >
-                <label className="mt-4">Masukkan Password Baru</label>
+                <label className="mt-4">Fill in New Password</label>
                 <div className="relative">
                   <input
                     className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"
@@ -125,7 +125,7 @@ export default function ResetPassword() {
                     onClick={() => setShowPassword1(!showPassword1)}
                   />
                 </div>
-                <label className="mt-4">Ulangi Password Baru</label>
+                <label className="mt-4">Fill in New Password Again</label>
                 <div className="relative">
                   <input
                     className="rounded-lg border-2 border-black border-opacity-10 p-2 mt-1 w-full h-[70]"

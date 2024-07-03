@@ -88,7 +88,7 @@ export default function Request() {
       />
       <div className="bg-[#FFFFFF] bg-opacity-45 border-2 border-black border-opacity-10 shadow-sm rounded-lg p-4 w-[509px] h-fit absolute top-[436px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-[90%]">
         <div>
-          <div className="text-2xl font-bold">Lupa Password</div>
+          <div className="text-2xl font-bold">Forgot Password</div>
           {startCountdown ? (
             <div className="flex flex-col justify-center items-center text-center p-5 min-h-[270px] gap-5">
               <Icon
