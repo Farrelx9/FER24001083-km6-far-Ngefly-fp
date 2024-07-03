@@ -111,10 +111,6 @@ export default function NotificationPage() {
     );
   }
 
-  if (notification.length === 0) {
-    return <NotFound />;
-  }
-
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
@@ -161,57 +157,67 @@ export default function NotificationPage() {
           </div>
         </div>
         <div className="flex flex-col items-center gap-4 justify-center py-9">
-          {notification
-            .filter(
-              (n) =>
-                filter === "all" ||
-                (filter === "unread" && !n.is_read) ||
-                (filter === "read" && n.is_read)
-            )
-            .map((notification) => (
-              <div
-                key={notification.id}
-                className={`flex justify-between border-b-2 lg:w-[880px] md:w-[680px] w-full lg:h-[87px] md:h-[87px] h-auto py-3 p-4 ${
-                  notification.is_read ? " hover:bg-green-100 " : "bg-red-100 "
-                }`}
-              >
-                <div className="flex gap-2 px-2">
-                  <IoNotificationsCircleSharp
-                    size={30}
-                    className="text-yellow-300"
-                  />
-                  <div>
-                    <div className="lg:text-sm md:text-sm text-xs font-semibold">
-                      {notification.title}
-                    </div>
-                    <div className="text-sm lg:w-[590px] md:w-[290px] w-[135px]">
-                      {notification.message}
-                    </div>
-                  </div>
-                </div>
-                <div className="text-xs font-semibold flex gap-2 lg:w-[500px] md:w-[150px] w-[65px]">
-                  {new Date(notification.createdAt).toLocaleDateString(
-                    "en-US",
-                    {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    }
-                  )}
-                  <div className="py-1">
-                    <RiCircleFill
-                      size={10}
-                      className={`${
-                        notification.is_read ? "text-green-500" : "text-red-500"
-                      }`}
+          {notification.length === 0 ? (
+            <NotFound>
+              <p className="mt-5 font-medium">No Notifications Found</p>
+            </NotFound>
+          ) : (
+            notification
+              .filter(
+                (n) =>
+                  filter === "all" ||
+                  (filter === "unread" && !n.is_read) ||
+                  (filter === "read" && n.is_read)
+              )
+              .map((notification) => (
+                <div
+                  key={notification.id}
+                  className={`flex justify-between border-b-2 lg:w-[880px] md:w-[680px] w-full lg:h-[87px] md:h-[87px] h-auto py-3 p-4 ${
+                    notification.is_read
+                      ? " hover:bg-green-100 "
+                      : "bg-red-100 "
+                  }`}
+                >
+                  <div className="flex gap-2 px-2">
+                    <IoNotificationsCircleSharp
+                      size={30}
+                      className="text-yellow-300"
                     />
+                    <div>
+                      <div className="lg:text-sm md:text-sm text-xs font-semibold">
+                        {notification.title}
+                      </div>
+                      <div className="text-sm lg:w-[590px] md:w-[290px] w-[135px]">
+                        {notification.message}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-xs font-semibold flex gap-2 lg:w-[500px] md:w-[150px] w-[65px]">
+                    {new Date(notification.createdAt).toLocaleDateString(
+                      "en-US",
+                      {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        weekday: "long",
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                    <div className="py-1">
+                      <RiCircleFill
+                        size={10}
+                        className={`${
+                          notification.is_read
+                            ? "text-green-500"
+                            : "text-red-500"
+                        }`}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))
+          )}
         </div>
         <div className="flex items-center justify-center gap-2">
           <button
