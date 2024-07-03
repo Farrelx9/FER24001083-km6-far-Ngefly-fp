@@ -123,7 +123,7 @@ export default function History() {
     }
 
     setLoading(true);
-    console.log("urlParams", urlParams);
+   
     try {
       const response = await fetch(`${API_URL}/bookings/?` + urlParams, {
         method: "GET",
