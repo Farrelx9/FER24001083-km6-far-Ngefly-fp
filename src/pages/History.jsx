@@ -302,7 +302,7 @@ export default function History() {
                               </div>
                             </div>
                           </div>
-                          {subItem.flight_class?.flight?.is_return && (
+                          {subItem.include_return && (
                             <>
                               <Icon
                                 className="self-center"
@@ -432,7 +432,7 @@ export default function History() {
                     {selected.id}
                   </span>
                 </div>
-                {selected.flight_class?.flight?.is_return && (
+                {selected.include_return && (
                   <h4 className="mb-2 text-lg font-bold">Flight Away</h4>
                 )}
                 <div className="flex justify-between gap-5">
@@ -469,7 +469,7 @@ export default function History() {
                   </div>
                   <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
                 </div>
-                {selected.flight_class?.flight?.is_return && (
+                {selected.include_return && (
                   <>
                     <div className="flex justify-center w-full !my-5">
                       <Icon

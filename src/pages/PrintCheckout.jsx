@@ -100,7 +100,7 @@ export default function PrintCheckout() {
               Booking Code:{" "}
               <span className="text-[#006769] font-bold">{data?.id}</span>
             </div>
-            {data?.flight_class?.flight?.is_return && (
+            {data?.include_return && (
               <h4 className="mb-2 text-lg font-bold">Flight Away</h4>
             )}
             <div className="flex justify-between gap-5">
@@ -136,7 +136,7 @@ export default function PrintCheckout() {
               </div>
               <p className="font-bold text-[#9DDE8B] text-xs">Arrive</p>
             </div>
-            {data?.flight_class?.flight?.is_return && (
+            {data?.include_return && (
               <>
                 <div className="flex justify-center w-full !my-5">
                   <Icon
@@ -236,7 +236,7 @@ export default function PrintCheckout() {
               <p className="font-bold">Total</p>
               <p>
                 {formatCurrency(
-                  data?.flight_class?.flight?.is_return
+                  data?.include_return
                     ? data?.total_price * 2
                     : data?.total_price || 0
                 )}
